@@ -4,7 +4,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cd src & nodemon index.ts"
+    "dev": "nodemon src/index.ts"
   },
   "author": "",
   "license": "ISC",
@@ -13,6 +13,7 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.4",
     "socket.io": "^4.7.5",
     "yarn": "^1.22.22"
