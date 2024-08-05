@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "start": "ts-node src/db/firebase.ts",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "serve": "node dist/index.js",
@@ -20,12 +20,14 @@
     "firebase": "^10.12.5",
     "firebase-admin": "^12.3.0",
     "jsonwebtoken": "^9.0.2",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/node": "^22.1.0",
+    "@types/uuid": "^10.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   }
