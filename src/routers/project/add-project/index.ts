@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import {
   checkEmailUIDExists,
-  createNewProject,
+  createOrSetProject,
 } from "../../../lib/firebase-func";
 import { generateNewUid } from "../../../lib/utils";
 
@@ -27,7 +27,7 @@ export default async function AddProjectHandler(req: Request, res: Response) {
   }
 
   try {
-    await createNewProject(userId, projectId, dataProject);
+    await createOrSetProject(userId, projectId, dataProject);
     return res.status(200).json({
       status: "success",
       message: "Create new project successfull",

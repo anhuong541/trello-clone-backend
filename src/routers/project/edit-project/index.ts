@@ -2,15 +2,15 @@ import { Request, Response } from "express";
 import {
   checkEmailUIDExists,
   checkProjectExists,
-  getProjectInfo,
+  createOrSetProject,
 } from "../../../lib/firebase-func";
 
-export default async function ProjectInfoHandler(
-  req: Request<{ projectId: string; userId: string }>,
+export default async function EditProjectHandler(
+  req: Request<{ projectId: string; userId: string; projectName: string }>,
   res: Response
 ) {
-  const { userId, projectId } = req.params;
-  if (!userId || !projectId) {
+  const { userId, projectId, projectName } = req.params;
+  if (!userId || !projectId || !projectName) {
     return res.status(404).json({
       status: "fail",
       message: "missing userId or projectId",
@@ -34,18 +34,23 @@ export default async function ProjectInfoHandler(
     });
   }
 
+  const dataProjectEdited = {
+    projectId,
+    projectName,
+  };
+
   try {
-    const data = await getProjectInfo(userId, projectId);
+    const data = await createOrSetProject(userId, projectId, dataProjectEdited);
     return res.status(200).json({
       status: "success",
-      feat: "project info",
+      feat: "edit project",
       data,
     });
   } catch (error) {
     return res.status(400).json({
       status: "fail",
       message: "something wrong!!!",
-      feat: "project info",
+      feat: "edit project",
       error,
     });
   }

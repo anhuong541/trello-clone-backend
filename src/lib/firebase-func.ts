@@ -19,6 +19,7 @@ type DataRegister = {
 };
 
 type DataProject = {
+  projectId: string;
   projectName: string;
 };
 
@@ -52,7 +53,7 @@ export const createNewUser = async (uid: string, data: DataRegister) => {
   return await setDoc(doc(firestoreDB, "users", uid), data);
 };
 
-export const createNewProject = async (
+export const createOrSetProject = async (
   uid: string,
   projectId: string,
   data: DataProject
