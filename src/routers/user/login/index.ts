@@ -11,8 +11,9 @@ dotenv.config();
 export default async function LoginRouteHandler(req: Request, res: Response) {
   const { email, password, jwtToken } = req.body;
   if (!email && !password) {
-    res.status(500);
-    throw Error("require email and password !!!");
+    return res
+      .status(500)
+      .json({ status: "fail", message: "require email and password !!!" });
   }
 
   const uid = generateUidByString(email);

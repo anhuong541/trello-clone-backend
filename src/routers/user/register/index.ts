@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { firestoreDB } from "../../../db/firebase";
 import { generateUidByString } from "../../../lib/utils";
-import { checkEmailUIDExists } from "../../../lib/firebase-func";
+import { checkEmailUIDExists, createNewUser } from "../../../lib/firebase-func";
 dotenv.config();
 
 export default async function RegisterRouteHandler(
@@ -30,14 +30,16 @@ export default async function RegisterRouteHandler(
     expiresIn: "30m",
   });
 
-  await setDoc(doc(firestoreDB, "users", uid), {
+  const dataRegister = {
     uid,
     username,
     email,
     password,
     createAt: Date.now(),
     jwtToken: token,
-  });
+  };
+
+  await createNewUser(uid, dataRegister);
 
   return res
     .status(200)
