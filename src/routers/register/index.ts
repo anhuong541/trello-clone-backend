@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { firestoreDB } from "../../db/firebase";
 import { doc, setDoc } from "firebase/firestore";
-import { generateUidByString } from "../../lib/utils";
-import { checkEmailUIDExists } from "../../lib/firebase-func";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { firestoreDB } from "../../db/firebase";
+import { generateUidByString } from "../../lib/utils";
+import { checkEmailUIDExists } from "../../lib/firebase-func";
 dotenv.config();
 
 export default async function RegisterRouteHandler(

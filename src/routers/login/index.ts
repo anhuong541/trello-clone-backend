@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { generateUidByString, isJwtExpired } from "../../lib/utils";
-import { checkEmailUIDExists } from "../../lib/firebase-func";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import { generateUidByString, isJwtExpired } from "../../lib/utils";
+import { checkEmailUIDExists } from "../../lib/firebase-func";
 import { doc, getDoc } from "firebase/firestore";
 import { firestoreDB } from "../../db/firebase";
 dotenv.config();
