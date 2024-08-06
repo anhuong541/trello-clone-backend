@@ -8,6 +8,7 @@ import {
   RegisterRouteHandler,
   TakeUserInfoHandler,
 } from "./routers/user";
+import { AddProjectHandler } from "./routers/project";
 
 dotenv.config();
 const app = express();
@@ -38,7 +39,7 @@ app.get("/project/:projectid", () => {});
 app.get("/project/:projectid/list", () => {});
 app.delete("/project/:projectid", () => {});
 app.put("/project/:projectid", () => {});
-app.post("/project", () => {});
+app.post("/project", AddProjectHandler);
 
 app.post("/project/task", () => {});
 app.put("/project/task", () => {});

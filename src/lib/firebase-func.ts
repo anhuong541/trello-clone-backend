@@ -1,5 +1,6 @@
 import { collection, doc, getDoc, setDoc } from "firebase/firestore";
 import { firestoreDB } from "../db/firebase";
+import { generateNewUid } from "./utils";
 
 type DataRegister = {
   uid: string;
@@ -8,6 +9,10 @@ type DataRegister = {
   password: string;
   createAt: number;
   jwtToken: string;
+};
+
+type DataProject = {
+  projectName: string;
 };
 
 export const checkEmailUIDExists = async (uid: string) => {
@@ -34,4 +39,10 @@ export const createNewUser = async (uid: string, data: DataRegister) => {
   return await setDoc(doc(firestoreDB, "users", uid), data);
 };
 
-export const createProject = async () => {};
+export const createNewProject = async (uid: string, data: DataProject) => {
+  const projectId = generateNewUid();
+  return await setDoc(
+    doc(firestoreDB, "users", uid, "projects", projectId),
+    data
+  );
+};

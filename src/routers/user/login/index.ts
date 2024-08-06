@@ -10,7 +10,7 @@ dotenv.config();
 
 export default async function LoginRouteHandler(req: Request, res: Response) {
   const { email, password, jwtToken } = req.body;
-  if (!email && !password) {
+  if (!email || !password) {
     return res
       .status(500)
       .json({ status: "fail", message: "require email and password !!!" });
@@ -20,16 +20,15 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
   const checkEmail = await checkEmailUIDExists(uid);
 
   if (!checkEmail) {
-    return res.status(409).json({ status: "fail", error: "email existed!" });
+    return res
+      .status(409)
+      .json({ status: "fail", error: "email doesn't exists!" });
   }
 
   let token = jwtToken;
 
   if (!jwtToken || jwtToken === "") {
     const userJwtToken = (await getUserDataById(uid)) ?? { jwtToken: "" }; // checked user is exists
-
-    console.log("it runn!!!");
-
     token = userJwtToken.jwtToken;
   }
 
