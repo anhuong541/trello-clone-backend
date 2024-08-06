@@ -29,13 +29,13 @@ export default async function CreateTaskHandler(
   };
 
   try {
-    const data = await createOrSetTask(
+    await createOrSetTask(
       taskContent.userId,
       taskContent.projectId,
       taskId,
       dataTask
     );
-    return res.status(200).json({ status: "success", feat, data });
+    return res.status(200).json({ status: "success", feat });
   } catch (error) {
     return res.status(400).json({
       status: "fail",

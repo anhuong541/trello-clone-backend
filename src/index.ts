@@ -15,7 +15,11 @@ import {
   ProjectInfoHandler,
   ProjectListHandler,
 } from "./routers/project";
-import { CreateTaskHandler, UpdateTaskHandler } from "./routers/task";
+import {
+  CreateTaskHandler,
+  UpdateTaskHandler,
+  ViewTasksHandler,
+} from "./routers/task";
 
 dotenv.config();
 const app = express();
@@ -48,6 +52,7 @@ app.delete("/project/:projectId/:userId", DeleteProjectHandler);
 app.put("/project", EditProjectHandler);
 app.post("/project", AddProjectHandler);
 
+app.get("/task/:userId/:projectId", ViewTasksHandler);
 app.post("/task", CreateTaskHandler);
 app.put("/task", UpdateTaskHandler);
 
