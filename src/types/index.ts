@@ -2,6 +2,8 @@ export type TaskStatusType = "Open" | "In-progress" | "Resolved" | "Closed";
 export type PriorityType = "Low" | "Medium" | "High";
 
 export interface TaskType {
+  taskId: string;
+  userId: string;
   projectId: string;
   title: string;
   description: string;

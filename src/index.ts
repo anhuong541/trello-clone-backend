@@ -15,7 +15,7 @@ import {
   ProjectInfoHandler,
   ProjectListHandler,
 } from "./routers/project";
-import { CreateTaskHandler } from "./routers/task";
+import { CreateTaskHandler, UpdateTaskHandler } from "./routers/task";
 
 dotenv.config();
 const app = express();
@@ -48,8 +48,8 @@ app.delete("/project/:projectId/:userId", DeleteProjectHandler);
 app.put("/project", EditProjectHandler);
 app.post("/project", AddProjectHandler);
 
-app.post("/task/:userId", CreateTaskHandler);
-app.put("/task", () => {});
+app.post("/task", CreateTaskHandler);
+app.put("/task", UpdateTaskHandler);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

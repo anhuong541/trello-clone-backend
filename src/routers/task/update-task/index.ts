@@ -1,17 +1,12 @@
 import { Request, Response } from "express";
 import { TaskType } from "../../../types";
-import {
-  checkEmailUIDExists,
-  checkProjectExists,
-  createOrSetTask,
-} from "../../../lib/firebase-func";
-import { generateNewUid } from "../../../lib/utils";
+import { createOrSetTask } from "../../../lib/firebase-func";
 
-export default async function CreateTaskHandler(
+export default async function UpdateTaskHandler(
   req: Request<{}, {}, TaskType, {}>,
   res: Response
 ) {
-  const feat = "create task"; // name api
+  const feat = "update task";
   const taskContent = req.body;
 
   if (!taskContent) {
@@ -22,25 +17,19 @@ export default async function CreateTaskHandler(
     });
   }
 
-  const taskId = generateNewUid();
-  const dataTask = {
-    ...taskContent,
-    taskId,
-  };
-
   try {
     const data = await createOrSetTask(
       taskContent.userId,
       taskContent.projectId,
-      taskId,
-      dataTask
+      taskContent.taskId,
+      taskContent
     );
     return res.status(200).json({ status: "success", feat, data });
   } catch (error) {
     return res.status(400).json({
       status: "fail",
       feat,
-      message: "something wrong when create task",
+      message: "something wrong when update task",
       error,
     });
   }
