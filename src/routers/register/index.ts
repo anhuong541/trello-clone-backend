@@ -3,6 +3,9 @@ import { firestoreDB } from "../../db/firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { generateUidByString } from "../../lib/utils";
 import { checkEmailUIDExists } from "../../lib/firebase-func";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 
 export default async function RegisterRouteHandler(
   req: Request,
@@ -31,5 +34,11 @@ export default async function RegisterRouteHandler(
     createAt: Date.now(),
   });
 
-  return res.status(200).json({ status: "success", jwt: "", feat: "register" });
+  const token = jwt.sign({ email, password }, process.env.JWT_SECRET!, {
+    expiresIn: "30m",
+  });
+
+  return res
+    .status(200)
+    .json({ status: "success", jwt: token, feat: "register" });
 }
