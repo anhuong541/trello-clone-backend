@@ -13,7 +13,7 @@ export default async function ProjectListHandler(
     return res.status(404).json({
       status: "fail",
       message: "missing userId",
-      feat: "delete project",
+      feat: "Project List",
     });
   }
   if (!(await checkEmailUIDExists(userId))) {

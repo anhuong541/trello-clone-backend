@@ -14,7 +14,7 @@ export default async function ProjectInfoHandler(
     return res.status(404).json({
       status: "fail",
       message: "missing userId or projectId",
-      feat: "delete project",
+      feat: "project info",
     });
   }
 

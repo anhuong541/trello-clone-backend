@@ -6,15 +6,29 @@ import {
 } from "../../../lib/firebase-func";
 
 export default async function EditProjectHandler(
-  req: Request<{ projectId: string; userId: string; projectName: string }>,
+  req: Request<
+    { projectId: string; userId: string },
+    {},
+    { projectName: string },
+    {}
+  >,
   res: Response
 ) {
-  const { userId, projectId, projectName } = req.params;
-  if (!userId || !projectId || !projectName) {
+  const { projectName } = req.body;
+  const { userId, projectId } = req.params;
+  if (!userId || !projectId) {
     return res.status(404).json({
       status: "fail",
       message: "missing userId or projectId",
-      feat: "delete project",
+      feat: "edit project",
+    });
+  }
+
+  if (!projectName) {
+    return res.status(404).json({
+      status: "fail",
+      message: "your project name is missing",
+      feat: "edit project",
     });
   }
 
@@ -22,7 +36,7 @@ export default async function EditProjectHandler(
     return res.status(409).json({
       status: "fail",
       error: "user doesn't exists!",
-      feat: "project info",
+      feat: "edit project",
     });
   }
 
@@ -30,7 +44,7 @@ export default async function EditProjectHandler(
     return res.status(409).json({
       status: "fail",
       error: "project doesn't exists!",
-      feat: "project info",
+      feat: "edit project",
     });
   }
 
@@ -40,11 +54,10 @@ export default async function EditProjectHandler(
   };
 
   try {
-    const data = await createOrSetProject(userId, projectId, dataProjectEdited);
+    await createOrSetProject(userId, projectId, dataProjectEdited);
     return res.status(200).json({
       status: "success",
       feat: "edit project",
-      data,
     });
   } catch (error) {
     return res.status(400).json({

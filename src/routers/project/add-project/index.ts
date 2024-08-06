@@ -11,7 +11,11 @@ export default async function AddProjectHandler(req: Request, res: Response) {
   if (!projectName || !userId) {
     return res
       .status(500)
-      .json({ status: "fail", message: "require project name and userId !!!" });
+      .json({
+        status: "fail",
+        message: "require project name and userId !!!",
+        feat: "add project",
+      });
   }
 
   const projectId = generateNewUid();
@@ -23,7 +27,11 @@ export default async function AddProjectHandler(req: Request, res: Response) {
   if (!(await checkEmailUIDExists(userId))) {
     return res
       .status(409)
-      .json({ status: "fail", error: "user doesn't exists!" });
+      .json({
+        status: "fail",
+        error: "user doesn't exists!",
+        feat: "add project",
+      });
   }
 
   try {
