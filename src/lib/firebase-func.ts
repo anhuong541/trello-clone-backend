@@ -1,4 +1,12 @@
-import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  deleteDoc,
+  getDocs,
+  collection,
+  DocumentData,
+} from "firebase/firestore";
 import { firestoreDB } from "../db/firebase";
 
 type DataRegister = {
@@ -64,4 +72,11 @@ export const getProjectInfo = async (uid: string, projectId: string) => {
   return (
     await getDoc(doc(firestoreDB, `users`, uid, "projects", projectId))
   ).data();
+};
+
+export const getProjectListByUser = async (uid: string) => {
+  const listProjectRef = await getDocs(
+    collection(firestoreDB, "users", uid, "projects")
+  );
+  return listProjectRef.docs.map((item: DocumentData) => item.data());
 };

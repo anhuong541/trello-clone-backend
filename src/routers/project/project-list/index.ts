@@ -2,10 +2,10 @@ import { Request, Response } from "express";
 import {
   checkEmailUIDExists,
   checkProjectExists,
-  getProjectInfo,
+  getProjectListByUser,
 } from "../../../lib/firebase-func";
 
-export default async function ProjectInfoHandler(
+export default async function ProjectListHandler(
   req: Request<{ projectId: string; userId: string }>,
   res: Response
 ) {
@@ -31,7 +31,7 @@ export default async function ProjectInfoHandler(
   }
 
   try {
-    const data = await getProjectInfo(userId, projectId);
+    const data = await getProjectListByUser(userId);
     return res.status(200).json({
       status: "success",
       message: "yeyyyy",
