@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { addJWTTokenExpire } from "../../lib/firebase-func";
+import { addJWTTokenExpire } from "../../../lib/firebase-func";
 
 export default async function LogoutRouteHandler(req: Request, res: Response) {
   const { jwtToken } = req.body;

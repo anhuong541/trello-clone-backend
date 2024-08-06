@@ -6,7 +6,7 @@ import {
   LoginRouteHandler,
   LogoutRouteHandler,
   RegisterRouteHandler,
-} from "./routers";
+} from "./routers/user";
 
 dotenv.config();
 const app = express();
@@ -28,9 +28,19 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post("/user/login", LoginRouteHandler);
-app.post("/user/check-email", CheckEmailIsValidRouteHandler);
+app.post("/user/email-verify", CheckEmailIsValidRouteHandler);
 app.post("/user/register", RegisterRouteHandler);
 app.post("/user/logout", LogoutRouteHandler);
+app.get("/user/:userid", () => {});
+
+app.get("/project/:projectid", () => {});
+app.get("/project/:projectid/list", () => {});
+app.delete("/project/:projectid", () => {});
+app.put("/project/:projectid", () => {});
+app.post("/project", () => {});
+
+app.post("/project/task", () => {});
+app.put("/project/task", () => {});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
