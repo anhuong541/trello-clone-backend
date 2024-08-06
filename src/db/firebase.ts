@@ -1,15 +1,21 @@
-import admin from "firebase-admin";
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+
 import dotenv from "dotenv";
 dotenv.config();
 
-// Firebase setup
-const serviceAccount = require(process.env
-  .FIREBASE_SERVICE_ACCOUNT_KEY_PATH as string);
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGE_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APPID,
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
+};
 
-const firebaseApp = admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: process.env.FIREBASE_DATABASE_URL,
-});
-
-export const firebaseDB = admin.database(firebaseApp);
-export const firebaseAuth = admin.auth(firebaseApp);
+const firebaseApp = initializeApp(firebaseConfig);
+export const auth = getAuth(firebaseApp);
+export const firestore = getFirestore(firebaseApp);
