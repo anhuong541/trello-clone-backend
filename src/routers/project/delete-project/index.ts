@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
 import {
   checkEmailUIDExists,
   checkProjectExists,
   deteleProject,
-} from "../../../lib/firebase-func";
+} from "@/lib/firebase-func";
+import { Request, Response } from "express";
 
 export default async function DeleteProjectHandler(
   req: Request<{ userId: string; projectId: string }>,

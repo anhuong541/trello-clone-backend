@@ -1,8 +1,5 @@
+import { checkEmailUIDExists, createNewProject } from "@/lib/firebase-func";
 import { Request, Response } from "express";
-import {
-  checkEmailUIDExists,
-  createNewProject,
-} from "../../../lib/firebase-func";
 
 export default async function AddProjectHandler(req: Request, res: Response) {
   const { projectName, userId } = req.body;

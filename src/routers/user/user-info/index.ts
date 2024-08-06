@@ -1,5 +1,5 @@
+import { getUserDataById } from "@/lib/firebase-func";
 import { Request, Response } from "express";
-import { getUserDataById } from "../../../lib/firebase-func";
 
 export default async function TakeUserInfoHandler(req: Request, res: Response) {
   const uid = req.params.userid ?? "";
@@ -12,13 +12,11 @@ export default async function TakeUserInfoHandler(req: Request, res: Response) {
       data,
     });
   } catch (error) {
-    return res
-      .status(404)
-      .json({
-        status: "fail",
-        message: "missing uid or something",
-        feat: "user-info",
-        error,
-      });
+    return res.status(404).json({
+      status: "fail",
+      message: "missing uid or something",
+      feat: "user-info",
+      error,
+    });
   }
 }

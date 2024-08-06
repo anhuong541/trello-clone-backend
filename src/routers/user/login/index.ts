@@ -1,11 +1,8 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { generateUidByString, isJwtExpired } from "../../../lib/utils";
-import {
-  checkEmailUIDExists,
-  getUserDataById,
-} from "../../../lib/firebase-func";
+import { generateUidByString, isJwtExpired } from "@/lib/utils";
+import { checkEmailUIDExists, getUserDataById } from "@/lib/firebase-func";
 dotenv.config();
 
 export default async function LoginRouteHandler(req: Request, res: Response) {
