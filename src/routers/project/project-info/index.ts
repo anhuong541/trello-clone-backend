@@ -21,13 +21,21 @@ export default async function ProjectInfoHandler(
   if (!(await checkEmailUIDExists(userId))) {
     return res
       .status(409)
-      .json({ status: "fail", error: "user doesn't exists!" });
+      .json({
+        status: "fail",
+        error: "user doesn't exists!",
+        feat: "project info",
+      });
   }
 
   if (!(await checkProjectExists(userId, projectId))) {
     return res
       .status(409)
-      .json({ status: "fail", error: "project doesn't exists!" });
+      .json({
+        status: "fail",
+        error: "project doesn't exists!",
+        feat: "project info",
+      });
   }
 
   try {

@@ -23,20 +23,19 @@ type DataProject = {
 };
 
 export const checkEmailUIDExists = async (uid: string) => {
-  const userRef = await getDoc(doc(firestoreDB, `users`, uid));
-  return userRef.exists();
+  return (await getDoc(doc(firestoreDB, `users`, uid))).exists();
 };
 
 export const checkProjectExists = async (uid: string, projectId: string) => {
-  const userRef = await getDoc(
-    doc(firestoreDB, `users`, uid, "projects", projectId)
-  );
-  return userRef.exists();
+  return (
+    await getDoc(doc(firestoreDB, `users`, uid, "projects", projectId))
+  ).exists();
 };
 
 export const checkJWTTokenExpire = async (jwtToken: string) => {
-  const ref = await getDoc(doc(firestoreDB, `jwt_tokens_expire`, jwtToken));
-  return ref.exists();
+  return (
+    await getDoc(doc(firestoreDB, `jwt_tokens_expire`, jwtToken))
+  ).exists();
 };
 
 export const addJWTTokenExpire = async (jwtToken: string) => {

@@ -41,7 +41,7 @@ app.post("/user/logout", LogoutRouteHandler);
 app.get("/user/:userId", TakeUserInfoHandler);
 
 app.get("/project/:projectId/:userId", ProjectInfoHandler);
-app.get("/project/:projectId/:userId/list", ProjectListHandler);
+app.get("/project/:userId", ProjectListHandler);
 app.delete("/project/:projectId/:userId", DeleteProjectHandler);
 app.put("/project/:projectId/:userId", () => {});
 app.post("/project", AddProjectHandler);
