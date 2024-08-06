@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { firestoreDB } from "../db/firebase";
 import { generateNewUid } from "./utils";
 
@@ -45,4 +45,8 @@ export const createNewProject = async (uid: string, data: DataProject) => {
     doc(firestoreDB, "users", uid, "projects", projectId),
     data
   );
+};
+
+export const deteleProject = async (uid: string, projectId: string) => {
+  return await deleteDoc(doc(firestoreDB, "users", uid, "projects", projectId));
 };

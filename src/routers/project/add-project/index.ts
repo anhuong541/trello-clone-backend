@@ -26,5 +26,9 @@ export default async function AddProjectHandler(req: Request, res: Response) {
 
   return res
     .status(200)
-    .json({ status: "success", message: "Create new project successfull" });
+    .json({
+      status: "success",
+      message: "Create new project successfull",
+      feat: "add project",
+    });
 }
