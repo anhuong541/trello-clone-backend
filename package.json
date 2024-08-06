@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node src/db/firebase.ts",
+    "start": "ts-node src/lib/utils.ts",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "serve": "node dist/index.js",
@@ -15,6 +15,7 @@
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "firebase": "^10.12.5",

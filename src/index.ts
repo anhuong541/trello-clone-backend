@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import {
+  CheckEmailIsValidRouteHandler,
   LoginRouteHandler,
   LogoutRouteHandler,
   RegisterRouteHandler,
@@ -27,6 +28,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post("/user/login", LoginRouteHandler);
+app.post("/user/check-email", CheckEmailIsValidRouteHandler);
 app.post("/user/register", RegisterRouteHandler);
 app.post("/user/logout", LogoutRouteHandler);
 

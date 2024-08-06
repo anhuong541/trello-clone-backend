@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
-import { firebaseAuth, firebaseDB } from "../../db/firebase";
+import { generateUidByString } from "../../lib/utils";
+import { checkEmailUIDExists } from "../../lib/firebase-func";
 
 export default async function LoginRouteHandler(req: Request, res: Response) {
   const { email, password } = req.body;
@@ -8,20 +9,14 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
     throw Error("require email and password !!!");
   }
 
-  // Example usage
-  // firebaseDB
-  //   .collection("users")
-  //   .get()
-  //   .then((snapshot) => {
-  //     snapshot.forEach((doc) => {
-  //       console.log(doc.id, "=>", doc.data());
-  //     });
-  //   })
-  //   .catch((err) => {
-  //     console.error("Error getting documents", err);
-  //   });
+  const uid = generateUidByString(email);
+  const checkEmail = await checkEmailUIDExists(uid);
 
-  console.log({ email, password });
+  if (checkEmail) {
+    return res
+      .status(409)
+      .json({ status: "fail", error: "email doesn't exists!" });
+  }
 
-  res.json({ route: "login" });
+  return res.status(200).json({ status: "success", jwt: "", feat: "login" });
 }

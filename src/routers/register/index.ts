@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
-import { firebaseDB } from "../../db/firebase";
+import { firestoreDB } from "../../db/firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { generateUidByString } from "../../lib/utils";
+import { checkEmailUIDExists } from "../../lib/firebase-func";
 
 export default async function RegisterRouteHandler(
   req: Request,
@@ -11,19 +14,22 @@ export default async function RegisterRouteHandler(
     throw Error("require email and password !!!");
   }
 
-  // var ref = firebaseDB.ref("users/uVZBH2tP5yGIhgfJ128n");
-  // ref.once("value", function (snapshot) {
-  //   console.log(snapshot.val());
-  // });
+  const uid = generateUidByString(email);
+  const checkEmail = await checkEmailUIDExists(uid);
 
-  const reff = firebaseDB.ref("users");
-  // reff.once("value", (snapshot) => {
-  //   console.log(snapshot.val());
-  // });
+  if (checkEmail) {
+    return res
+      .status(409)
+      .json({ status: "fail", error: "email have been used!" });
+  }
 
-  reff.push("value");
+  await setDoc(doc(firestoreDB, "users", uid), {
+    uid,
+    username,
+    email,
+    password,
+    createAt: Date.now(),
+  });
 
-  // console.log({ reff });
-
-  return res.status(200).json({ status: "register" });
+  return res.status(200).json({ status: "success", jwt: "", feat: "register" });
 }
