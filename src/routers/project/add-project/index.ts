@@ -7,13 +7,13 @@ import { generateNewUid } from "../../../lib/utils";
 import { ProjectType } from "../../../types";
 
 export default async function AddProjectHandler(
-  req: Request<{}, {}, { projectContent: ProjectType; userId: string }, {}>,
+  req: Request<{}, {}, ProjectType, {}>,
   res: Response
 ) {
   const feat = "add project";
-  const { projectContent, userId } = req.body;
+  const projectContent = req.body;
 
-  if (!projectContent || !userId) {
+  if (!projectContent) {
     return res.status(500).json({
       status: "fail",
       message: "require project name and userId !!!",
@@ -23,11 +23,11 @@ export default async function AddProjectHandler(
 
   const projectId = generateNewUid();
   const dataProject = {
-    projectId,
     ...projectContent,
+    projectId,
   };
 
-  if (!(await checkEmailUIDExists(userId))) {
+  if (!(await checkEmailUIDExists(projectContent.userId))) {
     return res.status(409).json({
       status: "fail",
       error: "user doesn't exists!",
@@ -36,7 +36,7 @@ export default async function AddProjectHandler(
   }
 
   try {
-    await createOrSetProject(userId, projectId, dataProject);
+    await createOrSetProject(projectContent.userId, projectId, dataProject);
     return res.status(200).json({
       status: "success",
       message: "Create new project successfull",

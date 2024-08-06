@@ -45,7 +45,7 @@ app.get("/user/:userId", TakeUserInfoHandler);
 app.get("/project/:projectId/:userId", ProjectInfoHandler);
 app.get("/project/:userId", ProjectListHandler);
 app.delete("/project/:projectId/:userId", DeleteProjectHandler);
-app.put("/project/:projectId/:userId", EditProjectHandler);
+app.put("/project", EditProjectHandler);
 app.post("/project", AddProjectHandler);
 
 app.post("/task/:userId", CreateTaskHandler);

@@ -13,6 +13,8 @@ export interface TaskType {
 }
 
 export interface ProjectType {
+  userId: string;
+  projectId: string;
   projectName: string;
   description: string;
   createAt: number;

@@ -7,24 +7,11 @@ import {
 import { ProjectType } from "../../../types";
 
 export default async function EditProjectHandler(
-  req: Request<
-    { projectId: string; userId: string },
-    {},
-    { projectContent: ProjectType },
-    {}
-  >,
+  req: Request<{}, {}, ProjectType, {}>,
   res: Response
 ) {
   const feat = "edit project";
-  const { projectContent } = req.body;
-  const { userId, projectId } = req.params;
-  if (!userId || !projectId) {
-    return res.status(404).json({
-      status: "fail",
-      message: "missing userId or projectId",
-      feat,
-    });
-  }
+  const projectContent = req.body;
 
   if (!projectContent) {
     return res.status(404).json({
@@ -34,7 +21,7 @@ export default async function EditProjectHandler(
     });
   }
 
-  if (!(await checkEmailUIDExists(userId))) {
+  if (!(await checkEmailUIDExists(projectContent.userId))) {
     return res.status(409).json({
       status: "fail",
       error: "user doesn't exists!",
@@ -42,7 +29,9 @@ export default async function EditProjectHandler(
     });
   }
 
-  if (!(await checkProjectExists(userId, projectId))) {
+  if (
+    !(await checkProjectExists(projectContent.userId, projectContent.projectId))
+  ) {
     return res.status(409).json({
       status: "fail",
       error: "project doesn't exists!",
@@ -50,13 +39,12 @@ export default async function EditProjectHandler(
     });
   }
 
-  const dataProjectEdited = {
-    projectId,
-    ...projectContent,
-  };
-
   try {
-    await createOrSetProject(userId, projectId, dataProjectEdited);
+    await createOrSetProject(
+      projectContent.userId,
+      projectContent.projectId,
+      projectContent
+    );
     return res.status(200).json({
       status: "success",
       feat,
