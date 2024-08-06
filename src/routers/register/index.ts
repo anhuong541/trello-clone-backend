@@ -26,16 +26,17 @@ export default async function RegisterRouteHandler(
       .json({ status: "fail", error: "email have been used!" });
   }
 
+  const token = jwt.sign({ email, password }, process.env.JWT_SECRET!, {
+    expiresIn: "30m",
+  });
+
   await setDoc(doc(firestoreDB, "users", uid), {
     uid,
     username,
     email,
     password,
     createAt: Date.now(),
-  });
-
-  const token = jwt.sign({ email, password }, process.env.JWT_SECRET!, {
-    expiresIn: "30m",
+    jwtToken: token,
   });
 
   return res
