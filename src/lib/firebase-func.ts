@@ -1,6 +1,5 @@
-import { collection, doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { firestoreDB } from "../db/firebase";
-import { generateNewUid } from "./utils";
 
 type DataRegister = {
   uid: string;
@@ -46,8 +45,11 @@ export const createNewUser = async (uid: string, data: DataRegister) => {
   return await setDoc(doc(firestoreDB, "users", uid), data);
 };
 
-export const createNewProject = async (uid: string, data: DataProject) => {
-  const projectId = generateNewUid();
+export const createNewProject = async (
+  uid: string,
+  projectId: string,
+  data: DataProject
+) => {
   return await setDoc(
     doc(firestoreDB, "users", uid, "projects", projectId),
     data
@@ -56,4 +58,10 @@ export const createNewProject = async (uid: string, data: DataProject) => {
 
 export const deteleProject = async (uid: string, projectId: string) => {
   return await deleteDoc(doc(firestoreDB, "users", uid, "projects", projectId));
+};
+
+export const getProjectInfo = async (uid: string, projectId: string) => {
+  return (
+    await getDoc(doc(firestoreDB, `users`, uid, "projects", projectId))
+  ).data();
 };

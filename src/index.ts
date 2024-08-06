@@ -8,7 +8,11 @@ import {
   RegisterRouteHandler,
   TakeUserInfoHandler,
 } from "./routers/user";
-import { AddProjectHandler, DeleteProjectHandler } from "./routers/project";
+import {
+  AddProjectHandler,
+  DeleteProjectHandler,
+  ProjectInfoHandler,
+} from "./routers/project";
 
 dotenv.config();
 const app = express();
@@ -35,8 +39,8 @@ app.post("/user/register", RegisterRouteHandler);
 app.post("/user/logout", LogoutRouteHandler);
 app.get("/user/:userId", TakeUserInfoHandler);
 
-app.get("/project/:projectId", () => {});
-app.get("/project/:projectId/list", () => {});
+app.get("/project/:projectId/:userId", ProjectInfoHandler);
+app.get("/project/:projectId/:userId/list", () => {});
 app.delete("/project/:projectId/:userId", DeleteProjectHandler);
 app.put("/project/:projectId", () => {});
 app.post("/project", AddProjectHandler);
