@@ -8,21 +8,9 @@ import {
   DocumentData,
 } from "firebase/firestore";
 import { firestoreDB } from "../db/firebase";
+import { DataProject, DataRegister, DataTask } from "../types/firebase";
 
-type DataRegister = {
-  uid: string;
-  username: string;
-  email: string;
-  password: string;
-  createAt: number;
-  jwtToken: string;
-};
-
-type DataProject = {
-  projectId: string;
-  projectName: string;
-};
-
+// user
 export const checkEmailUIDExists = async (uid: string) => {
   return (await getDoc(doc(firestoreDB, `users`, uid))).exists();
 };
@@ -53,6 +41,7 @@ export const createNewUser = async (uid: string, data: DataRegister) => {
   return await setDoc(doc(firestoreDB, "users", uid), data);
 };
 
+//project
 export const createOrSetProject = async (
   uid: string,
   projectId: string,
@@ -79,4 +68,17 @@ export const getProjectListByUser = async (uid: string) => {
     collection(firestoreDB, "users", uid, "projects")
   );
   return listProjectRef.docs.map((item: DocumentData) => item.data());
+};
+
+// task feature
+export const createOrSetTask = async (
+  uid: string,
+  projectId: string,
+  taskId: string,
+  contentTask: DataTask
+) => {
+  return await setDoc(
+    doc(firestoreDB, "users", uid, "projects", projectId, "tasks", taskId),
+    contentTask
+  );
 };

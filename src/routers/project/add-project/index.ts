@@ -4,34 +4,34 @@ import {
   createOrSetProject,
 } from "../../../lib/firebase-func";
 import { generateNewUid } from "../../../lib/utils";
+import { ProjectType } from "../../../types";
 
-export default async function AddProjectHandler(req: Request, res: Response) {
-  const { projectName, userId } = req.body;
+export default async function AddProjectHandler(
+  req: Request<{}, {}, { projectContent: ProjectType; userId: string }, {}>,
+  res: Response
+) {
+  const { projectContent, userId } = req.body;
 
-  if (!projectName || !userId) {
-    return res
-      .status(500)
-      .json({
-        status: "fail",
-        message: "require project name and userId !!!",
-        feat: "add project",
-      });
+  if (!projectContent || !userId) {
+    return res.status(500).json({
+      status: "fail",
+      message: "require project name and userId !!!",
+      feat: "add project",
+    });
   }
 
   const projectId = generateNewUid();
   const dataProject = {
     projectId,
-    projectName,
+    ...projectContent,
   };
 
   if (!(await checkEmailUIDExists(userId))) {
-    return res
-      .status(409)
-      .json({
-        status: "fail",
-        error: "user doesn't exists!",
-        feat: "add project",
-      });
+    return res.status(409).json({
+      status: "fail",
+      error: "user doesn't exists!",
+      feat: "add project",
+    });
   }
 
   try {

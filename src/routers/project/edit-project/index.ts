@@ -4,17 +4,18 @@ import {
   checkProjectExists,
   createOrSetProject,
 } from "../../../lib/firebase-func";
+import { ProjectType } from "../../../types";
 
 export default async function EditProjectHandler(
   req: Request<
     { projectId: string; userId: string },
     {},
-    { projectName: string },
+    { projectContent: ProjectType },
     {}
   >,
   res: Response
 ) {
-  const { projectName } = req.body;
+  const { projectContent } = req.body;
   const { userId, projectId } = req.params;
   if (!userId || !projectId) {
     return res.status(404).json({
@@ -24,7 +25,7 @@ export default async function EditProjectHandler(
     });
   }
 
-  if (!projectName) {
+  if (!projectContent) {
     return res.status(404).json({
       status: "fail",
       message: "your project name is missing",
@@ -50,7 +51,7 @@ export default async function EditProjectHandler(
 
   const dataProjectEdited = {
     projectId,
-    projectName,
+    ...projectContent,
   };
 
   try {
