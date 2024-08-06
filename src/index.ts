@@ -6,6 +6,7 @@ import {
   LoginRouteHandler,
   LogoutRouteHandler,
   RegisterRouteHandler,
+  TakeUserInfoHandler,
 } from "./routers/user";
 
 dotenv.config();
@@ -31,7 +32,7 @@ app.post("/user/login", LoginRouteHandler);
 app.post("/user/email-verify", CheckEmailIsValidRouteHandler);
 app.post("/user/register", RegisterRouteHandler);
 app.post("/user/logout", LogoutRouteHandler);
-app.get("/user/:userid", () => {});
+app.get("/user/:userid", TakeUserInfoHandler);
 
 app.get("/project/:projectid", () => {});
 app.get("/project/:projectid/list", () => {});

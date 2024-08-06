@@ -16,3 +16,7 @@ export const addJWTTokenExpire = async (jwtToken: string) => {
     jwtToken,
   });
 };
+
+export const getUserDataById = async (uid: string) => {
+  return (await getDoc(doc(firestoreDB, `users`, uid))).data();
+};

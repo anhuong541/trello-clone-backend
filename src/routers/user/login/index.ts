@@ -2,9 +2,10 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { generateUidByString, isJwtExpired } from "../../../lib/utils";
-import { checkEmailUIDExists } from "../../../lib/firebase-func";
-import { doc, getDoc } from "firebase/firestore";
-import { firestoreDB } from "../../../db/firebase";
+import {
+  checkEmailUIDExists,
+  getUserDataById,
+} from "../../../lib/firebase-func";
 dotenv.config();
 
 export default async function LoginRouteHandler(req: Request, res: Response) {
@@ -24,9 +25,7 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
   let token = jwtToken;
 
   if (!jwtToken || jwtToken === "") {
-    const userJwtToken = (
-      await getDoc(doc(firestoreDB, `users`, uid))
-    ).data() ?? { jwtToken: "" }; // checked user is exists
+    const userJwtToken = (await getUserDataById(uid)) ?? { jwtToken: "" }; // checked user is exists
 
     console.log("it runn!!!");
 
