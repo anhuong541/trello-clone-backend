@@ -20,6 +20,13 @@ export const checkEmailUIDExists = async (uid: string) => {
   return userRef.exists();
 };
 
+export const checkProjectExists = async (uid: string, projectId: string) => {
+  const userRef = await getDoc(
+    doc(firestoreDB, `users`, uid, "projects", projectId)
+  );
+  return userRef.exists();
+};
+
 export const checkJWTTokenExpire = async (jwtToken: string) => {
   const ref = await getDoc(doc(firestoreDB, `jwt_tokens_expire`, jwtToken));
   return ref.exists();

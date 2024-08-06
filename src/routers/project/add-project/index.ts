@@ -19,16 +19,22 @@ export default async function AddProjectHandler(req: Request, res: Response) {
   if (!(await checkEmailUIDExists(userId))) {
     return res
       .status(409)
-      .json({ status: "fail", error: "userId doesn't exists!" });
+      .json({ status: "fail", error: "user doesn't exists!" });
   }
 
-  await createNewProject(userId, dataProject);
-
-  return res
-    .status(200)
-    .json({
+  try {
+    await createNewProject(userId, dataProject);
+    return res.status(200).json({
       status: "success",
       message: "Create new project successfull",
       feat: "add project",
     });
+  } catch (error) {
+    return res.status(400).json({
+      status: "fail",
+      message: "something wrong when add new project",
+      feat: "add project",
+      error,
+    });
+  }
 }

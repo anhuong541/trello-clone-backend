@@ -39,9 +39,17 @@ export default async function RegisterRouteHandler(
     jwtToken: token,
   };
 
-  await createNewUser(uid, dataRegister);
-
-  return res
-    .status(200)
-    .json({ status: "success", jwt: token, feat: "register" });
+  try {
+    await createNewUser(uid, dataRegister);
+    return res
+      .status(200)
+      .json({ status: "success", jwt: token, feat: "register" });
+  } catch (error) {
+    return res.status(400).json({
+      status: "fail",
+      message: "something wrong when register new user",
+      feat: "register",
+      error,
+    });
+  }
 }
