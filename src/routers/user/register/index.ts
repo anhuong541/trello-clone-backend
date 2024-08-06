@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { generateUidByString } from "@/lib/utils";
-import { checkEmailUIDExists, createNewUser } from "@/lib/firebase-func";
+import { generateUidByString } from "../../../lib/utils";
+import { checkEmailUIDExists, createNewUser } from "../../../lib/firebase-func";
 dotenv.config();
 
 export default async function RegisterRouteHandler(

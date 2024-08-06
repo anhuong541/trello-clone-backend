@@ -1,5 +1,5 @@
-import { getUserDataById } from "@/lib/firebase-func";
 import { Request, Response } from "express";
+import { getUserDataById } from "../../../lib/firebase-func";
 
 export default async function TakeUserInfoHandler(req: Request, res: Response) {
   const uid = req.params.userid ?? "";

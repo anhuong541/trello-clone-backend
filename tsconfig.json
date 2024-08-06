@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    // "baseUrl": ".",
+    // "paths": {
+    //   "@/*": ["src/*"] // remove because it got some error
+    // },
     "target": "ES6",
     "module": "commonjs",
     "outDir": "./dist",
@@ -8,9 +12,6 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"] // Map '@/' to the 'src' directory
-    }
-  }
+  },
+  "exclude": ["node_modules"]
 }

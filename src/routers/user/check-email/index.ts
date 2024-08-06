@@ -1,5 +1,5 @@
-import { checkEmailUIDExists } from "@/lib/firebase-func";
-import { generateUidByString } from "@/lib/utils";
+import { generateUidByString } from "../../../lib/utils";
+import { checkEmailUIDExists } from "../../../lib/firebase-func";
 import { Request, Response } from "express";
 
 export default async function CheckEmailIsValidRouteHandler(

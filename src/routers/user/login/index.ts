@@ -1,12 +1,17 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import { generateUidByString, isJwtExpired } from "@/lib/utils";
-import { checkEmailUIDExists, getUserDataById } from "@/lib/firebase-func";
+import { generateUidByString, isJwtExpired } from "../../../lib/utils";
+import {
+  checkEmailUIDExists,
+  getUserDataById,
+} from "../../../lib/firebase-func";
 dotenv.config();
 
 export default async function LoginRouteHandler(req: Request, res: Response) {
   const { email, password, jwtToken } = req.body;
+  // update one more logic is when email and password input is empty and jwt is exists then go to another case
+  // we need to check the middleware auto login case
   if (!email || !password) {
     return res
       .status(500)
