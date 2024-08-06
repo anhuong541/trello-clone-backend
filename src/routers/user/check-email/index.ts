@@ -6,6 +6,7 @@ export default async function CheckEmailIsValidRouteHandler(
   req: Request,
   res: Response
 ) {
+  const feat = "check email";
   const { email } = req.body;
   if (!email) {
     res.status(500);
@@ -18,10 +19,10 @@ export default async function CheckEmailIsValidRouteHandler(
   if (checkEmail) {
     return res
       .status(409)
-      .json({ status: "fail", message: "email have been used!" });
+      .json({ status: "fail", message: "email have been used!", feat });
   } else {
     return res
       .status(200)
-      .json({ status: "success", message: "email haven't been used!" });
+      .json({ status: "success", message: "email haven't been used!", feat });
   }
 }

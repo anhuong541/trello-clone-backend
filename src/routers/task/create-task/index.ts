@@ -11,6 +11,7 @@ export default async function CreateTaskHandler(
   req: Request<{ userId: string }, {}, TaskType, {}>,
   res: Response
 ) {
+  const feat = "create task"; // name api
   const { userId } = req.params;
   const taskContent = req.body;
 
@@ -18,7 +19,7 @@ export default async function CreateTaskHandler(
     return res.status(400).json({
       status: "fail",
       message: "require userId",
-      feat: "create task",
+      feat,
     });
   }
 
@@ -26,7 +27,7 @@ export default async function CreateTaskHandler(
     return res.status(400).json({
       status: "fail",
       message: "require task body",
-      feat: "create task",
+      feat,
     });
   }
 
@@ -34,7 +35,7 @@ export default async function CreateTaskHandler(
     return res.status(409).json({
       status: "fail",
       error: "user doesn't exists!",
-      feat: "create task",
+      feat,
     });
   }
 
@@ -42,7 +43,7 @@ export default async function CreateTaskHandler(
     return res.status(409).json({
       status: "fail",
       error: "project doesn't exists!",
-      feat: "create task",
+      feat,
     });
   }
 
@@ -60,13 +61,11 @@ export default async function CreateTaskHandler(
       taskId,
       dataTask
     );
-    return res
-      .status(200)
-      .json({ status: "success", feat: "create task", data });
+    return res.status(200).json({ status: "success", feat, data });
   } catch (error) {
     return res.status(400).json({
       status: "fail",
-      feat: "create task",
+      feat,
       message: "something wrong when create task",
       error,
     });

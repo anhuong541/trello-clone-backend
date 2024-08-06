@@ -10,13 +10,14 @@ export default async function AddProjectHandler(
   req: Request<{}, {}, { projectContent: ProjectType; userId: string }, {}>,
   res: Response
 ) {
+  const feat = "add project";
   const { projectContent, userId } = req.body;
 
   if (!projectContent || !userId) {
     return res.status(500).json({
       status: "fail",
       message: "require project name and userId !!!",
-      feat: "add project",
+      feat,
     });
   }
 
@@ -30,7 +31,7 @@ export default async function AddProjectHandler(
     return res.status(409).json({
       status: "fail",
       error: "user doesn't exists!",
-      feat: "add project",
+      feat,
     });
   }
 
@@ -39,13 +40,13 @@ export default async function AddProjectHandler(
     return res.status(200).json({
       status: "success",
       message: "Create new project successfull",
-      feat: "add project",
+      feat,
     });
   } catch (error) {
     return res.status(400).json({
       status: "fail",
       message: "something wrong when add new project",
-      feat: "add project",
+      feat,
       error,
     });
   }

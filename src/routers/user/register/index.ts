@@ -9,6 +9,7 @@ export default async function RegisterRouteHandler(
   req: Request,
   res: Response
 ) {
+  const feat = "register";
   const { email, password, username } = req.body;
   if (!email || !password || !username) {
     res.status(500);
@@ -21,7 +22,7 @@ export default async function RegisterRouteHandler(
   if (checkEmail) {
     return res
       .status(409)
-      .json({ status: "fail", error: "email have been used!" });
+      .json({ status: "fail", error: "email have been used!", feat });
   }
 
   const token = jwt.sign({ email, password }, process.env.JWT_SECRET!, {
@@ -39,14 +40,12 @@ export default async function RegisterRouteHandler(
 
   try {
     await createNewUser(uid, dataRegister);
-    return res
-      .status(200)
-      .json({ status: "success", jwt: token, feat: "register" });
+    return res.status(200).json({ status: "success", jwt: token, feat });
   } catch (error) {
     return res.status(400).json({
       status: "fail",
       message: "something wrong when register new user",
-      feat: "register",
+      feat,
       error,
     });
   }

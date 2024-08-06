@@ -8,19 +8,20 @@ export default async function ProjectListHandler(
   req: Request<{ userId: string }>,
   res: Response
 ) {
+  const feat = "project list";
   const { userId } = req.params;
   if (!userId) {
     return res.status(404).json({
       status: "fail",
       message: "missing userId",
-      feat: "Project List",
+      feat,
     });
   }
   if (!(await checkEmailUIDExists(userId))) {
     return res.status(409).json({
       status: "fail",
       error: "user doesn't exists!",
-      feat: "Project List",
+      feat,
     });
   }
 
@@ -28,13 +29,13 @@ export default async function ProjectListHandler(
     const data = await getProjectListByUser(userId);
     return res.status(200).json({
       status: "success",
-      feat: "Project List",
+      feat,
       data,
     });
   } catch (error) {
     return res.status(400).json({
       status: "fail",
-      feat: "Project List",
+      feat,
       error,
     });
   }

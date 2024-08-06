@@ -9,25 +9,26 @@ export default async function DeleteProjectHandler(
   req: Request<{ userId: string; projectId: string }>,
   res: Response
 ) {
+  const feat = "delete project";
   const { userId, projectId } = req.params;
   if (!userId || !projectId) {
     return res.status(404).json({
       status: "fail",
       message: "missing userId or projectId",
-      feat: "delete project",
+      feat,
     });
   }
 
   if (!(await checkEmailUIDExists(userId))) {
     return res
       .status(409)
-      .json({ status: "fail", error: "user doesn't exists!" });
+      .json({ status: "fail", error: "user doesn't exists!", feat });
   }
 
   if (!(await checkProjectExists(userId, projectId))) {
     return res
       .status(409)
-      .json({ status: "fail", error: "project doesn't exists!" });
+      .json({ status: "fail", error: "project doesn't exists!", feat });
   }
 
   try {
@@ -35,13 +36,13 @@ export default async function DeleteProjectHandler(
     return res.status(200).json({
       status: "success",
       message: "delete project complete",
-      feat: "delete project",
+      feat,
     });
   } catch (error) {
     return res.status(404).json({
       status: "fail",
       message: "something wrong when delete project",
-      feat: "delete project",
+      feat,
       error,
     });
   }

@@ -9,13 +9,18 @@ import {
 dotenv.config();
 
 export default async function LoginRouteHandler(req: Request, res: Response) {
+  const feat = "login";
   const { email, password, jwtToken } = req.body;
   // update one more logic is when email and password input is empty and jwt is exists then go to another case
   // we need to check the middleware auto login case
   if (!email || !password) {
     return res
       .status(500)
-      .json({ status: "fail", message: "require email and password !!!" });
+      .json({
+        status: "fail",
+        message: "require email and password !!!",
+        feat,
+      });
   }
 
   const uid = generateUidByString(email);
@@ -24,7 +29,7 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
   if (!checkEmail) {
     return res
       .status(409)
-      .json({ status: "fail", error: "email doesn't exists!" });
+      .json({ status: "fail", error: "email doesn't exists!", feat });
   }
 
   let token = jwtToken;
@@ -45,5 +50,5 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
 
   return res
     .status(200)
-    .json({ status: "success", jwt: token, feat: "login", jwtChanged });
+    .json({ status: "success", jwt: token, feat, jwtChanged });
 }

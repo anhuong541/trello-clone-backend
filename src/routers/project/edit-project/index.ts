@@ -15,13 +15,14 @@ export default async function EditProjectHandler(
   >,
   res: Response
 ) {
+  const feat = "edit project";
   const { projectContent } = req.body;
   const { userId, projectId } = req.params;
   if (!userId || !projectId) {
     return res.status(404).json({
       status: "fail",
       message: "missing userId or projectId",
-      feat: "edit project",
+      feat,
     });
   }
 
@@ -29,7 +30,7 @@ export default async function EditProjectHandler(
     return res.status(404).json({
       status: "fail",
       message: "your project name is missing",
-      feat: "edit project",
+      feat,
     });
   }
 
@@ -37,7 +38,7 @@ export default async function EditProjectHandler(
     return res.status(409).json({
       status: "fail",
       error: "user doesn't exists!",
-      feat: "edit project",
+      feat,
     });
   }
 
@@ -45,7 +46,7 @@ export default async function EditProjectHandler(
     return res.status(409).json({
       status: "fail",
       error: "project doesn't exists!",
-      feat: "edit project",
+      feat,
     });
   }
 
@@ -58,13 +59,13 @@ export default async function EditProjectHandler(
     await createOrSetProject(userId, projectId, dataProjectEdited);
     return res.status(200).json({
       status: "success",
-      feat: "edit project",
+      feat,
     });
   } catch (error) {
     return res.status(400).json({
       status: "fail",
       message: "something wrong!!!",
-      feat: "edit project",
+      feat,
       error,
     });
   }
