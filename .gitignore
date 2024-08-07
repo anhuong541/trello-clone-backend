@@ -6,3 +6,4 @@ dist
 
 # db key
 FirebaseAccountSecretKey.json
+.vercel
