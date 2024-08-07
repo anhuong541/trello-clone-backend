@@ -7,19 +7,19 @@ import {
   LogoutRouteHandler,
   RegisterRouteHandler,
   TakeUserInfoHandler,
-} from "./src/routers/user";
+} from "./routers/user";
 import {
   AddProjectHandler,
   DeleteProjectHandler,
   EditProjectHandler,
   ProjectInfoHandler,
   ProjectListHandler,
-} from "./src/routers/project";
+} from "./routers/project";
 import {
   CreateTaskHandler,
   UpdateTaskHandler,
   ViewTasksHandler,
-} from "./src/routers/task";
+} from "./routers/task";
 
 dotenv.config();
 const app = express();

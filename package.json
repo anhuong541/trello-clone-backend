@@ -4,7 +4,7 @@
   "main": "index.ts",
   "private": true,
   "scripts": {
-    "dev": "nodemon public/index.ts",
+    "dev": "nodemon src/index.ts",
     "serve": "node dist/index.js",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
