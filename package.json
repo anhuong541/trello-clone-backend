@@ -4,12 +4,10 @@
   "main": "index.ts",
   "private": true,
   "scripts": {
-    "start": "ts-node src/lib/utils.ts",
     "dev": "nodemon src/index.ts",
-    "build": "tsc",
+    "build": "tsc --output public",
     "serve": "node dist/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "delete": "rm -rf node_modules/.cache"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
