@@ -4,6 +4,7 @@
   "main": "index.ts",
   "private": true,
   "scripts": {
+    "start": "nodemon src/index.ts",
     "dev": "nodemon src/index.ts",
     "serve": "node dist/index.js",
     "build": "tsc",
