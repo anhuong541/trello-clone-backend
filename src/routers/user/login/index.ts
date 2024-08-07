@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import { generateUidByString, isJwtExpired } from "../../../lib/utils";
 import {
   checkEmailUIDExists,
+  getProjectListByUser,
   getUserDataById,
 } from "../../../lib/firebase-func";
 dotenv.config();
@@ -50,7 +51,11 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
     jwtChanged = true;
   }
 
+  // const firstUserProject = await getProjectListByUser(uid);
+
+  // console.log({ firstUserProject });
+
   return res
     .status(200)
-    .json({ status: "success", jwt: token, feat, jwtChanged });
+    .json({ status: "success", jwt: token, feat, jwtChanged, userId: uid });
 }

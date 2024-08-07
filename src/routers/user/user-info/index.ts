@@ -3,7 +3,7 @@ import { getUserDataById } from "../../../lib/firebase-func";
 
 export default async function TakeUserInfoHandler(req: Request, res: Response) {
   const feat = "user-info";
-  const uid = req.params.userid ?? "";
+  const uid = req.params.userId ?? "";
   try {
     const data = await getUserDataById(uid);
     return res.status(200).json({
