@@ -4,7 +4,7 @@
   "main": "index.ts",
   "private": true,
   "scripts": {
-    "dev": "nodemon src/index.ts",
+    "dev": "nodemon public/index.ts",
     "serve": "node dist/index.js",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,7 +21,8 @@
     "firebase": "^10.12.5",
     "jsonwebtoken": "^9.0.2",
     "nodemon": "^3.1.4",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "vercel": "^35.2.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
