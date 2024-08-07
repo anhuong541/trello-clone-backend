@@ -82,3 +82,11 @@ export const createOrSetTask = async (
     contentTask
   );
 };
+
+export const viewTasksProject = async (uid: string, projectId: string) => {
+  return (
+    await getDocs(
+      collection(firestoreDB, "users", uid, "projects", projectId, "tasks")
+    )
+  ).docs.map((item: DocumentData) => item.data());
+};

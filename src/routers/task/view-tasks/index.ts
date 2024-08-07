@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {
   checkEmailUIDExists,
   checkProjectExists,
+  viewTasksProject,
 } from "../../../lib/firebase-func";
 
 export default async function ViewTasksHandler(
@@ -35,18 +36,13 @@ export default async function ViewTasksHandler(
   }
 
   try {
-    // const data = await createOrSetTask(
-    //   taskContent.userId,
-    //   taskContent.projectId,
-    //   taskId,
-    //   dataTask
-    // );
-    return res.status(200).json({ status: "success", feat });
+    const data = await viewTasksProject(userId, projectId);
+    return res.status(200).json({ status: "success", feat, data });
   } catch (error) {
     return res.status(400).json({
       status: "fail",
       feat,
-      message: "something wrong when create task",
+      message: "something wrong when viewing task",
       error,
     });
   }
