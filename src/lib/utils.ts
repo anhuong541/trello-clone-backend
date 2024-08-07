@@ -1,8 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 import crypto from "crypto";
-import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 import { checkJWTTokenExpire } from "./firebase-func";
+import { NextFunction, Request, Response } from "express";
 dotenv.config();
 
 export const generateNewUid = () => {
@@ -77,4 +78,22 @@ export const decodeJWT = (
     console.error("Failed to decode JWT:", error);
     return null;
   }
+};
+
+export const authenticationToken = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const authHeaderToken = req.headers["authorization"]?.split(" ")[1];
+
+  if (!authHeaderToken) return res.status(401);
+
+  jwt.verify(authHeaderToken, process.env.JWT_SECRET!, (err, user) => {
+    if (err) return res.status(401).json({ message: "token is outdated" });
+
+    // @ts-ignore
+    req?.user = user;
+    next();
+  });
 };

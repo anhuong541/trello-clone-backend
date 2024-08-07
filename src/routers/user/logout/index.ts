@@ -3,7 +3,7 @@ import { addJWTTokenExpire } from "../../../lib/firebase-func";
 
 export default async function LogoutRouteHandler(req: Request, res: Response) {
   const feat = "logout";
-  const { jwtToken } = req.body;
+  const jwtToken = req.headers["authorization"]?.split(" ")[1] ?? "";
   if (!jwtToken) {
     return res.status(404).json({ status: "fail", feat });
   }

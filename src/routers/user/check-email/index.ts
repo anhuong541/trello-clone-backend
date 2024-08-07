@@ -9,20 +9,27 @@ export default async function CheckEmailIsValidRouteHandler(
   const feat = "check email";
   const { email } = req.body;
   if (!email) {
-    res.status(500);
-    throw Error("require email!!!");
+    res
+      .status(500)
+      .json({ status: "fail", feat, message: "email is require!!!" });
   }
 
   const uid = generateUidByString(email);
   const checkEmail = await checkEmailUIDExists(uid);
 
   if (checkEmail) {
-    return res
-      .status(409)
-      .json({ status: "fail", message: "email have been used!", feat });
+    return res.status(200).json({
+      status: "fail",
+      message: "email have been used!",
+      feat,
+      used: true,
+    });
   } else {
-    return res
-      .status(200)
-      .json({ status: "success", message: "email haven't been used!", feat });
+    return res.status(200).json({
+      status: "success",
+      message: "email haven't been used!",
+      feat,
+      used: false,
+    });
   }
 }

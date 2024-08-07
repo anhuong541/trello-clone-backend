@@ -20,6 +20,7 @@ import {
   UpdateTaskHandler,
   ViewTasksHandler,
 } from "./routers/task";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
@@ -33,6 +34,7 @@ const corsOptions = {
 // Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cookieParser());
 
 // Routes
 app.get("/", (req: Request, res: Response) => {

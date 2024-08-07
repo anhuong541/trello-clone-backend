@@ -10,17 +10,19 @@ dotenv.config();
 
 export default async function LoginRouteHandler(req: Request, res: Response) {
   const feat = "login";
-  const { email, password, jwtToken } = req.body;
+  const { email, password } = req.body;
+  const jwtToken = req.headers["authorization"]?.split(" ")[1] ?? "";
+
   // update one more logic is when email and password input is empty and jwt is exists then go to another case
   // we need to check the middleware auto login case
+  // some trouble with jwt authenticaltion logic flow
+  // do it later
   if (!email || !password) {
-    return res
-      .status(500)
-      .json({
-        status: "fail",
-        message: "require email and password !!!",
-        feat,
-      });
+    return res.status(500).json({
+      status: "fail",
+      message: "require email and password !!!",
+      feat,
+    });
   }
 
   const uid = generateUidByString(email);

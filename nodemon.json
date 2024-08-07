@@ -1,0 +1,8 @@
+{
+    "watch": ["src"],
+    "ext": "js,json,ts",
+    "ignore": ["node_modules"],
+    "restartDelay": 1000,
+    "legacyWatch": true
+}
+  

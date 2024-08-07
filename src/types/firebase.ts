@@ -6,7 +6,6 @@ export interface DataRegister {
   email: string;
   password: string;
   createAt: number;
-  jwtToken: string;
 }
 
 export interface DataProject {
