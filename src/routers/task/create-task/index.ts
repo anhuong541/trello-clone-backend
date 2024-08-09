@@ -1,11 +1,6 @@
 import { Request, Response } from "express";
 import { TaskType } from "../../../types";
-import {
-  checkEmailUIDExists,
-  checkProjectExists,
-  createOrSetTask,
-} from "../../../lib/firebase-func";
-import { generateNewUid } from "../../../lib/utils";
+import { createOrSetTask } from "../../../lib/firebase-func";
 
 export default async function CreateTaskHandler(
   req: Request<{}, {}, TaskType, {}>,
@@ -22,18 +17,12 @@ export default async function CreateTaskHandler(
     });
   }
 
-  const taskId = generateNewUid();
-  const dataTask = {
-    ...taskContent,
-    taskId,
-  };
-
   try {
     await createOrSetTask(
       taskContent.userId,
       taskContent.projectId,
-      taskId,
-      dataTask
+      taskContent.taskId,
+      taskContent
     );
     return res.status(200).json({ status: "success", feat });
   } catch (error) {
