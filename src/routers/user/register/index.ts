@@ -35,12 +35,19 @@ export default async function RegisterRouteHandler(
     email,
     password,
     createAt: Date.now(),
-    jwtToken: token,
+    // jwtToken: token,
   };
+
+  res.cookie("user-session", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 60 * 60 * 24, // One day
+    path: "/",
+  });
 
   try {
     await createNewUser(uid, dataRegister);
-    return res.status(200).json({ status: "success", jwt: token, feat });
+    return res.status(200).json({ status: "success", feat });
   } catch (error) {
     return res.status(400).json({
       status: "fail",

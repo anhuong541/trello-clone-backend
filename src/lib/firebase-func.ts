@@ -12,7 +12,11 @@ import { DataProject, DataRegister, DataTask } from "../types/firebase";
 
 // user
 export const checkEmailUIDExists = async (uid: string) => {
-  return (await getDoc(doc(firestoreDB, `users`, uid))).exists();
+  try {
+    return (await getDoc(doc(firestoreDB, `users`, uid))).exists();
+  } catch (error) {
+    console.log("this is the error: ", error);
+  }
 };
 
 export const checkProjectExists = async (uid: string, projectId: string) => {
