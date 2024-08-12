@@ -7,6 +7,7 @@ import {
   LogoutRouteHandler,
   RegisterRouteHandler,
   TakeUserInfoHandler,
+  TokenVerifyHandler,
 } from "./routers/user";
 import {
   AddProjectHandler,
@@ -21,7 +22,6 @@ import {
   ViewTasksHandler,
 } from "./routers/task";
 import cookieParser from "cookie-parser";
-import TokenVerifyHandler from "./routers/user/token-verify";
 
 dotenv.config();
 const app = express();
@@ -30,6 +30,9 @@ const port = process.env.PORT || 3456;
 const corsOptions = {
   origin: ["http://localhost:3000"],
   optionsSuccessStatus: 200,
+  credentials: true, // enable set cookie
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
 };
 
 // Middleware
@@ -47,16 +50,15 @@ app.post("/user/login", LoginRouteHandler);
 app.post("/user/email-verify", CheckEmailIsValidRouteHandler);
 app.get("/user/token-verify", TokenVerifyHandler);
 app.post("/user/register", RegisterRouteHandler);
-app.post("/user/logout", LogoutRouteHandler);
-app.get("/user/:userId", TakeUserInfoHandler);
+app.get("/user/logout", LogoutRouteHandler);
+app.get("/user", TakeUserInfoHandler);
 
-app.get("/project/:projectId/:userId", ProjectInfoHandler);
-app.get("/project/:userId", ProjectListHandler);
-app.delete("/project/:projectId/:userId", DeleteProjectHandler);
+app.get("/project", ProjectListHandler);
+app.delete("/project/:projectId", DeleteProjectHandler);
 app.put("/project", EditProjectHandler);
 app.post("/project", AddProjectHandler);
 
-app.get("/task/:userId/:projectId", ViewTasksHandler);
+app.get("/task/:projectId", ViewTasksHandler);
 app.post("/task", CreateTaskHandler);
 app.put("/task", UpdateTaskHandler);
 

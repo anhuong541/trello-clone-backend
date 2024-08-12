@@ -40,6 +40,7 @@ export default async function AddProjectHandler(
     return res.status(200).json({
       status: "success",
       message: "Create new project successfull",
+      projectId,
       feat,
     });
   } catch (error) {

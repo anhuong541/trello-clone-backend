@@ -1,14 +1,19 @@
 import { Request, Response } from "express";
-import { viewTasksProject } from "../../../lib/firebase-func";
-import { checkUIDAndProjectExists } from "../../../lib/utils";
+import {
+  checkProjectExists,
+  viewTasksProject,
+} from "../../../lib/firebase-func";
+import { generateUidByString } from "../../../lib/utils";
+import config from "../../../config";
+import jwt from "jsonwebtoken";
 
 export default async function ViewTasksHandler(
   req: Request<{ userId: string; projectId: string }>,
   res: Response
 ) {
   const feat = "view all tasks"; // name api
-  const { userId, projectId } = req.params;
-  if (!userId || !projectId) {
+  const { projectId } = req.params;
+  if (!projectId) {
     return res.status(404).json({
       status: "fail",
       message: "missing userId or projectId",
@@ -16,7 +21,20 @@ export default async function ViewTasksHandler(
     });
   }
 
-  await checkUIDAndProjectExists(userId, projectId, feat, res);
+  const token = req?.cookies.user_session ?? "";
+  let verifedToken: any = "";
+  try {
+    verifedToken = jwt.verify(token, config.jwtSecret);
+  } catch (error) {
+    return res.status(401).json({ status: "fail", feat });
+  }
+  const userId = generateUidByString(verifedToken.email);
+
+  if (!(await checkProjectExists(userId, projectId))) {
+    return res
+      .status(409)
+      .json({ status: "fail", error: "project doesn't exists!", feat });
+  }
 
   try {
     const data = await viewTasksProject(userId, projectId);

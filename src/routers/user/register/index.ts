@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { generateUidByString } from "../../../lib/utils";
 import { checkEmailUIDExists, createNewUser } from "../../../lib/firebase-func";
 import config from "../../../config";
+import { sendUserSession } from "../../../lib/auth-action";
 
 export default async function RegisterRouteHandler(
   req: Request,
@@ -25,7 +26,7 @@ export default async function RegisterRouteHandler(
   }
 
   const token = jwt.sign({ email, password }, config.jwtSecret, {
-    expiresIn: "30m",
+    expiresIn: "1h",
   });
 
   const dataRegister = {
@@ -36,12 +37,7 @@ export default async function RegisterRouteHandler(
     createAt: Date.now(),
   };
 
-  res.cookie("user-session", token, {
-    httpOnly: true,
-    secure: config.env,
-    maxAge: 60 * 60 * 24 * 2, // Two day
-    path: "/",
-  });
+  sendUserSession(res, token);
 
   try {
     await createNewUser(uid, dataRegister);

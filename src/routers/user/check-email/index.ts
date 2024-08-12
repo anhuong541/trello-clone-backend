@@ -11,7 +11,7 @@ export default async function CheckEmailIsValidRouteHandler(
   if (!email) {
     res
       .status(500)
-      .json({ status: "fail", feat, message: "email is require!!!" });
+      .json({ status: "fail", message: "email is require!!!", feat });
   }
 
   const uid = generateUidByString(email);
