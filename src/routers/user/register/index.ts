@@ -38,8 +38,8 @@ export default async function RegisterRouteHandler(
 
   res.cookie("user-session", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 24, // One day
+    secure: config.env,
+    maxAge: 60 * 60 * 24 * 2, // Two day
     path: "/",
   });
 
