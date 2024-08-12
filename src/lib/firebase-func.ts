@@ -25,12 +25,6 @@ export const checkProjectExists = async (uid: string, projectId: string) => {
   ).exists();
 };
 
-export const checkJWTTokenExpire = async (jwtToken: string) => {
-  return (
-    await getDoc(doc(firestoreDB, `jwt_tokens_expire`, jwtToken))
-  ).exists();
-};
-
 export const addJWTTokenExpire = async (jwtToken: string) => {
   await setDoc(doc(firestoreDB, "jwt_tokens_expire", jwtToken), {
     jwtToken,

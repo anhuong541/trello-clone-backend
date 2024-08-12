@@ -17,6 +17,7 @@ export default async function ProjectListHandler(
       feat,
     });
   }
+
   if (!(await checkEmailUIDExists(userId))) {
     return res.status(409).json({
       status: "fail",

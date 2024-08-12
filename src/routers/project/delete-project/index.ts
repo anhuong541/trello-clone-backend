@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
-import {
-  checkEmailUIDExists,
-  checkProjectExists,
-  deteleProject,
-} from "../../../lib/firebase-func";
+import { deteleProject } from "../../../lib/firebase-func";
+import { checkUIDAndProjectExists } from "../../../lib/utils";
 
 export default async function DeleteProjectHandler(
   req: Request<{ userId: string; projectId: string }>,
@@ -19,17 +16,7 @@ export default async function DeleteProjectHandler(
     });
   }
 
-  if (!(await checkEmailUIDExists(userId))) {
-    return res
-      .status(409)
-      .json({ status: "fail", error: "user doesn't exists!", feat });
-  }
-
-  if (!(await checkProjectExists(userId, projectId))) {
-    return res
-      .status(409)
-      .json({ status: "fail", error: "project doesn't exists!", feat });
-  }
+  await checkUIDAndProjectExists(userId, projectId, feat, res);
 
   try {
     await deteleProject(userId, projectId);

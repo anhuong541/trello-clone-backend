@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
-import {
-  checkEmailUIDExists,
-  checkProjectExists,
-  viewTasksProject,
-} from "../../../lib/firebase-func";
+import { viewTasksProject } from "../../../lib/firebase-func";
+import { checkUIDAndProjectExists } from "../../../lib/utils";
 
 export default async function ViewTasksHandler(
   req: Request<{ userId: string; projectId: string }>,
@@ -19,21 +16,7 @@ export default async function ViewTasksHandler(
     });
   }
 
-  if (!(await checkEmailUIDExists(userId))) {
-    return res.status(409).json({
-      status: "fail",
-      error: "user doesn't exists!",
-      feat,
-    });
-  }
-
-  if (!(await checkProjectExists(userId, projectId))) {
-    return res.status(409).json({
-      status: "fail",
-      error: "project doesn't exists!",
-      feat,
-    });
-  }
+  await checkUIDAndProjectExists(userId, projectId, feat, res);
 
   try {
     const data = await viewTasksProject(userId, projectId);

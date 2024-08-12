@@ -1,10 +1,7 @@
 import { Request, Response } from "express";
-import {
-  checkEmailUIDExists,
-  checkProjectExists,
-  createOrSetProject,
-} from "../../../lib/firebase-func";
+import { createOrSetProject } from "../../../lib/firebase-func";
 import { ProjectType } from "../../../types";
+import { checkUIDAndProjectExists } from "../../../lib/utils";
 
 export default async function EditProjectHandler(
   req: Request<{}, {}, ProjectType, {}>,
@@ -21,23 +18,12 @@ export default async function EditProjectHandler(
     });
   }
 
-  if (!(await checkEmailUIDExists(projectContent.userId))) {
-    return res.status(409).json({
-      status: "fail",
-      error: "user doesn't exists!",
-      feat,
-    });
-  }
-
-  if (
-    !(await checkProjectExists(projectContent.userId, projectContent.projectId))
-  ) {
-    return res.status(409).json({
-      status: "fail",
-      error: "project doesn't exists!",
-      feat,
-    });
-  }
+  await checkUIDAndProjectExists(
+    projectContent.userId,
+    projectContent.projectId,
+    feat,
+    res
+  );
 
   try {
     await createOrSetProject(
