@@ -13,7 +13,6 @@ import {
   AddProjectHandler,
   DeleteProjectHandler,
   EditProjectHandler,
-  ProjectInfoHandler,
   ProjectListHandler,
 } from "./routers/project";
 import {
