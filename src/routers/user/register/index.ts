@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import { generateUidByString } from "../../../lib/utils";
 import { checkEmailUIDExists, createNewUser } from "../../../lib/firebase-func";
-dotenv.config();
+import config from "../../../config";
 
 export default async function RegisterRouteHandler(
   req: Request,
@@ -25,7 +24,7 @@ export default async function RegisterRouteHandler(
       .json({ status: "fail", error: "email have been used!", feat });
   }
 
-  const token = jwt.sign({ email, password }, process.env.JWT_SECRET!, {
+  const token = jwt.sign({ email, password }, config.jwtSecret, {
     expiresIn: "30m",
   });
 
@@ -35,7 +34,6 @@ export default async function RegisterRouteHandler(
     email,
     password,
     createAt: Date.now(),
-    // jwtToken: token,
   };
 
   res.cookie("user-session", token, {

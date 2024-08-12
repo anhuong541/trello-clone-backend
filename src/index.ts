@@ -21,6 +21,7 @@ import {
   ViewTasksHandler,
 } from "./routers/task";
 import cookieParser from "cookie-parser";
+import TokenVerifyHandler from "./routers/user/token-verify";
 
 dotenv.config();
 const app = express();
@@ -44,6 +45,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.post("/user/login", LoginRouteHandler);
 app.post("/user/email-verify", CheckEmailIsValidRouteHandler);
+app.get("/user/token-verify", TokenVerifyHandler);
 app.post("/user/register", RegisterRouteHandler);
 app.post("/user/logout", LogoutRouteHandler);
 app.get("/user/:userId", TakeUserInfoHandler);

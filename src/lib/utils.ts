@@ -1,10 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 import crypto from "crypto";
-import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import { checkJWTTokenExpire } from "./firebase-func";
 import { NextFunction, Request, Response } from "express";
-dotenv.config();
+import config from "../config";
 
 export const generateNewUid = () => {
   return uuidv4();
@@ -34,14 +33,16 @@ export const isJwtExpired = async (token: string) => {
       return true;
     }
 
-    const decoded = decodeJwt(token);
-    const exp = decoded.exp;
+    const decoded: any = jwt.verify(token, config.jwtSecret);
+    const exp = decoded?.exp;
 
     if (!exp) {
       throw new Error("No expiration claim found");
     }
     const expirationTime = exp * 1000;
     const currentTime = Date.now();
+
+    console.log({ expirationTime, currentTime });
 
     return currentTime > expirationTime;
   } catch (error) {
@@ -89,7 +90,7 @@ export const authenticationToken = (
 
   if (!authHeaderToken) return res.status(401);
 
-  jwt.verify(authHeaderToken, process.env.JWT_SECRET!, (err, user) => {
+  jwt.verify(authHeaderToken, config.jwtSecret, (err, user) => {
     if (err) return res.status(401).json({ message: "token is outdated" });
 
     // @ts-ignore

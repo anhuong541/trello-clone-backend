@@ -1,13 +1,11 @@
-import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
+import { Request, Response } from "express";
 import { generateUidByString, isJwtExpired } from "../../../lib/utils";
 import {
   checkEmailUIDExists,
-  getProjectListByUser,
   getUserDataById,
 } from "../../../lib/firebase-func";
-dotenv.config();
+import config from "../../../config";
 
 export default async function LoginRouteHandler(req: Request, res: Response) {
   const feat = "login";
@@ -18,6 +16,7 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
   // we need to check the middleware auto login case
   // some trouble with jwt authenticaltion logic flow
   // do it later
+
   if (!email || !password) {
     return res.status(500).json({
       status: "fail",
@@ -45,17 +44,17 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
   let jwtChanged = false;
 
   if (await isJwtExpired(token)) {
-    token = jwt.sign({ email, password }, process.env.JWT_SECRET!, {
+    token = jwt.sign({ email, password }, config.jwtSecret, {
       expiresIn: "1d",
     });
     jwtChanged = true;
   }
 
-  // const firstUserProject = await getProjectListByUser(uid);
+  const verifyToken = jwt.verify(token, config.jwtSecret);
 
-  // console.log({ firstUserProject });
+  console.log({ verifyToken });
 
   return res
     .status(200)
-    .json({ status: "success", jwt: token, feat, jwtChanged, userId: uid });
+    .json({ status: "success", token, feat, jwtChanged, userId: uid });
 }

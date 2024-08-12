@@ -13,4 +13,5 @@ export default {
   messagingSenderId: process.env.MESSAGE_SENDER_ID,
   appId: process.env.APPID,
   measurementId: process.env.MEASUREMENT_ID,
+  jwtSecret: process.env.JWT_SECRET!,
 };
