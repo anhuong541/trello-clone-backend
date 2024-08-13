@@ -1,7 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 import crypto from "crypto";
-import { Response } from "express";
+import { Request, Response } from "express";
 import { checkEmailUIDExists, checkProjectExists } from "./firebase-func";
+import jwt from "jsonwebtoken";
+import config from "../config";
 
 export const generateNewUid = () => {
   return uuidv4();
@@ -30,5 +32,21 @@ export const checkUIDAndProjectExists = async (
     return res
       .status(409)
       .json({ status: "fail", error: "project doesn't exists!", feat });
+  }
+};
+
+export const readUserIdFromTheCookis = (
+  req: Request,
+  res: Response,
+  feat: string
+) => {
+  const token = req?.cookies.user_session ?? "";
+  try {
+    const { email } = jwt.verify(token, config.jwtSecret) as { email: string };
+    return generateUidByString(email);
+  } catch (error) {
+    return res
+      .status(401)
+      .json({ status: "fail", feat, message: "Un Authorization" });
   }
 };

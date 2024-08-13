@@ -2,16 +2,15 @@ import { Request, Response } from "express";
 import { deteleProject } from "../../../lib/firebase-func";
 import {
   checkUIDAndProjectExists,
-  generateUidByString,
+  readUserIdFromTheCookis,
 } from "../../../lib/utils";
-import config from "../../../config";
-import jwt from "jsonwebtoken";
 
 export default async function DeleteProjectHandler(
   req: Request<{ projectId: string }>,
   res: Response
 ) {
   const feat = "delete project";
+  const userId = readUserIdFromTheCookis(req, res, feat) as string;
   const { projectId } = req.params;
   if (!projectId) {
     return res.status(404).json({
@@ -20,15 +19,6 @@ export default async function DeleteProjectHandler(
       feat,
     });
   }
-
-  const token = req?.cookies.user_session ?? "";
-  let verifedToken: any = "";
-  try {
-    verifedToken = jwt.verify(token, config.jwtSecret);
-  } catch (error) {
-    return res.status(401).json({ status: "fail", feat });
-  }
-  const userId = generateUidByString(verifedToken.email);
 
   await checkUIDAndProjectExists(userId, projectId, feat, res);
 

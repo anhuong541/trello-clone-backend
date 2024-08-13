@@ -16,8 +16,8 @@ export default async function RegisterRouteHandler(
     throw Error("require email and password !!!");
   }
 
-  const uid = generateUidByString(email);
-  const checkEmail = await checkEmailUIDExists(uid);
+  const userId = generateUidByString(email);
+  const checkEmail = await checkEmailUIDExists(userId);
 
   if (checkEmail) {
     return res
@@ -30,7 +30,7 @@ export default async function RegisterRouteHandler(
   });
 
   const dataRegister = {
-    uid,
+    uid: userId,
     username,
     email,
     password,
@@ -40,7 +40,7 @@ export default async function RegisterRouteHandler(
   sendUserSession(res, token);
 
   try {
-    await createNewUser(uid, dataRegister);
+    await createNewUser(userId, dataRegister);
     return res.status(200).json({ status: "success", feat });
   } catch (error) {
     return res.status(400).json({

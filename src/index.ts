@@ -46,16 +46,16 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post("/user/login", LoginRouteHandler);
-app.post("/user/email-verify", CheckEmailIsValidRouteHandler);
-app.get("/user/token-verify", TokenVerifyHandler);
 app.post("/user/register", RegisterRouteHandler);
 app.get("/user/logout", LogoutRouteHandler);
 app.get("/user", TakeUserInfoHandler);
+app.post("/user/email-verify", CheckEmailIsValidRouteHandler);
+app.get("/user/token-verify", TokenVerifyHandler);
 
 app.get("/project", ProjectListHandler);
-app.delete("/project/:projectId", DeleteProjectHandler);
-app.put("/project", EditProjectHandler);
 app.post("/project", AddProjectHandler);
+app.put("/project", EditProjectHandler);
+app.delete("/project/:projectId", DeleteProjectHandler);
 
 app.get("/task/:projectId", ViewTasksHandler);
 app.post("/task", CreateTaskHandler);

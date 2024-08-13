@@ -10,7 +10,6 @@ export interface DataRegister {
 
 export interface DataProject {
   projectId: string;
-  userId: string;
   projectName: string;
   description: string;
   createAt: number;
@@ -18,7 +17,6 @@ export interface DataProject {
 }
 
 export interface DataTask {
-  userId: string;
   taskId: string;
   projectId: string;
   title: string;

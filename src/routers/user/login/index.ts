@@ -17,8 +17,8 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
     });
   }
 
-  const uid = generateUidByString(email);
-  const checkEmail = await checkEmailUIDExists(uid);
+  const userId = generateUidByString(email);
+  const checkEmail = await checkEmailUIDExists(userId);
 
   if (!checkEmail) {
     return res
@@ -32,5 +32,5 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
 
   sendUserSession(res, token);
 
-  return res.status(200).json({ status: "success", feat, userId: uid });
+  return res.status(200).json({ status: "success", feat });
 }

@@ -4,6 +4,7 @@ import {
   createOrSetTask,
   getUpdateProjectDueTime,
 } from "../../../lib/firebase-func";
+import { readUserIdFromTheCookis } from "../../../lib/utils";
 
 export default async function UpdateTaskHandler(
   req: Request<{}, {}, TaskType, {}>,
@@ -11,6 +12,7 @@ export default async function UpdateTaskHandler(
 ) {
   const feat = "update task";
   const taskContent = req.body;
+  const userId = readUserIdFromTheCookis(req, res, feat) as string;
 
   if (!taskContent) {
     return res.status(400).json({
@@ -22,12 +24,12 @@ export default async function UpdateTaskHandler(
 
   try {
     await createOrSetTask(
-      taskContent.userId,
+      userId,
       taskContent.projectId,
       taskContent.taskId,
       taskContent
     );
-    await getUpdateProjectDueTime(taskContent.userId, taskContent.projectId);
+    await getUpdateProjectDueTime(userId, taskContent.projectId);
     return res.status(200).json({ status: "success", feat });
   } catch (error) {
     return res.status(400).json({

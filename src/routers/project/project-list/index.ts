@@ -3,21 +3,11 @@ import {
   checkEmailUIDExists,
   getProjectListByUser,
 } from "../../../lib/firebase-func";
-import { generateUidByString } from "../../../lib/utils";
-import config from "../../../config";
-import jwt from "jsonwebtoken";
+import { readUserIdFromTheCookis } from "../../../lib/utils";
 
 export default async function ProjectListHandler(req: Request, res: Response) {
   const feat = "project list";
-  const token = req?.cookies.user_session ?? "";
-  let verifedToken: any = "";
-
-  try {
-    verifedToken = jwt.verify(token, config.jwtSecret);
-  } catch (error) {
-    return res.status(401).json({ status: "fail", feat });
-  }
-  const userId = generateUidByString(verifedToken.email);
+  const userId = readUserIdFromTheCookis(req, res, feat) as string;
 
   if (!(await checkEmailUIDExists(userId))) {
     return res.status(409).json({

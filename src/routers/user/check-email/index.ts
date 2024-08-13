@@ -14,20 +14,20 @@ export default async function CheckEmailIsValidRouteHandler(
       .json({ status: "fail", message: "email is require!!!", feat });
   }
 
-  const uid = generateUidByString(email);
-  const checkEmail = await checkEmailUIDExists(uid);
+  const userId = generateUidByString(email);
+  const checkEmail = await checkEmailUIDExists(userId);
 
   if (checkEmail) {
     return res.status(200).json({
       status: "fail",
-      message: "email have been used!",
+      message: "Email have been used",
       feat,
       used: true,
     });
   } else {
     return res.status(200).json({
       status: "success",
-      message: "email haven't been used!",
+      message: "You can use this email",
       feat,
       used: false,
     });

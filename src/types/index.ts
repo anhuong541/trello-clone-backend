@@ -3,7 +3,6 @@ export type PriorityType = "Low" | "Medium" | "High";
 
 export interface TaskType {
   taskId: string;
-  userId: string;
   projectId: string;
   title: string;
   description: string;
@@ -15,7 +14,6 @@ export interface TaskType {
 }
 
 export interface ProjectType {
-  userId: string;
   projectId: string;
   projectName: string;
   description: string;

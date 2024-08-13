@@ -3,7 +3,7 @@ import {
   checkEmailUIDExists,
   createOrSetProject,
 } from "../../../lib/firebase-func";
-import { generateNewUid } from "../../../lib/utils";
+import { generateNewUid, readUserIdFromTheCookis } from "../../../lib/utils";
 import { ProjectType } from "../../../types";
 
 export default async function AddProjectHandler(
@@ -12,6 +12,7 @@ export default async function AddProjectHandler(
 ) {
   const feat = "add project";
   const projectContent = req.body;
+  const userId = readUserIdFromTheCookis(req, res, feat) as string;
 
   if (!projectContent) {
     return res.status(500).json({
@@ -28,7 +29,7 @@ export default async function AddProjectHandler(
     dueTime: Date.now(),
   };
 
-  if (!(await checkEmailUIDExists(projectContent.userId))) {
+  if (!(await checkEmailUIDExists(userId))) {
     return res.status(409).json({
       status: "fail",
       error: "user doesn't exists!",
@@ -37,7 +38,7 @@ export default async function AddProjectHandler(
   }
 
   try {
-    await createOrSetProject(projectContent.userId, projectId, dataProject);
+    await createOrSetProject(userId, projectId, dataProject);
     return res.status(200).json({
       status: "success",
       message: "Create new project successfull",

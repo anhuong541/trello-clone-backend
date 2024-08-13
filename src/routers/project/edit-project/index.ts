@@ -1,7 +1,10 @@
 import { Request, Response } from "express";
 import { createOrSetProject } from "../../../lib/firebase-func";
 import { ProjectType } from "../../../types";
-import { checkUIDAndProjectExists } from "../../../lib/utils";
+import {
+  checkUIDAndProjectExists,
+  readUserIdFromTheCookis,
+} from "../../../lib/utils";
 
 export default async function EditProjectHandler(
   req: Request<{}, {}, ProjectType, {}>,
@@ -9,6 +12,7 @@ export default async function EditProjectHandler(
 ) {
   const feat = "edit project";
   let projectContent = req.body;
+  const userId = readUserIdFromTheCookis(req, res, feat) as string;
 
   if (!projectContent) {
     return res.status(404).json({
@@ -18,12 +22,7 @@ export default async function EditProjectHandler(
     });
   }
 
-  await checkUIDAndProjectExists(
-    projectContent.userId,
-    projectContent.projectId,
-    feat,
-    res
-  );
+  await checkUIDAndProjectExists(userId, projectContent.projectId, feat, res);
 
   const dataInput = {
     ...projectContent,
@@ -31,11 +30,7 @@ export default async function EditProjectHandler(
   };
 
   try {
-    await createOrSetProject(
-      projectContent.userId,
-      projectContent.projectId,
-      dataInput
-    );
+    await createOrSetProject(userId, projectContent.projectId, dataInput);
     return res.status(200).json({
       status: "success",
       feat,
