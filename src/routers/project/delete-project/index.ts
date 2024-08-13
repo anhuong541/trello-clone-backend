@@ -8,7 +8,7 @@ import config from "../../../config";
 import jwt from "jsonwebtoken";
 
 export default async function DeleteProjectHandler(
-  req: Request<{ userId: string; projectId: string }>,
+  req: Request<{ projectId: string }>,
   res: Response
 ) {
   const feat = "delete project";

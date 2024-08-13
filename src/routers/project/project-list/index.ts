@@ -11,6 +11,7 @@ export default async function ProjectListHandler(req: Request, res: Response) {
   const feat = "project list";
   const token = req?.cookies.user_session ?? "";
   let verifedToken: any = "";
+
   try {
     verifedToken = jwt.verify(token, config.jwtSecret);
   } catch (error) {
