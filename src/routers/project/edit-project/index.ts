@@ -8,7 +8,7 @@ export default async function EditProjectHandler(
   res: Response
 ) {
   const feat = "edit project";
-  const projectContent = req.body;
+  let projectContent = req.body;
 
   if (!projectContent) {
     return res.status(404).json({
@@ -25,11 +25,16 @@ export default async function EditProjectHandler(
     res
   );
 
+  const dataInput = {
+    ...projectContent,
+    dueTime: Date.now(),
+  };
+
   try {
     await createOrSetProject(
       projectContent.userId,
       projectContent.projectId,
-      projectContent
+      dataInput
     );
     return res.status(200).json({
       status: "success",

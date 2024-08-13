@@ -6,6 +6,7 @@ import {
   getDocs,
   collection,
   DocumentData,
+  updateDoc,
 } from "firebase/firestore";
 import { firestoreDB } from "../db/firebase";
 import { DataProject, DataRegister, DataTask } from "../types/firebase";
@@ -60,6 +61,15 @@ export const getProjectListByUser = async (uid: string) => {
     collection(firestoreDB, "users", uid, "projects")
   );
   return listProjectRef.docs.map((item: DocumentData) => item.data());
+};
+
+export const getUpdateProjectDueTime = async (
+  uid: string,
+  projectId: string
+) => {
+  await updateDoc(doc(firestoreDB, "users", uid, "projects", projectId), {
+    dueTime: Date.now(),
+  });
 };
 
 // task feature

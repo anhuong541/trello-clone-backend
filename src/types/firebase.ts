@@ -14,6 +14,7 @@ export interface DataProject {
   projectName: string;
   description: string;
   createAt: number;
+  dueTime: number;
 }
 
 export interface DataTask {

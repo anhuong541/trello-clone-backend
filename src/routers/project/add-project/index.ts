@@ -25,6 +25,7 @@ export default async function AddProjectHandler(
   const dataProject = {
     ...projectContent,
     projectId,
+    dueTime: Date.now(),
   };
 
   if (!(await checkEmailUIDExists(projectContent.userId))) {

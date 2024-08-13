@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { TaskType } from "../../../types";
-import { createOrSetTask } from "../../../lib/firebase-func";
+import {
+  createOrSetTask,
+  getUpdateProjectDueTime,
+} from "../../../lib/firebase-func";
 
 export default async function UpdateTaskHandler(
   req: Request<{}, {}, TaskType, {}>,
@@ -24,6 +27,7 @@ export default async function UpdateTaskHandler(
       taskContent.taskId,
       taskContent
     );
+    await getUpdateProjectDueTime(taskContent.userId, taskContent.projectId);
     return res.status(200).json({ status: "success", feat });
   } catch (error) {
     return res.status(400).json({
