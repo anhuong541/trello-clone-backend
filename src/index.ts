@@ -17,6 +17,7 @@ import {
 } from "./routers/project";
 import {
   CreateTaskHandler,
+  DeleteTaskHandler,
   UpdateTaskHandler,
   ViewTasksHandler,
 } from "./routers/task";
@@ -60,6 +61,7 @@ app.delete("/project/:projectId", DeleteProjectHandler);
 app.get("/task/:projectId", ViewTasksHandler);
 app.post("/task", CreateTaskHandler);
 app.put("/task", UpdateTaskHandler);
+app.delete("/task/:projectId/:taskId", DeleteTaskHandler);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

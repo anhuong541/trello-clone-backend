@@ -92,3 +92,13 @@ export const viewTasksProject = async (uid: string, projectId: string) => {
     )
   ).docs.map((item: DocumentData) => item.data());
 };
+
+export const deteleTask = async (
+  uid: string,
+  projectId: string,
+  taskId: string
+) => {
+  return await deleteDoc(
+    doc(firestoreDB, "users", uid, "projects", projectId, "tasks", taskId)
+  );
+};
