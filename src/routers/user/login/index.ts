@@ -27,7 +27,7 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
   }
 
   const token = jwt.sign({ email, password }, config.jwtSecret, {
-    expiresIn: "1h",
+    expiresIn: "12h",
   });
 
   sendUserSession(res, token);

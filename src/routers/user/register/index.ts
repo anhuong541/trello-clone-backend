@@ -26,7 +26,7 @@ export default async function RegisterRouteHandler(
   }
 
   const token = jwt.sign({ email, password }, config.jwtSecret, {
-    expiresIn: "1h",
+    expiresIn: "12h",
   });
 
   const dataRegister = {
