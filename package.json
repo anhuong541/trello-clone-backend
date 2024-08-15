@@ -1,7 +1,8 @@
 {
   "name": "trello-clone-mor-course-be",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "dist/index",
+  "types": "dist/index",
   "private": true,
   "type": "module",
   "scripts": {
