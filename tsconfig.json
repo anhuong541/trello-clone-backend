@@ -5,7 +5,7 @@
     //   "@/*": ["src/*"] // remove because it got some error
     // },
     "target": "ES6",
-    "module": "commonjs",
+    // "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
