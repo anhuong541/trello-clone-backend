@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.ts",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "nodemon index.ts",
     "dev": "nodemon src/index.ts",
