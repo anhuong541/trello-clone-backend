@@ -1,9 +1,18 @@
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { generateUidByString } from "../../../lib/utils";
-import { checkEmailUIDExists } from "../../../lib/firebase-func";
+import {
+  checkEmailUIDExists,
+  getUserDataById,
+} from "../../../lib/firebase-func";
 import config from "../../../config";
 import { sendUserSession } from "../../../lib/auth-action";
+
+const checkPasswordIsCorrect = async (userId: string, password: string) => {
+  const dataUser = await getUserDataById(userId);
+  if (dataUser?.password === password) return true;
+  return false;
+};
 
 export default async function LoginRouteHandler(req: Request, res: Response) {
   const feat = "login";
@@ -22,8 +31,15 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
 
   if (!checkEmail) {
     return res
-      .status(409)
+      .status(404)
       .json({ status: "fail", error: "email doesn't exists!", feat });
+  }
+
+  const checkPassword = await checkPasswordIsCorrect(userId, password);
+  if (!checkPassword) {
+    return res
+      .status(401)
+      .json({ status: "fail", error: "your password is wrong", feat });
   }
 
   const token = jwt.sign({ email, password }, config.jwtSecret, {
