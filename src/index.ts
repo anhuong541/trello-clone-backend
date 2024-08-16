@@ -28,7 +28,10 @@ const app = express();
 const port = process.env.PORT || 3456;
 
 const corsOptions = {
-  origin: ["http://localhost:3000"],
+  origin: [
+    "http://localhost:3000",
+    "https://trello-clone-mor-course-fe.vercel.app/",
+  ],
   optionsSuccessStatus: 200,
   credentials: true, // enable set cookie
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
