@@ -3,7 +3,6 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import cors from "cors";
 import {
-  CheckEmailIsValidRouteHandler,
   LoginRouteHandler,
   LogoutRouteHandler,
   RegisterRouteHandler,
@@ -62,7 +61,6 @@ app.post("/user/login", LoginRouteHandler);
 app.post("/user/register", RegisterRouteHandler);
 app.get("/user/logout", LogoutRouteHandler);
 app.get("/user", TakeUserInfoHandler);
-app.post("/user/email-verify", CheckEmailIsValidRouteHandler);
 app.get("/user/token-verify", TokenVerifyHandler);
 
 app.get("/project", authorizationMidleware, ProjectListHandler);
