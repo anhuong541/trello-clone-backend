@@ -27,11 +27,19 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3456;
 
+const corsWebAllow = [
+  "http://localhost:3000",
+  "https://trello-clone-mor-course-fe.vercel.app",
+];
+
 const corsOptions = {
-  origin: [
-    "http://localhost:3000",
-    "https://trello-clone-mor-course-fe.vercel.app/",
-  ],
+  origin: function (origin, callback) {
+    if (!origin || corsWebAllow.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   optionsSuccessStatus: 200,
   credentials: true, // enable set cookie
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
