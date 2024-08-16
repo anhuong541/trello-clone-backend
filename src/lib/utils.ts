@@ -43,12 +43,7 @@ export const readUserIdFromTheCookis = (
   feat: string
 ) => {
   const token = req?.cookies.user_session ?? "";
-  try {
-    const { email } = jwt.verify(token, config.jwtSecret) as { email: string };
-    return generateUidByString(email);
-  } catch (error) {
-    return res
-      .status(401)
-      .json({ status: "fail", feat, message: "Un Authorization" });
-  }
+  console.log({ token });
+  const { email } = jwt.verify(token, config.jwtSecret) as { email: string };
+  return generateUidByString(email);
 };
