@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { generateUidByString } from "../../../lib/utils";
 import { checkEmailUIDExists, createNewUser } from "../../../lib/firebase-func";
 import config from "../../../config";
-import { sendUserSession } from "src/lib/auth-action";
+import { sendUserSession } from "./../../../lib/auth-action";
 
 export default async function RegisterRouteHandler(
   req: Request,
@@ -42,7 +42,7 @@ export default async function RegisterRouteHandler(
 
   try {
     await createNewUser(userId, dataRegister);
-    return res.status(200).json({ status: "success", token, feat });
+    return res.status(200).json({ status: "success", userId, feat });
   } catch (error) {
     return res.status(400).json({
       status: "fail",

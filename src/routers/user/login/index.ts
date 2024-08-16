@@ -6,7 +6,7 @@ import {
   getUserDataById,
 } from "../../../lib/firebase-func";
 import config from "../../../config";
-import { sendUserSession } from "src/lib/auth-action";
+import { sendUserSession } from "./../../../lib/auth-action";
 
 const checkPasswordIsCorrect = async (userId: string, password: string) => {
   const dataUser = await getUserDataById(userId);
@@ -49,5 +49,5 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
   // send auth cookie at frontend code
   sendUserSession(res, token);
 
-  return res.status(200).json({ status: "success", token, feat });
+  return res.status(200).json({ status: "success", userId, feat });
 }
