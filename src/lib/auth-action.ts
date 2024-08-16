@@ -9,6 +9,7 @@ export const sendUserSession = (res: Response, token: string) => {
     maxAge: 2 * 60 * 60 * 1000, // two hours
     path: "/",
     sameSite: "none",
+    domain: "localhost",
   });
 };
 
