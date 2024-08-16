@@ -1,6 +1,6 @@
-const { v4: uuidv4 } = require("uuid");
-const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
+import { v4 as uuidv4 } from "uuid";
+import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import { Request, Response } from "express";
 import { checkEmailUIDExists, checkProjectExists } from "./firebase-func";
 import config from "../config";

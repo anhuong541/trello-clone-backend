@@ -1,8 +1,7 @@
-const express = require("express");
-import { Request, Response } from "express";
-const cookieParser = require("cookie-parser");
-const dotenv = require("dotenv");
-const cors = require("cors");
+import express from "express";
+import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+import cors from "cors";
 import {
   CheckEmailIsValidRouteHandler,
   LoginRouteHandler,
@@ -42,7 +41,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Routes
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
   console.log("it run!!!");
   res.json({ status: "success", text: "everything is clear!!!" });
 });

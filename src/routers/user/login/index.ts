@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { generateUidByString } from "../../../lib/utils";
 import {
