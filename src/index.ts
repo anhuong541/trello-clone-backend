@@ -1,6 +1,6 @@
+const express = require("express");
 import { Request, Response } from "express";
 const cookieParser = require("cookie-parser");
-const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 import {
