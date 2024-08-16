@@ -4,10 +4,11 @@ import jwt from "jsonwebtoken";
 
 export const sendUserSession = (res: Response, token: string) => {
   res.cookie("user_session", token, {
-    httpOnly: true,
+    // httpOnly: true, // for deploy only
     secure: config.env,
     maxAge: 2 * 60 * 60 * 1000, // two hours
     path: "/",
+    domain: "localhost",
   });
 };
 
