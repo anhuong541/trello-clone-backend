@@ -1,12 +1,17 @@
 import { Request, Response } from "express";
 import { getUserDataById } from "../../../lib/firebase-func";
-import { readUserIdFromTheCookis } from "../../../lib/utils";
+import { generateUidByString } from "../../../lib/utils";
+import config from "./../../../config";
+import jwt from "jsonwebtoken";
 
 export default async function TakeUserInfoHandler(req: Request, res: Response) {
   const feat = "user-info";
+
   try {
-    const userId = readUserIdFromTheCookis(req) as string;
-    console.log({ userId });
+    const token = req?.headers.authorization?.split(" ")[1] ?? ""; // send at the server
+    console.log("read cookie", { token });
+    const { email } = jwt.verify(token, config.jwtSecret) as { email: string };
+    const userId = generateUidByString(email);
 
     try {
       const data = await getUserDataById(userId);
