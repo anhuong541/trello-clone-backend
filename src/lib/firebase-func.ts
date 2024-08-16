@@ -17,6 +17,7 @@ export const checkEmailUIDExists = async (uid: string) => {
     return (await getDoc(doc(firestoreDB, `users`, uid))).exists();
   } catch (error) {
     console.log("this is the error: ", error);
+    return null;
   }
 };
 

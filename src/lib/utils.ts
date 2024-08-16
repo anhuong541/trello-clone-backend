@@ -33,6 +33,8 @@ export const checkUIDAndProjectExists = async (
       .status(409)
       .json({ status: "fail", error: "project doesn't exists!", feat });
   }
+
+  return null;
 };
 
 export const readUserIdFromTheCookis = (
