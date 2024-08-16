@@ -5,7 +5,7 @@ import { readUserIdFromTheCookis } from "../../../lib/utils";
 export default async function TakeUserInfoHandler(req: Request, res: Response) {
   const feat = "user-info";
   try {
-    const userId = readUserIdFromTheCookis(req, res, feat) as string;
+    const userId = readUserIdFromTheCookis(req) as string;
     console.log({ userId });
 
     try {

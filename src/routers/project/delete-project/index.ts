@@ -10,31 +10,37 @@ export default async function DeleteProjectHandler(
   res: Response
 ) {
   const feat = "delete project";
-  const userId = readUserIdFromTheCookis(req, res, feat) as string;
-  const { projectId } = req.params;
-  if (!projectId) {
-    return res.status(404).json({
-      status: "fail",
-      message: "missing userId or projectId",
-      feat,
-    });
-  }
-
-  await checkUIDAndProjectExists(userId, projectId, feat, res);
-
   try {
-    await deteleProject(userId, projectId);
-    return res.status(200).json({
-      status: "success",
-      message: "delete project complete",
-      feat,
-    });
+    const userId = readUserIdFromTheCookis(req) as string;
+    const { projectId } = req.params;
+    if (!projectId) {
+      return res.status(404).json({
+        status: "fail",
+        message: "missing userId or projectId",
+        feat,
+      });
+    }
+
+    await checkUIDAndProjectExists(userId, projectId, feat, res);
+
+    try {
+      await deteleProject(userId, projectId);
+      return res.status(200).json({
+        status: "success",
+        message: "delete project complete",
+        feat,
+      });
+    } catch (error) {
+      return res.status(404).json({
+        status: "fail",
+        message: "something wrong when delete project",
+        feat,
+        error,
+      });
+    }
   } catch (error) {
-    return res.status(404).json({
-      status: "fail",
-      message: "something wrong when delete project",
-      feat,
-      error,
-    });
+    return res
+      .status(401)
+      .json({ status: "fail", feat, message: "Un Authorization" });
   }
 }

@@ -37,11 +37,7 @@ export const checkUIDAndProjectExists = async (
   return null;
 };
 
-export const readUserIdFromTheCookis = (
-  req: Request,
-  res: Response,
-  feat: string
-) => {
+export const readUserIdFromTheCookis = (req: Request) => {
   const token = req?.cookies.user_session ?? "";
   console.log({ token });
   const { email } = jwt.verify(token, config.jwtSecret) as { email: string };
