@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { generateUidByString } from "../../../lib/utils";
 import { checkEmailUIDExists, createNewUser } from "../../../lib/firebase-func";
 import config from "../../../config";
+import { sendUserSession } from "src/lib/auth-action";
 
 export default async function RegisterRouteHandler(
   req: Request,
@@ -37,7 +38,7 @@ export default async function RegisterRouteHandler(
   };
 
   // send auth cookie at frontend code when call api at server side in nextjs
-  // sendUserSession(res, token);
+  sendUserSession(res, token);
 
   try {
     await createNewUser(userId, dataRegister);
