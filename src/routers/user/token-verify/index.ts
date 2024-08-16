@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
 import config from "../../../config";
 
 export default async function TokenVerifyHandler(req: Request, res: Response) {

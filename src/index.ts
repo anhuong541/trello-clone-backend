@@ -1,6 +1,8 @@
-import express, { Request, Response } from "express";
-import cors from "cors";
-import dotenv from "dotenv";
+import { Request, Response } from "express";
+const cookieParser = require("cookie-parser");
+const express = require("express");
+const dotenv = require("dotenv");
+const cors = require("cors");
 import {
   CheckEmailIsValidRouteHandler,
   LoginRouteHandler,
@@ -21,7 +23,6 @@ import {
   UpdateTaskHandler,
   ViewTasksHandler,
 } from "./routers/task";
-import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
