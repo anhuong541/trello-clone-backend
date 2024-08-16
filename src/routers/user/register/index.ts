@@ -42,7 +42,7 @@ export default async function RegisterRouteHandler(
 
   try {
     await createNewUser(userId, dataRegister);
-    return res.status(200).json({ status: "success", userId, feat });
+    return res.status(200).json({ status: "success", token, feat });
   } catch (error) {
     return res.status(400).json({
       status: "fail",

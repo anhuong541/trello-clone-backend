@@ -49,5 +49,5 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
   // send auth cookie at frontend code
   sendUserSession(res, token);
 
-  return res.status(200).json({ status: "success", userId, feat });
+  return res.status(200).json({ status: "success", token, feat });
 }
