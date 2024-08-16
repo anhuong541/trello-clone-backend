@@ -4,9 +4,8 @@
   "main": "dist/index",
   "types": "dist/index",
   "private": true,
-  "type": "module",
   "scripts": {
-    "start": "ts-node -r src/index.ts",
+    "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
     "serve": "node dist/index.js",
     "build": "tsc",
