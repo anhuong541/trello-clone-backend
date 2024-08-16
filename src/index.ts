@@ -22,6 +22,7 @@ import {
   UpdateTaskHandler,
   ViewTasksHandler,
 } from "./routers/task";
+import { authorizationMidleware } from "./lib/auth-action";
 
 dotenv.config();
 const app = express();
@@ -64,15 +65,19 @@ app.get("/user", TakeUserInfoHandler);
 app.post("/user/email-verify", CheckEmailIsValidRouteHandler);
 app.get("/user/token-verify", TokenVerifyHandler);
 
-app.get("/project", ProjectListHandler);
-app.post("/project", AddProjectHandler);
-app.put("/project", EditProjectHandler);
-app.delete("/project/:projectId", DeleteProjectHandler);
+app.get("/project", authorizationMidleware, ProjectListHandler);
+app.post("/project", authorizationMidleware, AddProjectHandler);
+app.put("/project", authorizationMidleware, EditProjectHandler);
+app.delete("/project/:projectId", authorizationMidleware, DeleteProjectHandler);
 
-app.get("/task/:projectId", ViewTasksHandler);
-app.post("/task", CreateTaskHandler);
-app.put("/task", UpdateTaskHandler);
-app.delete("/task/:projectId/:taskId", DeleteTaskHandler);
+app.get("/task/:projectId", authorizationMidleware, ViewTasksHandler);
+app.post("/task", authorizationMidleware, CreateTaskHandler);
+app.put("/task", authorizationMidleware, UpdateTaskHandler);
+app.delete(
+  "/task/:projectId/:taskId",
+  authorizationMidleware,
+  DeleteTaskHandler
+);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
