@@ -38,34 +38,7 @@ export const checkUIDAndProjectExists = async (
 };
 
 export const readUserIdFromTheCookis = (req: Request) => {
-  // const token = req?.headers.authorization?.split(" ")[1] ?? ""; // send at the server
   const token = req?.cookies.user_session ?? ""; // send at the client
-  console.log("read cookie", { token });
   const { email } = jwt.verify(token, config.jwtSecret) as { email: string };
   return generateUidByString(email);
 };
-
-// const token = req?.headers.authorization?.split(" ")[1] ?? "";
-// let verifedToken: any = "";
-// try {
-//   verifedToken = jwt.verify(token, config.jwtSecret);
-// } catch (error) {
-//   return res.status(401).json({ status: "fail", feat });
-// }
-// const userId = generateUidByString(verifedToken.email);
-// try {
-//   const data = await getUserDataById(userId);
-//   return res.status(200).json({
-//     status: "success",
-//     message: "get user data success",
-//     feat,
-//     data,
-//   });
-// } catch (error) {
-//   return res.status(404).json({
-//     status: "fail",
-//     message: "missing userId or something",
-//     feat,
-//     error,
-//   });
-// }
