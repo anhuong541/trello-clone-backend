@@ -6,7 +6,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "ts-node -r tsconfig-paths/register src/index.ts",
+    "start": "ts-node -r src/index.ts",
     "dev": "nodemon src/index.ts",
     "serve": "node dist/index.js",
     "build": "tsc",
