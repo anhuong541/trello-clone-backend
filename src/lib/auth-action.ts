@@ -8,8 +8,6 @@ export const sendUserSession = (res: Response, token: string) => {
     secure: config.env,
     maxAge: 2 * 60 * 60 * 1000, // two hours
     path: "/",
-    sameSite: "none",
-    domain: "localhost",
   });
 };
 
