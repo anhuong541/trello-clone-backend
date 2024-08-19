@@ -7,11 +7,6 @@
       "config": { "distDir": "dist" }
     }
   ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/dist/index.js"
-    }
-  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/dist/index.js" }],
   "buildCommand": "npm run vercel-build"
 }
