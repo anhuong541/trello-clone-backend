@@ -3,6 +3,7 @@ import RegisterRouteHandler from "./register";
 import LogoutRouteHandler from "./logout";
 import TakeUserInfoHandler from "./user-info";
 import TokenVerifyHandler from "./token-verify";
+import ActiveUserAccountHandler from "./active-user-account";
 
 export {
   LoginRouteHandler,
@@ -10,4 +11,5 @@ export {
   LogoutRouteHandler,
   TakeUserInfoHandler,
   TokenVerifyHandler,
+  ActiveUserAccountHandler,
 };

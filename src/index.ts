@@ -1,8 +1,9 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import cors from "cors";
 import {
+  ActiveUserAccountHandler,
   LoginRouteHandler,
   LogoutRouteHandler,
   RegisterRouteHandler,
@@ -22,6 +23,7 @@ import {
   ViewTasksHandler,
 } from "./routers/task";
 import { authorizationMidleware } from "./lib/auth-action";
+import { sendMail } from "./lib/email-action";
 
 dotenv.config();
 const app = express();
@@ -62,6 +64,7 @@ app.post("/user/register", RegisterRouteHandler);
 app.get("/user/logout", LogoutRouteHandler);
 app.get("/user", TakeUserInfoHandler);
 app.get("/user/token-verify", TokenVerifyHandler);
+app.get("/user/:email/:hash", ActiveUserAccountHandler);
 
 app.get("/project", authorizationMidleware, ProjectListHandler);
 app.post("/project", authorizationMidleware, AddProjectHandler);
@@ -76,6 +79,11 @@ app.delete(
   authorizationMidleware,
   DeleteTaskHandler
 );
+
+app.get("/testing", async (req: Request, res: Response) => {
+  await sendMail();
+  res.send("Hello world");
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
