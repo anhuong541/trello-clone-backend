@@ -4,7 +4,8 @@
     "module": "commonjs",
     "pretty": true,
     "sourceMap": true,
-    "outDir": "dist",
+    "outDir": "./dist",      // Specifies the output directory
+    "rootDir": "./src", 
     "importHelpers": true,
     "strict": true,
     "noImplicitAny": false,
@@ -38,5 +39,6 @@
         "esnext.asynciterable"
     ]
   },
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }
