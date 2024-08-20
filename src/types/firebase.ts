@@ -6,6 +6,8 @@ export interface DataRegister {
   email: string;
   password: string;
   createAt: number;
+  activationHash: string | null;
+  isActive: boolean;
 }
 
 export interface DataProject {

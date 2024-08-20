@@ -21,6 +21,28 @@ export const checkEmailUIDExists = async (uid: string) => {
   }
 };
 
+export const checkUserAccountIsActive = async (uid: string) => {
+  try {
+    const userData = (await getDoc(doc(firestoreDB, `users`, uid))).data();
+    if (userData.isActive) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.log("this is the error: ", error);
+    return null;
+  }
+};
+
+export const deleteAccountUnActive = async (userId: string) => {
+  try {
+    return await deleteDoc(doc(firestoreDB, `users`, userId));
+  } catch (error) {
+    console.log("error when delete user: ", error);
+    return null;
+  }
+};
+
 export const checkProjectExists = async (uid: string, projectId: string) => {
   return (
     await getDoc(doc(firestoreDB, `users`, uid, "projects", projectId))

@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import cors from "cors";
@@ -23,7 +23,6 @@ import {
   ViewTasksHandler,
 } from "./routers/task";
 import { authorizationMidleware } from "./lib/auth-action";
-import { sendMail } from "./lib/email-action";
 
 dotenv.config();
 const app = express();
@@ -35,13 +34,7 @@ const corsWebAllow = [
 ];
 
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || corsWebAllow.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: corsWebAllow,
   optionsSuccessStatus: 200,
   credentials: true, // enable set cookie
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -79,11 +72,6 @@ app.delete(
   authorizationMidleware,
   DeleteTaskHandler
 );
-
-app.get("/testing", async (req: Request, res: Response) => {
-  await sendMail();
-  res.send("Hello world");
-});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

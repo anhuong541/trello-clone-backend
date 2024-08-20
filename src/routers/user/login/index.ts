@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { generateUidByString } from "../../../lib/utils";
 import {
   checkEmailUIDExists,
+  checkUserAccountIsActive,
   getUserDataById,
 } from "../../../lib/firebase-func";
 import config from "../../../config";
@@ -40,6 +41,16 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
     return res
       .status(401)
       .json({ status: "fail", error: "your password is wrong", feat });
+  }
+
+  const checkUserIsActive = await checkUserAccountIsActive(userId);
+
+  if (!checkUserIsActive) {
+    return res.status(403).json({
+      status: "fail",
+      error: "Check your email to active your account first!",
+      feat,
+    });
   }
 
   const token = jwt.sign({ email, password }, config.jwtSecret, {

@@ -9,7 +9,6 @@ export default async function TakeUserInfoHandler(req: Request, res: Response) {
 
   try {
     const token = req?.headers.authorization?.split(" ")[1] ?? ""; // send at the server
-    console.log("read authorization", { token });
     const { email } = jwt.verify(token, config.jwtSecret) as { email: string };
     const userId = generateUidByString(email);
 

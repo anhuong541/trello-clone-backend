@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import config from "../config";
 import jwt from "jsonwebtoken";
 
-export const sendUserSession = (res: Response, token: string) => {
-  res.cookie("user_session", token, {
+export const sendUserSession = async (res: Response, token: string) => {
+  await res.cookie("user_session", token, {
     httpOnly: true, // for deploy only
     secure: config.env,
     maxAge: 2 * 60 * 60 * 1000, // two hours
