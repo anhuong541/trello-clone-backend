@@ -7,10 +7,17 @@
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
     "serve": "node dist/index.js",
-    "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "vercel-build": "npm run build"
+    "vercel-build": "npm run build",
+    "build": "rimraf dist && tsc",
+    "ts.check": "tsc --project tsconfig.json",
+    "add-build": "git add dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "pre-commit": [
+    "ts.check",
+    "build",
+    "add-build"
+  ],
   "keywords": [],
   "author": "Nguyen Xuan An Huong",
   "license": "ISC",
@@ -35,6 +42,8 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/node": "^22.3.0",
     "@types/uuid": "^10.0.0",
+    "pre-commit": "^1.2.2",
+    "rimraf": "^6.0.1",
     "ts-node": "10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.5.4"

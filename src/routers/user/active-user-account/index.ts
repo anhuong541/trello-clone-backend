@@ -5,7 +5,7 @@ import {
   getUserDataById,
 } from "../../../lib/firebase-func";
 import { generateUidByString } from "../../../lib/utils";
-import { DataRegister } from "firebase";
+import { DataRegister } from "./../../../types/firebase";
 
 export default async function ActiveUserAccountHandler(
   req: Request<{ email: string; hash: string }, {}, {}, {}>,
