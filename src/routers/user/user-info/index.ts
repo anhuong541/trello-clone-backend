@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
+
 import { getUserDataById } from "@/lib/firebase-func";
 import { generateUidByString } from "@/lib/utils";
 import config from "@/config";

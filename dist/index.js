@@ -5,6 +5,7 @@ require("module-alias/register");
 const express_1 = tslib_1.__importDefault(require("express"));
 const cookie_parser_1 = tslib_1.__importDefault(require("cookie-parser"));
 const dotenv_1 = tslib_1.__importDefault(require("dotenv"));
+const jsonwebtoken_1 = tslib_1.__importDefault(require("jsonwebtoken"));
 const cors_1 = tslib_1.__importDefault(require("cors"));
 const user_1 = require("./routers/user");
 const project_1 = require("./routers/project");
@@ -47,27 +48,41 @@ app.get("/task/:projectId", auth_action_1.authorizationMidleware, task_1.ViewTas
 app.post("/task", auth_action_1.authorizationMidleware, task_1.CreateTaskHandler);
 app.put("/task", auth_action_1.authorizationMidleware, task_1.UpdateTaskHandler);
 app.delete("/task/:projectId/:taskId", auth_action_1.authorizationMidleware, task_1.DeleteTaskHandler);
-// const wss = new WebSocket.Server({ port: 8080 });
-// // WebSocket event handling
-// wss.on("connection", (ws) => {
-//   console.log("A new client connected.");
-//   // Event listener for incoming messages
-//   ws.on("message", (message) => {
-//     console.log("Received message:", message.toString());
-//     // Broadcast the message to all connected clients
-//     wss.clients.forEach((client) => {
-//       if (client.readyState === WebSocket.OPEN) {
-//         client.send(message.toString());
-//       }
-//     });
-//   });
-//   // Event listener for client disconnection
-//   ws.on("close", () => {
-//     console.log("A client disconnected.");
-//   });
-// });
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+const http_1 = tslib_1.__importDefault(require("http"));
+const socket_io_1 = require("socket.io");
+const firebase_func_1 = require("./lib/firebase-func");
+const config_1 = tslib_1.__importDefault(require("./config"));
+const utils_1 = require("./lib/utils");
+const server = http_1.default.createServer(app);
+const io = new socket_io_1.Server(server, {
+    cors: corsOptions,
+});
+// Setup Socket.IO connection
+io.on("connection", (socket) => {
+    var _a, _b, _c, _d, _e, _f, _g;
+    console.log("a user connected:", socket.id);
+    const userCookie = (_d = (_c = (_b = (_a = socket === null || socket === void 0 ? void 0 : socket.handshake) === null || _a === void 0 ? void 0 : _a.headers) === null || _b === void 0 ? void 0 : _b.cookie) === null || _c === void 0 ? void 0 : _c.split("=")[1]) !== null && _d !== void 0 ? _d : null;
+    console.log("cookie: ", (_g = (_f = (_e = socket === null || socket === void 0 ? void 0 : socket.handshake) === null || _e === void 0 ? void 0 : _e.headers) === null || _f === void 0 ? void 0 : _f.cookie) === null || _g === void 0 ? void 0 : _g.split("="));
+    socket.on("message", (msg) => {
+        console.log("message received:", msg);
+        io.emit("message", msg);
+    });
+    socket.on("project_room", (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        var _a;
+        if (userCookie) {
+            const verify = jsonwebtoken_1.default.verify(userCookie, config_1.default.jwtSecret);
+            const userId = (0, utils_1.generateUidByString)((_a = verify === null || verify === void 0 ? void 0 : verify.email) !== null && _a !== void 0 ? _a : "");
+            const data = yield (0, firebase_func_1.viewTasksProject)(userId, projectId);
+            io.emit(`project_room_${projectId}`, data);
+        }
+    }));
+    socket.on("disconnect", () => {
+        console.log("user disconnected:", socket.id);
+    });
+});
+// Start the server
+server.listen(port, () => {
+    console.log(`Server is listening on ${port}`);
 });
 module.exports = app;
 //# sourceMappingURL=index.js.map

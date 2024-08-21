@@ -2,6 +2,7 @@ import "module-alias/register";
 import express from "express";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
 import cors from "cors";
 import {
   ActiveUserAccountHandler,
@@ -74,32 +75,48 @@ app.delete(
   DeleteTaskHandler
 );
 
-// const wss = new WebSocket.Server({ port: 8080 });
+import http from "http";
+import { Server } from "socket.io";
+import { viewTasksProject } from "./lib/firebase-func";
+import config from "./config";
+import { generateUidByString } from "./lib/utils";
 
-// // WebSocket event handling
-// wss.on("connection", (ws) => {
-//   console.log("A new client connected.");
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: corsOptions,
+});
 
-//   // Event listener for incoming messages
-//   ws.on("message", (message) => {
-//     console.log("Received message:", message.toString());
+// Setup Socket.IO connection
+io.on("connection", (socket) => {
+  console.log("a user connected:", socket.id);
 
-//     // Broadcast the message to all connected clients
-//     wss.clients.forEach((client) => {
-//       if (client.readyState === WebSocket.OPEN) {
-//         client.send(message.toString());
-//       }
-//     });
-//   });
+  const userCookie = socket?.handshake?.headers?.cookie?.split("=")[1] ?? null;
+  console.log("cookie: ", socket?.handshake?.headers?.cookie?.split("="));
 
-//   // Event listener for client disconnection
-//   ws.on("close", () => {
-//     console.log("A client disconnected.");
-//   });
-// });
+  socket.on("message", (msg) => {
+    console.log("message received:", msg);
+    io.emit("message", msg);
+  });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  socket.on("project_room", async (projectId: string) => {
+    if (userCookie) {
+      const verify: any = jwt.verify(userCookie, config.jwtSecret);
+
+      const userId = generateUidByString(verify?.email ?? "");
+
+      const data = await viewTasksProject(userId, projectId);
+      io.emit(`project_room_${projectId}`, data);
+    }
+  });
+
+  socket.on("disconnect", () => {
+    console.log("user disconnected:", socket.id);
+  });
+});
+
+// Start the server
+server.listen(port, () => {
+  console.log(`Server is listening on ${port}`);
 });
 
 module.exports = app;
