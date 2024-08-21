@@ -18,7 +18,7 @@ exports.checkEmailUIDExists = checkEmailUIDExists;
 const checkUserAccountIsActive = (uid) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
         const userData = (yield (0, firestore_1.getDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, `users`, uid))).data();
-        if (userData.isActive) {
+        if (userData === null || userData === void 0 ? void 0 : userData.isActive) {
             return true;
         }
         return false;

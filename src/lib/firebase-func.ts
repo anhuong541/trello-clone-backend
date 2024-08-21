@@ -24,7 +24,7 @@ export const checkEmailUIDExists = async (uid: string) => {
 export const checkUserAccountIsActive = async (uid: string) => {
   try {
     const userData = (await getDoc(doc(firestoreDB, `users`, uid))).data();
-    if (userData.isActive) {
+    if (userData?.isActive) {
       return true;
     }
     return false;
