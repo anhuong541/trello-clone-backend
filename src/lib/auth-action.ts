@@ -1,5 +1,6 @@
+import config from "@/config";
 import { NextFunction, Request, Response } from "express";
-import config from "../config";
+
 import jwt from "jsonwebtoken";
 
 export const sendUserSession = async (res: Response, token: string) => {

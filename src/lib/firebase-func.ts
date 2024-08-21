@@ -8,8 +8,8 @@ import {
   DocumentData,
   updateDoc,
 } from "firebase/firestore";
-import { firestoreDB } from "../db/firebase";
-import { DataProject, DataRegister, DataTask } from "../types/firebase";
+import { firestoreDB } from "@/db/firebase";
+import { DataProject, DataRegister, DataTask } from "@/types/firebase";
 
 // user
 export const checkEmailUIDExists = async (uid: string) => {

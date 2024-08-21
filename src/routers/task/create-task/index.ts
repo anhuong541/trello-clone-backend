@@ -1,10 +1,7 @@
 import { Request, Response } from "express";
-import { TaskType } from "../../../types";
-import {
-  createOrSetTask,
-  getUpdateProjectDueTime,
-} from "../../../lib/firebase-func";
-import { readUserIdFromTheCookis } from "../../../lib/utils";
+import { TaskType } from "@/types";
+import { createOrSetTask, getUpdateProjectDueTime } from "@/lib/firebase-func";
+import { readUserIdFromTheCookis } from "@/lib/utils";
 
 export default async function CreateTaskHandler(
   req: Request<{}, {}, TaskType, {}>,

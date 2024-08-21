@@ -1,10 +1,7 @@
 import { Request, Response } from "express";
-import { createOrSetProject } from "../../../lib/firebase-func";
-import { ProjectType } from "../../../types";
-import {
-  checkUIDAndProjectExists,
-  readUserIdFromTheCookis,
-} from "../../../lib/utils";
+import { createOrSetProject } from "@/lib/firebase-func";
+import { ProjectType } from "@/types";
+import { checkUIDAndProjectExists, readUserIdFromTheCookis } from "@/lib/utils";
 
 export default async function EditProjectHandler(
   req: Request<{}, {}, ProjectType, {}>,

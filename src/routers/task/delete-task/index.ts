@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
-import { readUserIdFromTheCookis } from "../../../lib/utils";
-import {
-  deteleTask,
-  getUpdateProjectDueTime,
-} from "../../../lib/firebase-func";
+import { readUserIdFromTheCookis } from "@/lib/utils";
+import { deteleTask, getUpdateProjectDueTime } from "@/lib/firebase-func";
 
 export default async function DeleteTaskHandler(req: Request, res: Response) {
   const feat = "delete task";

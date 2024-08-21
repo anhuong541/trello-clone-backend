@@ -18,22 +18,33 @@
     "build",
     "add-build"
   ],
+  "_moduleAliases": {
+    "@": "./dist"
+  },
   "keywords": [],
   "author": "Nguyen Xuan An Huong",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/module-alias": "^2.0.4",
     "cookie-parser": "1.4.6",
     "cors": "2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "16.4.5",
     "express": "4.19.2",
+    "express-ws": "^5.0.2",
     "firebase": "10.12.5",
+    "http": "^0.0.1-security",
     "jsonwebtoken": "9.0.2",
+    "module-alias": "^2.2.3",
     "nodemailer": "^6.9.14",
     "nodemon": "3.1.4",
+    "query-string": "^9.1.0",
+    "socket.io": "^4.7.5",
+    "tslib": "^2.6.3",
     "uuid": "10.0.0",
-    "vercel": "36.0.0"
+    "vercel": "36.0.0",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.7",

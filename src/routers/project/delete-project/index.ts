@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
-import { deteleProject } from "../../../lib/firebase-func";
-import {
-  checkUIDAndProjectExists,
-  readUserIdFromTheCookis,
-} from "../../../lib/utils";
+import { deteleProject } from "@/lib/firebase-func";
+import { checkUIDAndProjectExists, readUserIdFromTheCookis } from "@/lib/utils";
 
 export default async function DeleteProjectHandler(
   req: Request<{ projectId: string }>,

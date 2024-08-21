@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = TokenVerifyHandler;
 const tslib_1 = require("tslib");
 const jsonwebtoken_1 = tslib_1.__importDefault(require("jsonwebtoken"));
-const config_1 = tslib_1.__importDefault(require("../../../config"));
-const utils_1 = require("../../../lib/utils");
-const firebase_func_1 = require("../../../lib/firebase-func");
+const config_1 = tslib_1.__importDefault(require("@/config"));
+const utils_1 = require("@/lib/utils");
+const firebase_func_1 = require("@/lib/firebase-func");
 function TokenVerifyHandler(req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         var _a, _b;

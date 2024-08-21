@@ -1,3 +1,4 @@
+import "module-alias/register";
 import express from "express";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
@@ -72,6 +73,30 @@ app.delete(
   authorizationMidleware,
   DeleteTaskHandler
 );
+
+// const wss = new WebSocket.Server({ port: 8080 });
+
+// // WebSocket event handling
+// wss.on("connection", (ws) => {
+//   console.log("A new client connected.");
+
+//   // Event listener for incoming messages
+//   ws.on("message", (message) => {
+//     console.log("Received message:", message.toString());
+
+//     // Broadcast the message to all connected clients
+//     wss.clients.forEach((client) => {
+//       if (client.readyState === WebSocket.OPEN) {
+//         client.send(message.toString());
+//       }
+//     });
+//   });
+
+//   // Event listener for client disconnection
+//   ws.on("close", () => {
+//     console.log("A client disconnected.");
+//   });
+// });
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
-import {
-  checkProjectExists,
-  viewTasksProject,
-} from "../../../lib/firebase-func";
-import { readUserIdFromTheCookis } from "../../../lib/utils";
+import { checkProjectExists, viewTasksProject } from "@/lib/firebase-func";
+import { readUserIdFromTheCookis } from "@/lib/utils";
 
 export default async function ViewTasksHandler(
   req: Request<{ projectId: string }>,

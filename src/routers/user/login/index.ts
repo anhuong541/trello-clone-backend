@@ -1,13 +1,13 @@
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
-import { generateUidByString } from "../../../lib/utils";
+import { generateUidByString } from "@/lib/utils";
 import {
   checkEmailUIDExists,
   checkUserAccountIsActive,
   getUserDataById,
-} from "../../../lib/firebase-func";
-import config from "../../../config";
-import { sendUserSession } from "./../../../lib/auth-action";
+} from "@/lib/firebase-func";
+import config from "@/config";
+import { sendUserSession } from "@/lib/auth-action";
 
 const checkPasswordIsCorrect = async (userId: string, password: string) => {
   const dataUser = await getUserDataById(userId);

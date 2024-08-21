@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { getProjectListByUser } from "../../../lib/firebase-func";
-import { readUserIdFromTheCookis } from "../../../lib/utils";
+import { getProjectListByUser } from "@/lib/firebase-func";
+import { readUserIdFromTheCookis } from "@/lib/utils";
 
 export default async function ProjectListHandler(req: Request, res: Response) {
   const feat = "project list";

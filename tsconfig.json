@@ -18,6 +18,9 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -39,6 +42,6 @@
         "esnext.asynciterable"
     ]
   },
-  "include": ["src/**/*"],
+  "include": ["src/*"],
   "exclude": ["node_modules"]
 }

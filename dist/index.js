@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
+require("module-alias/register");
 const express_1 = tslib_1.__importDefault(require("express"));
 const cookie_parser_1 = tslib_1.__importDefault(require("cookie-parser"));
 const dotenv_1 = tslib_1.__importDefault(require("dotenv"));
@@ -46,6 +47,25 @@ app.get("/task/:projectId", auth_action_1.authorizationMidleware, task_1.ViewTas
 app.post("/task", auth_action_1.authorizationMidleware, task_1.CreateTaskHandler);
 app.put("/task", auth_action_1.authorizationMidleware, task_1.UpdateTaskHandler);
 app.delete("/task/:projectId/:taskId", auth_action_1.authorizationMidleware, task_1.DeleteTaskHandler);
+// const wss = new WebSocket.Server({ port: 8080 });
+// // WebSocket event handling
+// wss.on("connection", (ws) => {
+//   console.log("A new client connected.");
+//   // Event listener for incoming messages
+//   ws.on("message", (message) => {
+//     console.log("Received message:", message.toString());
+//     // Broadcast the message to all connected clients
+//     wss.clients.forEach((client) => {
+//       if (client.readyState === WebSocket.OPEN) {
+//         client.send(message.toString());
+//       }
+//     });
+//   });
+//   // Event listener for client disconnection
+//   ws.on("close", () => {
+//     console.log("A client disconnected.");
+//   });
+// });
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

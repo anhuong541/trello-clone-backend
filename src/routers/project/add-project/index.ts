@@ -1,10 +1,7 @@
 import { Request, Response } from "express";
-import {
-  checkEmailUIDExists,
-  createOrSetProject,
-} from "../../../lib/firebase-func";
-import { generateNewUid, readUserIdFromTheCookis } from "../../../lib/utils";
-import { ProjectType } from "../../../types";
+import { checkEmailUIDExists, createOrSetProject } from "@/lib/firebase-func";
+import { generateNewUid, readUserIdFromTheCookis } from "@/lib/utils";
+import { ProjectType } from "@/types";
 
 export default async function AddProjectHandler(
   req: Request<{}, {}, ProjectType, {}>,

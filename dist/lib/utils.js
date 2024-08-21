@@ -6,7 +6,7 @@ const uuid_1 = require("uuid");
 const jsonwebtoken_1 = tslib_1.__importDefault(require("jsonwebtoken"));
 const crypto_1 = tslib_1.__importDefault(require("crypto"));
 const firebase_func_1 = require("./firebase-func");
-const config_1 = tslib_1.__importDefault(require("../config"));
+const config_1 = tslib_1.__importDefault(require("@/config"));
 const generateNewUid = () => {
     return (0, uuid_1.v4)();
 };
