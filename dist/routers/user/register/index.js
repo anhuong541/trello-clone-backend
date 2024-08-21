@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = RegisterRouteHandler;
 const tslib_1 = require("tslib");
 const jsonwebtoken_1 = tslib_1.__importDefault(require("jsonwebtoken"));
-const crypto_1 = tslib_1.__importDefault(require("crypto"));
 const firebase_func_1 = require("../../../lib/firebase-func");
 const auth_action_1 = require("./../../../lib/auth-action");
 const utils_1 = require("../../../lib/utils");
@@ -27,7 +26,9 @@ function RegisterRouteHandler(req, res) {
         const token = jsonwebtoken_1.default.sign({ email, password }, config_1.default.jwtSecret, {
             expiresIn: "12h",
         });
-        const activationHash = crypto_1.default.randomBytes(20).toString("hex");
+        const activationHash = jsonwebtoken_1.default.sign({ message: "active user email", email, username }, config_1.default.jwtSecret, {
+            expiresIn: "1h",
+        });
         const dataRegister = {
             uid: userId,
             username,

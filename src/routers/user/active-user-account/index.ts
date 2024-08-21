@@ -6,6 +6,8 @@ import {
 } from "../../../lib/firebase-func";
 import { generateUidByString } from "../../../lib/utils";
 import { DataRegister } from "./../../../types/firebase";
+import jwt from "jsonwebtoken";
+import config from "./../../../config";
 
 export default async function ActiveUserAccountHandler(
   req: Request<{ email: string; hash: string }, {}, {}, {}>,
@@ -20,9 +22,21 @@ export default async function ActiveUserAccountHandler(
     return res.redirect("http://localhost:3000/project");
   }
 
+  try {
+    await jwt.verify(data?.activationHash, config.jwtSecret);
+  } catch (error) {
+    await deleteAccountUnActive(userId);
+    return res.status(200).json({
+      message: "email active is expired! Please register your email again!",
+    });
+  }
+
   if (data?.activationHash !== hash) {
     await deleteAccountUnActive(userId);
-    return res.status(400).json({ message: "your account active is expired!" });
+    return res.status(200).json({
+      message:
+        "your something wrong when active your email please register with this email again!",
+    });
   }
 
   const removeHashData: DataRegister = {

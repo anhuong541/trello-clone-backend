@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import crypto from "crypto";
 import { checkEmailUIDExists, createNewUser } from "../../../lib/firebase-func";
 import { sendUserSession } from "./../../../lib/auth-action";
 import { generateUidByString } from "../../../lib/utils";
@@ -30,7 +29,14 @@ export default async function RegisterRouteHandler(
   const token = jwt.sign({ email, password }, config.jwtSecret, {
     expiresIn: "12h",
   });
-  const activationHash = crypto.randomBytes(20).toString("hex");
+
+  const activationHash = jwt.sign(
+    { message: "active user email", email, username },
+    config.jwtSecret,
+    {
+      expiresIn: "1h",
+    }
+  );
 
   const dataRegister = {
     uid: userId,
