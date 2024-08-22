@@ -9,6 +9,7 @@ function ViewTasksHandler(req, res) {
         const feat = "view all tasks"; // name api
         try {
             const userId = (0, utils_1.readUserIdFromTheCookis)(req);
+            console.log("update authority: ", userId);
             const { projectId } = req.params;
             if (!projectId) {
                 return res.status(404).json({
@@ -17,13 +18,13 @@ function ViewTasksHandler(req, res) {
                     feat,
                 });
             }
-            if (!(yield (0, firebase_func_1.checkProjectExists)(userId, projectId))) {
+            if (!(yield (0, firebase_func_1.checkProjectExists)(projectId))) {
                 return res
                     .status(409)
                     .json({ status: "fail", error: "project doesn't exists!", feat });
             }
             try {
-                const data = yield (0, firebase_func_1.viewTasksProject)(userId, projectId);
+                const data = yield (0, firebase_func_1.viewTasksProject)(projectId);
                 return res.status(200).json({ status: "success", feat, data });
             }
             catch (error) {

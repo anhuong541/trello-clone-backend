@@ -10,6 +10,7 @@ function CreateTaskHandler(req, res) {
         const taskContent = req.body;
         try {
             const userId = (0, utils_1.readUserIdFromTheCookis)(req);
+            console.log("update authority: ", userId);
             if (!taskContent) {
                 return res.status(400).json({
                     status: "fail",
@@ -18,8 +19,8 @@ function CreateTaskHandler(req, res) {
                 });
             }
             try {
-                yield (0, firebase_func_1.createOrSetTask)(userId, taskContent.projectId, taskContent.taskId, taskContent);
-                yield (0, firebase_func_1.getUpdateProjectDueTime)(userId, taskContent.projectId);
+                yield (0, firebase_func_1.createOrSetTask)(taskContent.projectId, taskContent.taskId, taskContent);
+                yield (0, firebase_func_1.getUpdateProjectDueTime)(taskContent.projectId);
                 return res.status(200).json({ status: "success", feat });
             }
             catch (error) {

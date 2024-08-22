@@ -24,7 +24,7 @@ const checkUIDAndProjectExists = (userId, projectId, feat, res) => tslib_1.__awa
             .status(409)
             .json({ status: "fail", error: "user doesn't exists!", feat });
     }
-    if (!(yield (0, firebase_func_1.checkProjectExists)(userId, projectId))) {
+    if (!(yield (0, firebase_func_1.checkProjectExists)(projectId))) {
         return res
             .status(409)
             .json({ status: "fail", error: "project doesn't exists!", feat });

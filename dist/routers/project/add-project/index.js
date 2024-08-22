@@ -18,9 +18,7 @@ function AddProjectHandler(req, res) {
                 });
             }
             const projectId = (0, utils_1.generateNewUid)();
-            const dataProject = Object.assign(Object.assign({}, projectContent), { members: [userId], authority: {
-                    [userId]: ["Owner", "Edit", "View"],
-                }, projectId, dueTime: Date.now() });
+            const dataProject = Object.assign(Object.assign({}, projectContent), { members: [userId], projectId, dueTime: Date.now() });
             if (!(yield (0, firebase_func_1.checkEmailUIDExists)(userId))) {
                 return res.status(409).json({
                     status: "fail",
@@ -32,8 +30,17 @@ function AddProjectHandler(req, res) {
                 yield (0, firebase_func_1.addUserProjectsInfo)(userId, projectId, {
                     projectId,
                     projectName: projectContent.projectName,
+                    dueTime: Date.now(),
+                    createAt: projectContent.createAt,
                 });
                 yield (0, firebase_func_1.createOrSetProject)(projectId, dataProject);
+                const createrAuthority = ["Owner", "Edit", "View"];
+                try {
+                    yield (0, firebase_func_1.addMemberAuthorityInProject)(projectId, userId, createrAuthority);
+                }
+                catch (error) {
+                    console.log(error);
+                }
                 return res.status(200).json({
                     status: "success",
                     message: "Create new project successfull",

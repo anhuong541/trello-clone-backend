@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deteleTask = exports.viewTasksProject = exports.createOrSetTask = exports.getUpdateProjectDueTime = exports.getProjectListByUser = exports.getProjectInfo = exports.deteleProject = exports.createOrSetProject = exports.addUserProjectsInfo = exports.createNewUser = exports.getUserDataById = exports.checkProjectExists = exports.deleteAccountUnActive = exports.checkUserAccountIsActive = exports.checkEmailUIDExists = void 0;
+exports.deteleTask = exports.viewTasksProject = exports.createOrSetTask = exports.updateMemberAuthorityInProject = exports.addMemberAuthorityInProject = exports.getUpdateProjectDueTime = exports.getProjectListByUser = exports.getProjectInfo = exports.deteleProject = exports.createOrSetProject = exports.addUserProjectsInfo = exports.createNewUser = exports.getUserDataById = exports.checkProjectExists = exports.deleteAccountUnActive = exports.checkUserAccountIsActive = exports.checkEmailUIDExists = void 0;
 const tslib_1 = require("tslib");
 const firestore_1 = require("firebase/firestore");
 const firebase_1 = require("@/db/firebase");
@@ -39,8 +39,8 @@ const deleteAccountUnActive = (userId) => tslib_1.__awaiter(void 0, void 0, void
     }
 });
 exports.deleteAccountUnActive = deleteAccountUnActive;
-const checkProjectExists = (uid, projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return (yield (0, firestore_1.getDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, `users`, uid, "projects", projectId))).exists();
+const checkProjectExists = (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    return (yield (0, firestore_1.getDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId))).exists();
 });
 exports.checkProjectExists = checkProjectExists;
 const getUserDataById = (uid) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
@@ -61,11 +61,12 @@ const createOrSetProject = (projectId, data) => tslib_1.__awaiter(void 0, void 0
 });
 exports.createOrSetProject = createOrSetProject;
 const deteleProject = (uid, projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    // need to fixed delete from user to project database
     return yield (0, firestore_1.deleteDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "users", uid, "projects", projectId));
 });
 exports.deteleProject = deteleProject;
-const getProjectInfo = (uid, projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return (yield (0, firestore_1.getDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, `users`, uid, "projects", projectId))).data();
+const getProjectInfo = (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    return (yield (0, firestore_1.getDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId))).data();
 });
 exports.getProjectInfo = getProjectInfo;
 const getProjectListByUser = (uid) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
@@ -73,23 +74,31 @@ const getProjectListByUser = (uid) => tslib_1.__awaiter(void 0, void 0, void 0, 
     return listProjectRef.docs.map((item) => item.data());
 });
 exports.getProjectListByUser = getProjectListByUser;
-const getUpdateProjectDueTime = (uid, projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    yield (0, firestore_1.updateDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "users", uid, "projects", projectId), {
+const getUpdateProjectDueTime = (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    yield (0, firestore_1.updateDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId), {
         dueTime: Date.now(),
     });
 });
 exports.getUpdateProjectDueTime = getUpdateProjectDueTime;
+const addMemberAuthorityInProject = (projectId, userId, authority) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    return yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId, "authority", userId), { authority });
+});
+exports.addMemberAuthorityInProject = addMemberAuthorityInProject;
+const updateMemberAuthorityInProject = (projectId, userId, authority) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    yield (0, firestore_1.updateDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId, "authority", userId), { authority });
+});
+exports.updateMemberAuthorityInProject = updateMemberAuthorityInProject;
 // task feature
-const createOrSetTask = (uid, projectId, taskId, contentTask) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "users", uid, "projects", projectId, "tasks", taskId), contentTask);
+const createOrSetTask = (projectId, taskId, contentTask) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    return yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId, "tasks", taskId), contentTask);
 });
 exports.createOrSetTask = createOrSetTask;
-const viewTasksProject = (uid, projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return (yield (0, firestore_1.getDocs)((0, firestore_1.collection)(firebase_1.firestoreDB, "users", uid, "projects", projectId, "tasks"))).docs.map((item) => item.data());
+const viewTasksProject = (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    return (yield (0, firestore_1.getDocs)((0, firestore_1.collection)(firebase_1.firestoreDB, "projects", projectId, "tasks"))).docs.map((item) => item.data());
 });
 exports.viewTasksProject = viewTasksProject;
-const deteleTask = (uid, projectId, taskId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return yield (0, firestore_1.deleteDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "users", uid, "projects", projectId, "tasks", taskId));
+const deteleTask = (projectId, taskId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    return yield (0, firestore_1.deleteDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId, "tasks", taskId));
 });
 exports.deteleTask = deteleTask;
 //# sourceMappingURL=firebase-func.js.map
