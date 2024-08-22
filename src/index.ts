@@ -66,10 +66,11 @@ app.get("/user", TakeUserInfoHandler);
 app.get("/user/token-verify", TokenVerifyHandler);
 app.get("/user/:email/:hash", ActiveUserAccountHandler);
 
-app.get("/project", authorizationMidleware, ProjectListHandler);
+app.get("/project", authorizationMidleware, ProjectListHandler); // ....
 app.post("/project", authorizationMidleware, AddProjectHandler);
 app.put("/project", authorizationMidleware, EditProjectHandler);
 app.delete("/project/:projectId", authorizationMidleware, DeleteProjectHandler);
+// update 2 api authority and members
 
 app.get("/task/:projectId", authorizationMidleware, ViewTasksHandler);
 app.post("/task", authorizationMidleware, CreateTaskHandler);
@@ -99,7 +100,9 @@ io.on("connection", (socket) => {
     if (userCookie) {
       const verify: any = jwt.verify(userCookie, config.jwtSecret);
       const userId = generateUidByString(verify?.email ?? "");
-      const data = await viewTasksProject(userId, projectId);
+      console.log("check authority: ", userId);
+
+      const data = await viewTasksProject(projectId);
       io.to(projectId).emit("view_project", data);
     }
   });

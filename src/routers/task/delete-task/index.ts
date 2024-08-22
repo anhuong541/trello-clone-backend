@@ -7,6 +7,7 @@ export default async function DeleteTaskHandler(req: Request, res: Response) {
   const taskContent = req.params;
   try {
     const userId = readUserIdFromTheCookis(req) as string;
+    console.log("update authority: ", userId);
 
     if (!taskContent) {
       return res.status(400).json({
@@ -17,8 +18,8 @@ export default async function DeleteTaskHandler(req: Request, res: Response) {
     }
 
     try {
-      await deteleTask(userId, taskContent.projectId, taskContent.taskId);
-      await getUpdateProjectDueTime(userId, taskContent.projectId);
+      await deteleTask(taskContent.projectId, taskContent.taskId);
+      await getUpdateProjectDueTime(taskContent.projectId);
       return res.status(200).json({ status: "success", feat });
     } catch (error) {
       return res.status(400).json({

@@ -11,6 +11,7 @@ export default async function UpdateTaskHandler(
   const taskContent = req.body;
   try {
     const userId = readUserIdFromTheCookis(req) as string;
+    console.log("update authority: ", userId);
     if (!taskContent) {
       return res.status(400).json({
         status: "fail",
@@ -21,12 +22,11 @@ export default async function UpdateTaskHandler(
 
     try {
       await createOrSetTask(
-        userId,
         taskContent.projectId,
         taskContent.taskId,
         taskContent
       );
-      await getUpdateProjectDueTime(userId, taskContent.projectId);
+      await getUpdateProjectDueTime(taskContent.projectId);
       return res.status(200).json({ status: "success", feat });
     } catch (error) {
       return res.status(400).json({

@@ -1,9 +1,11 @@
 import { Request, Response } from "express";
 import {
+  addMemberAuthorityInProject,
   addUserProjectsInfo,
   AuthorityType,
   checkEmailUIDExists,
   createOrSetProject,
+  NewDataProject,
 } from "@/lib/firebase-func";
 import { generateNewUid, readUserIdFromTheCookis } from "@/lib/utils";
 import { ProjectType } from "@/types";
@@ -26,12 +28,9 @@ export default async function AddProjectHandler(
     }
 
     const projectId = generateNewUid();
-    const dataProject = {
+    const dataProject: NewDataProject = {
       ...projectContent,
       members: [userId],
-      authority: {
-        [userId]: ["Owner", "Edit", "View"] as AuthorityType[],
-      },
       projectId,
       dueTime: Date.now(),
     };
@@ -48,9 +47,19 @@ export default async function AddProjectHandler(
       await addUserProjectsInfo(userId, projectId, {
         projectId,
         projectName: projectContent.projectName,
+        dueTime: Date.now(),
+        createAt: projectContent.createAt,
       });
 
       await createOrSetProject(projectId, dataProject);
+
+      const createrAuthority = ["Owner", "Edit", "View"] as AuthorityType[];
+
+      try {
+        await addMemberAuthorityInProject(projectId, userId, createrAuthority);
+      } catch (error) {
+        console.log(error);
+      }
 
       return res.status(200).json({
         status: "success",

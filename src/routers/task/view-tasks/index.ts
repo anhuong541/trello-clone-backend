@@ -9,6 +9,8 @@ export default async function ViewTasksHandler(
   const feat = "view all tasks"; // name api
   try {
     const userId = readUserIdFromTheCookis(req) as string;
+    console.log("update authority: ", userId);
+
     const { projectId } = req.params;
     if (!projectId) {
       return res.status(404).json({
@@ -18,14 +20,14 @@ export default async function ViewTasksHandler(
       });
     }
 
-    if (!(await checkProjectExists(userId, projectId))) {
+    if (!(await checkProjectExists(projectId))) {
       return res
         .status(409)
         .json({ status: "fail", error: "project doesn't exists!", feat });
     }
 
     try {
-      const data = await viewTasksProject(userId, projectId);
+      const data = await viewTasksProject(projectId);
       return res.status(200).json({ status: "success", feat, data });
     } catch (error) {
       return res.status(400).json({

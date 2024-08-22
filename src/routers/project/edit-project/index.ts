@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createOrSetProject } from "@/lib/firebase-func";
+import { createOrSetProject, getProjectInfo } from "@/lib/firebase-func";
 import { ProjectType } from "@/types";
 import { checkUIDAndProjectExists, readUserIdFromTheCookis } from "@/lib/utils";
 
@@ -23,13 +23,34 @@ export default async function EditProjectHandler(
 
     await checkUIDAndProjectExists(userId, projectContent.projectId, feat, res);
 
+    let userAuthority = [];
+
+    try {
+      const dataProject = await getProjectInfo(projectContent.projectId);
+      userAuthority = dataProject.authority[userId];
+
+      console.log("userAuthority => ", userAuthority);
+    } catch (error) {
+      return res
+        .status(400)
+        .json({ status: "fail", feat, message: "Didn't find project data" });
+    }
+
+    if (!userAuthority.includes("Edit")) {
+      return res.status(403).json({
+        status: "fail",
+        feat,
+        message: "User Didn't have an authority to edit project",
+      });
+    }
+
     const dataInput = {
       ...projectContent,
       dueTime: Date.now(),
     };
 
     try {
-      await createOrSetProject(userId, projectContent.projectId, dataInput);
+      await createOrSetProject(projectContent.projectId, dataInput);
       return res.status(200).json({
         status: "success",
         feat,

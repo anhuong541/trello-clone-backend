@@ -28,7 +28,7 @@ export const checkUIDAndProjectExists = async (
       .json({ status: "fail", error: "user doesn't exists!", feat });
   }
 
-  if (!(await checkProjectExists(userId, projectId))) {
+  if (!(await checkProjectExists(projectId))) {
     return res
       .status(409)
       .json({ status: "fail", error: "project doesn't exists!", feat });
