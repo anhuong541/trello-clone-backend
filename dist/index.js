@@ -1,12 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.io = void 0;
 const tslib_1 = require("tslib");
-require("module-alias/register");
-const express_1 = tslib_1.__importDefault(require("express"));
 const cookie_parser_1 = tslib_1.__importDefault(require("cookie-parser"));
-const dotenv_1 = tslib_1.__importDefault(require("dotenv"));
+const socket_io_1 = require("socket.io");
+require("module-alias/register");
 const jsonwebtoken_1 = tslib_1.__importDefault(require("jsonwebtoken"));
+const express_1 = tslib_1.__importDefault(require("express"));
+const dotenv_1 = tslib_1.__importDefault(require("dotenv"));
 const cors_1 = tslib_1.__importDefault(require("cors"));
+const http_1 = tslib_1.__importDefault(require("http"));
+const config_1 = tslib_1.__importDefault(require("./config"));
+const firebase_func_1 = require("./lib/firebase-func");
+const utils_1 = require("./lib/utils");
 const user_1 = require("./routers/user");
 const project_1 = require("./routers/project");
 const task_1 = require("./routers/task");
@@ -48,34 +54,29 @@ app.get("/task/:projectId", auth_action_1.authorizationMidleware, task_1.ViewTas
 app.post("/task", auth_action_1.authorizationMidleware, task_1.CreateTaskHandler);
 app.put("/task", auth_action_1.authorizationMidleware, task_1.UpdateTaskHandler);
 app.delete("/task/:projectId/:taskId", auth_action_1.authorizationMidleware, task_1.DeleteTaskHandler);
-const http_1 = tslib_1.__importDefault(require("http"));
-const socket_io_1 = require("socket.io");
-const firebase_func_1 = require("./lib/firebase-func");
-const config_1 = tslib_1.__importDefault(require("./config"));
-const utils_1 = require("./lib/utils");
 const server = http_1.default.createServer(app);
-const io = new socket_io_1.Server(server, {
+exports.io = new socket_io_1.Server(server, {
     cors: corsOptions,
 });
 // Setup Socket.IO connection
-io.on("connection", (socket) => {
-    var _a, _b, _c, _d, _e, _f, _g;
-    console.log("a user connected:", socket.id);
+exports.io.on("connection", (socket) => {
+    // console.log("a user connected:", socket.id);
+    var _a, _b, _c, _d;
     const userCookie = (_d = (_c = (_b = (_a = socket === null || socket === void 0 ? void 0 : socket.handshake) === null || _a === void 0 ? void 0 : _a.headers) === null || _b === void 0 ? void 0 : _b.cookie) === null || _c === void 0 ? void 0 : _c.split("=")[1]) !== null && _d !== void 0 ? _d : null;
-    console.log("cookie: ", (_g = (_f = (_e = socket === null || socket === void 0 ? void 0 : socket.handshake) === null || _e === void 0 ? void 0 : _e.headers) === null || _f === void 0 ? void 0 : _f.cookie) === null || _g === void 0 ? void 0 : _g.split("="));
+    // console.log("cookie: ", socket?.handshake?.headers?.cookie?.split("="));
     socket.on("join_project_room", (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         var _a;
         socket.join(projectId);
-        console.log("user: " + socket.id + " joined " + projectId);
+        console.log("User: " + socket.id + " joined " + projectId);
         if (userCookie) {
             const verify = jsonwebtoken_1.default.verify(userCookie, config_1.default.jwtSecret);
             const userId = (0, utils_1.generateUidByString)((_a = verify === null || verify === void 0 ? void 0 : verify.email) !== null && _a !== void 0 ? _a : "");
             const data = yield (0, firebase_func_1.viewTasksProject)(userId, projectId);
-            io.to(projectId).emit("view_project", data);
+            exports.io.to(projectId).emit("view_project", data);
         }
     }));
     socket.on("realtime_update_project", (projectId, data) => {
-        io.to(projectId).emit("realtime_update_project_client", data);
+        exports.io.to(projectId).emit("realtime_update_project_client", data);
     });
     socket.on("disconnect", () => {
         console.log("user disconnected:", socket.id);

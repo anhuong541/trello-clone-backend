@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deteleTask = exports.viewTasksProject = exports.createOrSetTask = exports.getUpdateProjectDueTime = exports.getProjectListByUser = exports.getProjectInfo = exports.deteleProject = exports.createOrSetProject = exports.createNewUser = exports.getUserDataById = exports.checkProjectExists = exports.deleteAccountUnActive = exports.checkUserAccountIsActive = exports.checkEmailUIDExists = void 0;
+exports.deteleTask = exports.viewTasksProject = exports.createOrSetTask = exports.getUpdateProjectDueTime = exports.getProjectListByUser = exports.getProjectInfo = exports.deteleProject = exports.createOrSetProject = exports.addUserProjectsInfo = exports.createNewUser = exports.getUserDataById = exports.checkProjectExists = exports.deleteAccountUnActive = exports.checkUserAccountIsActive = exports.checkEmailUIDExists = void 0;
 const tslib_1 = require("tslib");
 const firestore_1 = require("firebase/firestore");
 const firebase_1 = require("@/db/firebase");
@@ -51,9 +51,13 @@ const createNewUser = (uid, data) => tslib_1.__awaiter(void 0, void 0, void 0, f
     return yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "users", uid), data);
 });
 exports.createNewUser = createNewUser;
-//project
-const createOrSetProject = (uid, projectId, data) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+const addUserProjectsInfo = (uid, projectId, data) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     return yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "users", uid, "projects", projectId), data);
+});
+exports.addUserProjectsInfo = addUserProjectsInfo;
+//project
+const createOrSetProject = (projectId, data) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    return yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId), data);
 });
 exports.createOrSetProject = createOrSetProject;
 const deteleProject = (uid, projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {

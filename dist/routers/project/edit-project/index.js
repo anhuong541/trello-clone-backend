@@ -20,7 +20,7 @@ function EditProjectHandler(req, res) {
             yield (0, utils_1.checkUIDAndProjectExists)(userId, projectContent.projectId, feat, res);
             const dataInput = Object.assign(Object.assign({}, projectContent), { dueTime: Date.now() });
             try {
-                yield (0, firebase_func_1.createOrSetProject)(userId, projectContent.projectId, dataInput);
+                yield (0, firebase_func_1.createOrSetProject)(projectContent.projectId, dataInput);
                 return res.status(200).json({
                     status: "success",
                     feat,
