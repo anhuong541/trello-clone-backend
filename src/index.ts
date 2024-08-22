@@ -1,9 +1,14 @@
-import "module-alias/register";
-import express from "express";
 import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
+import { Server } from "socket.io";
+import "module-alias/register";
 import jwt from "jsonwebtoken";
+import express from "express";
+import dotenv from "dotenv";
 import cors from "cors";
+import http from "http";
+import config from "./config";
+import { viewTasksProject } from "./lib/firebase-func";
+import { generateUidByString } from "./lib/utils";
 import {
   ActiveUserAccountHandler,
   LoginRouteHandler,
@@ -75,27 +80,21 @@ app.delete(
   DeleteTaskHandler
 );
 
-import http from "http";
-import { Server } from "socket.io";
-import { viewTasksProject } from "./lib/firebase-func";
-import config from "./config";
-import { generateUidByString } from "./lib/utils";
-
 const server = http.createServer(app);
-const io = new Server(server, {
+export const io = new Server(server, {
   cors: corsOptions,
 });
 
 // Setup Socket.IO connection
 io.on("connection", (socket) => {
-  console.log("a user connected:", socket.id);
+  // console.log("a user connected:", socket.id);
 
   const userCookie = socket?.handshake?.headers?.cookie?.split("=")[1] ?? null;
-  console.log("cookie: ", socket?.handshake?.headers?.cookie?.split("="));
+  // console.log("cookie: ", socket?.handshake?.headers?.cookie?.split("="));
 
   socket.on("join_project_room", async (projectId: string) => {
     socket.join(projectId);
-    console.log("user: " + socket.id + " joined " + projectId);
+    console.log("User: " + socket.id + " joined " + projectId);
 
     if (userCookie) {
       const verify: any = jwt.verify(userCookie, config.jwtSecret);

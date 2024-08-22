@@ -1,3 +1,5 @@
+import { AuthorityType } from "@/lib/firebase-func";
+
 export type TaskStatusType = "Open" | "In-progress" | "Resolved" | "Closed";
 export type PriorityType = "Low" | "Medium" | "High";
 
@@ -18,4 +20,6 @@ export interface ProjectType {
   projectName: string;
   description: string;
   createAt: number;
+  members: string[];
+  authority: { [key in string]: AuthorityType[] };
 }

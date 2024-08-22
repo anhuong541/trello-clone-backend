@@ -1,9 +1,7 @@
-// import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 
 import { getUserDataById } from "@/lib/firebase-func";
 import { readUserIdFromTheCookis } from "@/lib/utils";
-// import config from "@/config";
 
 export default async function TakeUserInfoHandler(req: Request, res: Response) {
   const feat = "user-info";

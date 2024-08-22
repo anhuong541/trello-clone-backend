@@ -9,7 +9,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { firestoreDB } from "@/db/firebase";
-import { DataProject, DataRegister, DataTask } from "@/types/firebase";
+import { DataRegister, DataTask } from "@/types/firebase";
 
 // user
 export const checkEmailUIDExists = async (uid: string) => {
@@ -57,16 +57,40 @@ export const createNewUser = async (uid: string, data: DataRegister) => {
   return await setDoc(doc(firestoreDB, "users", uid), data);
 };
 
-//project
-export const createOrSetProject = async (
+export interface DataUserProject {
+  projectId: string;
+  projectName: string;
+}
+
+export type AuthorityType = "Owner" | "Edit" | "View";
+
+export interface NewDataProject {
+  projectId: string;
+  projectName: string;
+  members: string[];
+  authority: { [key in string]: AuthorityType[] };
+  description: string;
+  createAt: number;
+  dueTime: number;
+}
+
+export const addUserProjectsInfo = async (
   uid: string,
   projectId: string,
-  data: DataProject
+  data: DataUserProject
 ) => {
   return await setDoc(
     doc(firestoreDB, "users", uid, "projects", projectId),
     data
   );
+};
+
+//project
+export const createOrSetProject = async (
+  projectId: string,
+  data: NewDataProject
+) => {
+  return await setDoc(doc(firestoreDB, "projects", projectId), data);
 };
 
 export const deteleProject = async (uid: string, projectId: string) => {
