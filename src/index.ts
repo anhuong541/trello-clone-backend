@@ -93,20 +93,20 @@ io.on("connection", (socket) => {
   const userCookie = socket?.handshake?.headers?.cookie?.split("=")[1] ?? null;
   console.log("cookie: ", socket?.handshake?.headers?.cookie?.split("="));
 
-  socket.on("message", (msg) => {
-    console.log("message received:", msg);
-    io.emit("message", msg);
-  });
+  socket.on("join_project_room", async (projectId: string) => {
+    socket.join(projectId);
+    console.log("user: " + socket.id + " joined " + projectId);
 
-  socket.on("project_room", async (projectId: string) => {
     if (userCookie) {
       const verify: any = jwt.verify(userCookie, config.jwtSecret);
-
       const userId = generateUidByString(verify?.email ?? "");
-
       const data = await viewTasksProject(userId, projectId);
-      io.emit(`project_room_${projectId}`, data);
+      io.to(projectId).emit("view_project", data);
     }
+  });
+
+  socket.on("realtime_update_project", (projectId, data) => {
+    io.to(projectId).emit("realtime_update_project_client", data);
   });
 
   socket.on("disconnect", () => {

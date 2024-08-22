@@ -63,19 +63,20 @@ io.on("connection", (socket) => {
     console.log("a user connected:", socket.id);
     const userCookie = (_d = (_c = (_b = (_a = socket === null || socket === void 0 ? void 0 : socket.handshake) === null || _a === void 0 ? void 0 : _a.headers) === null || _b === void 0 ? void 0 : _b.cookie) === null || _c === void 0 ? void 0 : _c.split("=")[1]) !== null && _d !== void 0 ? _d : null;
     console.log("cookie: ", (_g = (_f = (_e = socket === null || socket === void 0 ? void 0 : socket.handshake) === null || _e === void 0 ? void 0 : _e.headers) === null || _f === void 0 ? void 0 : _f.cookie) === null || _g === void 0 ? void 0 : _g.split("="));
-    socket.on("message", (msg) => {
-        console.log("message received:", msg);
-        io.emit("message", msg);
-    });
-    socket.on("project_room", (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    socket.on("join_project_room", (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         var _a;
+        socket.join(projectId);
+        console.log("user: " + socket.id + " joined " + projectId);
         if (userCookie) {
             const verify = jsonwebtoken_1.default.verify(userCookie, config_1.default.jwtSecret);
             const userId = (0, utils_1.generateUidByString)((_a = verify === null || verify === void 0 ? void 0 : verify.email) !== null && _a !== void 0 ? _a : "");
             const data = yield (0, firebase_func_1.viewTasksProject)(userId, projectId);
-            io.emit(`project_room_${projectId}`, data);
+            io.to(projectId).emit("view_project", data);
         }
     }));
+    socket.on("realtime_update_project", (projectId, data) => {
+        io.to(projectId).emit("realtime_update_project_client", data);
+    });
     socket.on("disconnect", () => {
         console.log("user disconnected:", socket.id);
     });
