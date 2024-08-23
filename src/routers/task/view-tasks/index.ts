@@ -33,6 +33,7 @@ export default async function ViewTasksHandler(req: Request<{ projectId: string 
 
     try {
       const data = await viewTasksProject(projectId);
+
       return res.status(200).json({ status: "success", feat, data });
     } catch (error) {
       return res.status(400).json({
