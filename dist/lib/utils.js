@@ -20,14 +20,10 @@ const generateUidByString = (inputString) => {
 exports.generateUidByString = generateUidByString;
 const checkUIDAndProjectExists = (userId, projectId, feat, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     if (!(yield (0, firebase_func_1.checkEmailUIDExists)(userId))) {
-        return res
-            .status(409)
-            .json({ status: "fail", error: "user doesn't exists!", feat });
+        return res.status(409).json({ status: "fail", error: "user doesn't exists!", feat });
     }
     if (!(yield (0, firebase_func_1.checkProjectExists)(projectId))) {
-        return res
-            .status(409)
-            .json({ status: "fail", error: "project doesn't exists!", feat });
+        return res.status(409).json({ status: "fail", error: "project doesn't exists!", feat });
     }
     return null;
 });

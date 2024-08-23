@@ -24,9 +24,7 @@ function DeleteProjectHandler(req, res) {
                 userAuthority = dataProject.authority;
             }
             catch (error) {
-                return res
-                    .status(400)
-                    .json({ status: "fail", feat, message: "Didn't find project data" });
+                return res.status(400).json({ status: "fail", feat, message: "Didn't find project data" });
             }
             if (!userAuthority.includes("Owner")) {
                 return res.status(403).json({
@@ -53,9 +51,7 @@ function DeleteProjectHandler(req, res) {
             }
         }
         catch (error) {
-            return res
-                .status(401)
-                .json({ status: "fail", feat, message: "Un Authorization" });
+            return res.status(401).json({ status: "fail", feat, message: "Un Authorization" });
         }
     });
 }

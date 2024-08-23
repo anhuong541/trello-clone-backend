@@ -26,9 +26,7 @@ function ProjectListHandler(req, res) {
             }
         }
         catch (error) {
-            return res
-                .status(401)
-                .json({ status: "fail", feat, message: "Un Authorization" });
+            return res.status(401).json({ status: "fail", feat, message: "Un Authorization" });
         }
     });
 }

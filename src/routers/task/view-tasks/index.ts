@@ -3,10 +3,7 @@ import { checkProjectExists, viewTasksProject } from "@/lib/firebase-func";
 import { readUserIdFromTheCookis } from "@/lib/utils";
 import { checkUserIsAllowJoiningProject } from "@/lib/auth-action";
 
-export default async function ViewTasksHandler(
-  req: Request<{ projectId: string }>,
-  res: Response
-) {
+export default async function ViewTasksHandler(req: Request<{ projectId: string }>, res: Response) {
   const feat = "view all tasks"; // name api
   try {
     const userId = readUserIdFromTheCookis(req) as string;
@@ -22,9 +19,7 @@ export default async function ViewTasksHandler(
     }
 
     if (!(await checkProjectExists(projectId))) {
-      return res
-        .status(409)
-        .json({ status: "fail", error: "project doesn't exists!", feat });
+      return res.status(409).json({ status: "fail", error: "project doesn't exists!", feat });
     }
 
     const check = await checkUserIsAllowJoiningProject(userId, projectId);
@@ -49,8 +44,6 @@ export default async function ViewTasksHandler(
       });
     }
   } catch (error) {
-    return res
-      .status(401)
-      .json({ status: "fail", feat, message: "Un Authorization" });
+    return res.status(401).json({ status: "fail", feat, message: "Un Authorization" });
   }
 }

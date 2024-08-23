@@ -18,10 +18,7 @@ export default async function DeleteTaskHandler(req: Request, res: Response) {
       });
     }
 
-    const check = await checkUserIsAllowJoiningProject(
-      userId,
-      taskContent.projectId
-    );
+    const check = await checkUserIsAllowJoiningProject(userId, taskContent.projectId);
 
     if (!check) {
       return res.status(401).json({
@@ -44,8 +41,6 @@ export default async function DeleteTaskHandler(req: Request, res: Response) {
       });
     }
   } catch (error) {
-    return res
-      .status(401)
-      .json({ status: "fail", feat, message: "Un Authorization" });
+    return res.status(401).json({ status: "fail", feat, message: "Un Authorization" });
   }
 }

@@ -22,8 +22,6 @@ export default async function ProjectListHandler(req: Request, res: Response) {
       });
     }
   } catch (error) {
-    return res
-      .status(401)
-      .json({ status: "fail", feat, message: "Un Authorization" });
+    return res.status(401).json({ status: "fail", feat, message: "Un Authorization" });
   }
 }

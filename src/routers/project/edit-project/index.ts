@@ -1,16 +1,9 @@
 import { Request, Response } from "express";
-import {
-  addUserProjectsInfo,
-  checkUserAuthority,
-  createOrSetProject,
-} from "@/lib/firebase-func";
+import { addUserProjectsInfo, checkUserAuthority, createOrSetProject } from "@/lib/firebase-func";
 import { ProjectType } from "@/types";
 import { checkUIDAndProjectExists, readUserIdFromTheCookis } from "@/lib/utils";
 
-export default async function EditProjectHandler(
-  req: Request<{}, {}, ProjectType, {}>,
-  res: Response
-) {
+export default async function EditProjectHandler(req: Request<{}, {}, ProjectType, {}>, res: Response) {
   const feat = "edit project";
   let projectContent = req.body;
 
@@ -30,15 +23,10 @@ export default async function EditProjectHandler(
     let userAuthority = [];
 
     try {
-      const dataProject = await checkUserAuthority(
-        projectContent.projectId,
-        userId
-      );
+      const dataProject = await checkUserAuthority(projectContent.projectId, userId);
       userAuthority = dataProject.authority;
     } catch (error) {
-      return res
-        .status(400)
-        .json({ status: "fail", feat, message: "Didn't find project data" });
+      return res.status(400).json({ status: "fail", feat, message: "Didn't find project data" });
     }
 
     if (!userAuthority.includes("Edit")) {
@@ -76,8 +64,6 @@ export default async function EditProjectHandler(
       });
     }
   } catch (error) {
-    return res
-      .status(401)
-      .json({ status: "fail", feat, message: "Un Authorization" });
+    return res.status(401).json({ status: "fail", feat, message: "Un Authorization" });
   }
 }

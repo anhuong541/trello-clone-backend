@@ -3,10 +3,7 @@ import { TaskType } from "@/types";
 import { createOrSetTask, getUpdateProjectDueTime } from "@/lib/firebase-func";
 import { readUserIdFromTheCookis } from "@/lib/utils";
 
-export default async function UpdateTaskHandler(
-  req: Request<{}, {}, TaskType, {}>,
-  res: Response
-) {
+export default async function UpdateTaskHandler(req: Request<{}, {}, TaskType, {}>, res: Response) {
   const feat = "update task";
   const taskContent = req.body;
   try {
@@ -21,11 +18,7 @@ export default async function UpdateTaskHandler(
     }
 
     try {
-      await createOrSetTask(
-        taskContent.projectId,
-        taskContent.taskId,
-        taskContent
-      );
+      await createOrSetTask(taskContent.projectId, taskContent.taskId, taskContent);
       await getUpdateProjectDueTime(taskContent.projectId);
       return res.status(200).json({ status: "success", feat });
     } catch (error) {
@@ -37,8 +30,6 @@ export default async function UpdateTaskHandler(
       });
     }
   } catch (error) {
-    return res
-      .status(401)
-      .json({ status: "fail", feat, message: "Un Authorization" });
+    return res.status(401).json({ status: "fail", feat, message: "Un Authorization" });
   }
 }

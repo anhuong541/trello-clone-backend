@@ -16,22 +16,13 @@ export const generateUidByString = (inputString: string) => {
   return uid.slice(0, 35);
 };
 
-export const checkUIDAndProjectExists = async (
-  userId: string,
-  projectId: string,
-  feat: string,
-  res: Response
-) => {
+export const checkUIDAndProjectExists = async (userId: string, projectId: string, feat: string, res: Response) => {
   if (!(await checkEmailUIDExists(userId))) {
-    return res
-      .status(409)
-      .json({ status: "fail", error: "user doesn't exists!", feat });
+    return res.status(409).json({ status: "fail", error: "user doesn't exists!", feat });
   }
 
   if (!(await checkProjectExists(projectId))) {
-    return res
-      .status(409)
-      .json({ status: "fail", error: "project doesn't exists!", feat });
+    return res.status(409).json({ status: "fail", error: "project doesn't exists!", feat });
   }
 
   return null;
