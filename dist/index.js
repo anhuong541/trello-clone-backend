@@ -73,9 +73,17 @@ exports.io.on("connection", (socket) => {
         if (userCookie) {
             const verify = jsonwebtoken_1.default.verify(userCookie, config_1.default.jwtSecret);
             const userId = (0, utils_1.generateUidByString)((_a = verify === null || verify === void 0 ? void 0 : verify.email) !== null && _a !== void 0 ? _a : "");
-            console.log("check authority: ", userId);
-            const data = yield (0, firebase_func_1.viewTasksProject)(projectId);
-            exports.io.to(projectId).emit("view_project", data);
+            const check = yield (0, auth_action_1.checkUserIsAllowJoiningProject)(userId, projectId);
+            if (check) {
+                const data = yield (0, firebase_func_1.viewTasksProject)(projectId);
+                exports.io.to(projectId).emit("view_project", data);
+            }
+            else {
+                exports.io.to(projectId).emit("view_project", {
+                    error: "User didn't allow to join this project",
+                    status: "fail",
+                });
+            }
         }
     }));
     socket.on("realtime_update_project", (projectId, data) => {

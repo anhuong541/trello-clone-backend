@@ -7,7 +7,6 @@ export default async function ViewTasksHandler(req: Request<{ projectId: string 
   const feat = "view all tasks"; // name api
   try {
     const userId = readUserIdFromTheCookis(req) as string;
-    console.log("update authority: ", userId);
 
     const { projectId } = req.params;
     if (!projectId) {

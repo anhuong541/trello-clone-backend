@@ -11,7 +11,6 @@ function DeleteTaskHandler(req, res) {
         const taskContent = req.params;
         try {
             const userId = (0, utils_1.readUserIdFromTheCookis)(req);
-            console.log("update authority: ", userId);
             if (!taskContent) {
                 return res.status(400).json({
                     status: "fail",

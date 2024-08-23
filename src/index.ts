@@ -20,7 +20,7 @@ import {
 import { AddProjectHandler, DeleteProjectHandler, EditProjectHandler, ProjectListHandler } from "./routers/project";
 import { CreateTaskHandler, DeleteTaskHandler, UpdateTaskHandler, ViewTasksHandler } from "./routers/task";
 import { AddMemberHandler, EditMemberHandler, DeleteMemberHandler } from "./routers/members";
-import { authorizationMidleware, authUserIsAMember, authUserIsProjectOwner } from "./lib/auth-action";
+import { authorizationMidleware, authUserIsAMember, authUserIsProjectOwner, checkUserIsAllowJoiningProject } from "./lib/auth-action";
 
 dotenv.config();
 const app = express();
@@ -88,10 +88,18 @@ io.on("connection", (socket) => {
     if (userCookie) {
       const verify: any = jwt.verify(userCookie, config.jwtSecret);
       const userId = generateUidByString(verify?.email ?? "");
-      console.log("check authority: ", userId);
 
-      const data = await viewTasksProject(projectId);
-      io.to(projectId).emit("view_project", data);
+      const check = await checkUserIsAllowJoiningProject(userId, projectId);
+
+      if (check) {
+        const data = await viewTasksProject(projectId);
+        io.to(projectId).emit("view_project", data);
+      } else {
+        io.to(projectId).emit("view_project", {
+          error: "User didn't allow to join this project",
+          status: "fail",
+        });
+      }
     }
   });
 

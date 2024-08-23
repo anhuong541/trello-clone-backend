@@ -10,7 +10,6 @@ function ViewTasksHandler(req, res) {
         const feat = "view all tasks"; // name api
         try {
             const userId = (0, utils_1.readUserIdFromTheCookis)(req);
-            console.log("update authority: ", userId);
             const { projectId } = req.params;
             if (!projectId) {
                 return res.status(404).json({

@@ -8,7 +8,6 @@ export default async function DeleteTaskHandler(req: Request, res: Response) {
   const taskContent = req.params;
   try {
     const userId = readUserIdFromTheCookis(req) as string;
-    console.log("update authority: ", userId);
 
     if (!taskContent) {
       return res.status(400).json({
