@@ -17,19 +17,10 @@ import {
   TakeUserInfoHandler,
   TokenVerifyHandler,
 } from "./routers/user";
-import {
-  AddProjectHandler,
-  DeleteProjectHandler,
-  EditProjectHandler,
-  ProjectListHandler,
-} from "./routers/project";
-import {
-  CreateTaskHandler,
-  DeleteTaskHandler,
-  UpdateTaskHandler,
-  ViewTasksHandler,
-} from "./routers/task";
-import { authorizationMidleware, authUserIsAMember } from "./lib/auth-action";
+import { AddProjectHandler, DeleteProjectHandler, EditProjectHandler, ProjectListHandler } from "./routers/project";
+import { CreateTaskHandler, DeleteTaskHandler, UpdateTaskHandler, ViewTasksHandler } from "./routers/task";
+import { AddMemberHandler, EditMemberHandler, DeleteMemberHandler } from "./routers/members";
+import { authorizationMidleware, authUserIsAMember, authUserIsProjectOwner } from "./lib/auth-action";
 
 dotenv.config();
 const app = express();
@@ -72,11 +63,11 @@ app.delete("/project/:projectId", authorizationMidleware, DeleteProjectHandler);
 app.get("/task/:projectId", authorizationMidleware, ViewTasksHandler);
 app.post("/task", authorizationMidleware, authUserIsAMember, CreateTaskHandler);
 app.put("/task", authorizationMidleware, authUserIsAMember, UpdateTaskHandler);
-app.delete(
-  "/task/:projectId/:taskId",
-  authorizationMidleware,
-  DeleteTaskHandler
-);
+app.delete("/task/:projectId/:taskId", authorizationMidleware, DeleteTaskHandler);
+
+app.post("/member/:projectId", authorizationMidleware, authUserIsProjectOwner, AddMemberHandler);
+app.put("/member/:projectId", authorizationMidleware, authUserIsProjectOwner, EditMemberHandler);
+app.delete("/member/:projectId", authorizationMidleware, authUserIsProjectOwner, DeleteMemberHandler);
 
 const server = http.createServer(app);
 export const io = new Server(server, {

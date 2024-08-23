@@ -16,6 +16,7 @@ const utils_1 = require("./lib/utils");
 const user_1 = require("./routers/user");
 const project_1 = require("./routers/project");
 const task_1 = require("./routers/task");
+const members_1 = require("./routers/members");
 const auth_action_1 = require("./lib/auth-action");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -52,6 +53,9 @@ app.get("/task/:projectId", auth_action_1.authorizationMidleware, task_1.ViewTas
 app.post("/task", auth_action_1.authorizationMidleware, auth_action_1.authUserIsAMember, task_1.CreateTaskHandler);
 app.put("/task", auth_action_1.authorizationMidleware, auth_action_1.authUserIsAMember, task_1.UpdateTaskHandler);
 app.delete("/task/:projectId/:taskId", auth_action_1.authorizationMidleware, task_1.DeleteTaskHandler);
+app.post("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.AddMemberHandler);
+app.put("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.EditMemberHandler);
+app.delete("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.DeleteMemberHandler);
 const server = http_1.default.createServer(app);
 exports.io = new socket_io_1.Server(server, {
     cors: corsOptions,

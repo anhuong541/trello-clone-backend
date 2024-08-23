@@ -10,10 +10,7 @@ import {
 import { generateNewUid, readUserIdFromTheCookis } from "@/lib/utils";
 import { ProjectType } from "@/types";
 
-export default async function AddProjectHandler(
-  req: Request<{}, {}, ProjectType, {}>,
-  res: Response
-) {
+export default async function AddProjectHandler(req: Request<{}, {}, ProjectType, {}>, res: Response) {
   const feat = "add project";
   const projectContent = req.body;
   try {
@@ -76,8 +73,6 @@ export default async function AddProjectHandler(
       });
     }
   } catch (error) {
-    return res
-      .status(401)
-      .json({ status: "fail", feat, message: "Un Authorization" });
+    return res.status(401).json({ status: "fail", feat, message: "Un Authorization" });
   }
 }
