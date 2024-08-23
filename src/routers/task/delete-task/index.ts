@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { readUserIdFromTheCookis } from "@/lib/utils";
 import { deteleTask, getUpdateProjectDueTime } from "@/lib/firebase-func";
+import { checkUserIsAllowJoiningProject } from "@/lib/auth-action";
 
 export default async function DeleteTaskHandler(req: Request, res: Response) {
   const feat = "delete task";
@@ -13,6 +14,19 @@ export default async function DeleteTaskHandler(req: Request, res: Response) {
       return res.status(400).json({
         status: "fail",
         message: "require task body",
+        feat,
+      });
+    }
+
+    const check = await checkUserIsAllowJoiningProject(
+      userId,
+      taskContent.projectId
+    );
+
+    if (!check) {
+      return res.status(401).json({
+        message: "User is not allow on this room",
+        userAuthority: check,
         feat,
       });
     }

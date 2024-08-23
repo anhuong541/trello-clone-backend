@@ -29,16 +29,13 @@ import {
   UpdateTaskHandler,
   ViewTasksHandler,
 } from "./routers/task";
-import { authorizationMidleware } from "./lib/auth-action";
+import { authorizationMidleware, authUserIsAMember } from "./lib/auth-action";
 
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 3456;
 
-const corsWebAllow = [
-  "http://localhost:3000",
-  "https://trello-clone-mor-course-fe.vercel.app",
-];
+const corsWebAllow = ["http://localhost:3000"];
 
 const corsOptions = {
   origin: corsWebAllow,
@@ -73,8 +70,8 @@ app.delete("/project/:projectId", authorizationMidleware, DeleteProjectHandler);
 // update 2 api authority and members
 
 app.get("/task/:projectId", authorizationMidleware, ViewTasksHandler);
-app.post("/task", authorizationMidleware, CreateTaskHandler);
-app.put("/task", authorizationMidleware, UpdateTaskHandler);
+app.post("/task", authorizationMidleware, authUserIsAMember, CreateTaskHandler);
+app.put("/task", authorizationMidleware, authUserIsAMember, UpdateTaskHandler);
 app.delete(
   "/task/:projectId/:taskId",
   authorizationMidleware,

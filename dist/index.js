@@ -20,10 +20,7 @@ const auth_action_1 = require("./lib/auth-action");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3456;
-const corsWebAllow = [
-    "http://localhost:3000",
-    "https://trello-clone-mor-course-fe.vercel.app",
-];
+const corsWebAllow = ["http://localhost:3000"];
 const corsOptions = {
     origin: corsWebAllow,
     optionsSuccessStatus: 200,
@@ -52,8 +49,8 @@ app.put("/project", auth_action_1.authorizationMidleware, project_1.EditProjectH
 app.delete("/project/:projectId", auth_action_1.authorizationMidleware, project_1.DeleteProjectHandler);
 // update 2 api authority and members
 app.get("/task/:projectId", auth_action_1.authorizationMidleware, task_1.ViewTasksHandler);
-app.post("/task", auth_action_1.authorizationMidleware, task_1.CreateTaskHandler);
-app.put("/task", auth_action_1.authorizationMidleware, task_1.UpdateTaskHandler);
+app.post("/task", auth_action_1.authorizationMidleware, auth_action_1.authUserIsAMember, task_1.CreateTaskHandler);
+app.put("/task", auth_action_1.authorizationMidleware, auth_action_1.authUserIsAMember, task_1.UpdateTaskHandler);
 app.delete("/task/:projectId/:taskId", auth_action_1.authorizationMidleware, task_1.DeleteTaskHandler);
 const server = http_1.default.createServer(app);
 exports.io = new socket_io_1.Server(server, {

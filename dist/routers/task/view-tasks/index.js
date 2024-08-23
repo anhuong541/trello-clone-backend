@@ -4,6 +4,7 @@ exports.default = ViewTasksHandler;
 const tslib_1 = require("tslib");
 const firebase_func_1 = require("@/lib/firebase-func");
 const utils_1 = require("@/lib/utils");
+const auth_action_1 = require("@/lib/auth-action");
 function ViewTasksHandler(req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const feat = "view all tasks"; // name api
@@ -22,6 +23,14 @@ function ViewTasksHandler(req, res) {
                 return res
                     .status(409)
                     .json({ status: "fail", error: "project doesn't exists!", feat });
+            }
+            const check = yield (0, auth_action_1.checkUserIsAllowJoiningProject)(userId, projectId);
+            if (!check) {
+                return res.status(401).json({
+                    message: "User is not allow on this room",
+                    userAuthority: check,
+                    feat,
+                });
             }
             try {
                 const data = yield (0, firebase_func_1.viewTasksProject)(projectId);

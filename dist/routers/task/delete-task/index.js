@@ -4,6 +4,7 @@ exports.default = DeleteTaskHandler;
 const tslib_1 = require("tslib");
 const utils_1 = require("@/lib/utils");
 const firebase_func_1 = require("@/lib/firebase-func");
+const auth_action_1 = require("@/lib/auth-action");
 function DeleteTaskHandler(req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const feat = "delete task";
@@ -15,6 +16,14 @@ function DeleteTaskHandler(req, res) {
                 return res.status(400).json({
                     status: "fail",
                     message: "require task body",
+                    feat,
+                });
+            }
+            const check = yield (0, auth_action_1.checkUserIsAllowJoiningProject)(userId, taskContent.projectId);
+            if (!check) {
+                return res.status(401).json({
+                    message: "User is not allow on this room",
+                    userAuthority: check,
                     feat,
                 });
             }

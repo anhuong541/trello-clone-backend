@@ -1,7 +1,11 @@
 import config from "@/config";
+import { TaskType } from "@/types";
 import { NextFunction, Request, Response } from "express";
 
 import jwt from "jsonwebtoken";
+import { readUserIdFromTheCookis } from "./utils";
+import { firestoreDB } from "@/db/firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 export const sendUserSession = async (res: Response, token: string) => {
   await res.cookie("user_session", token, {
@@ -26,5 +30,47 @@ export const authorizationMidleware = async (
     return res
       .status(401)
       .json({ status: "fail", feat, message: "Un Authorization" });
+  }
+};
+
+export const checkUserIsAllowJoiningProject = async (
+  userId: string,
+  projectId: string
+) => {
+  return (
+    await getDoc(doc(firestoreDB, `users`, userId, "projects", projectId))
+  ).exists();
+};
+
+export const authUserIsAMember = async (
+  req: Request<{}, {}, TaskType, {}>,
+  res: Response,
+  next: NextFunction
+) => {
+  const feat = "check user is a member";
+  const taskContent = req.body;
+  const userId = readUserIdFromTheCookis(req) as string;
+
+  try {
+    const check = await checkUserIsAllowJoiningProject(
+      userId,
+      taskContent.projectId
+    );
+
+    if (check) {
+      return next();
+    }
+
+    return res.status(401).json({
+      message: "User is not allow on this room",
+      userAuthority: check,
+      feat,
+    });
+  } catch (error) {
+    return res.status(404).json({
+      status: "fail",
+      feat,
+      message: "Check user auth git something wrong",
+    });
   }
 };

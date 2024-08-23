@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { checkProjectExists, viewTasksProject } from "@/lib/firebase-func";
 import { readUserIdFromTheCookis } from "@/lib/utils";
+import { checkUserIsAllowJoiningProject } from "@/lib/auth-action";
 
 export default async function ViewTasksHandler(
   req: Request<{ projectId: string }>,
@@ -24,6 +25,16 @@ export default async function ViewTasksHandler(
       return res
         .status(409)
         .json({ status: "fail", error: "project doesn't exists!", feat });
+    }
+
+    const check = await checkUserIsAllowJoiningProject(userId, projectId);
+
+    if (!check) {
+      return res.status(401).json({
+        message: "User is not allow on this room",
+        userAuthority: check,
+        feat,
+      });
     }
 
     try {
