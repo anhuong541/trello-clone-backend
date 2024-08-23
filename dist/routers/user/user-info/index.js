@@ -7,7 +7,14 @@ const utils_1 = require("@/lib/utils");
 function TakeUserInfoHandler(req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const feat = "user-info";
-        const userId = (0, utils_1.readUserIdFromTheCookis)(req); // send at the server
+        let userId = "";
+        try {
+            userId = (0, utils_1.readUserIdFromAuth)(req);
+        }
+        catch (error) {
+            console.log("error: ", error);
+            return res.status(400).json({ feat, status: "fail", message: "it got error from here!!!" });
+        }
         try {
             const data = yield (0, firebase_func_1.getUserDataById)(userId);
             return res.status(200).json({

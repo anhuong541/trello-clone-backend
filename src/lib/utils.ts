@@ -33,3 +33,9 @@ export const readUserIdFromTheCookis = (req: Request) => {
   const { email } = jwt.verify(token, config.jwtSecret) as { email: string };
   return generateUidByString(email);
 };
+
+export const readUserIdFromAuth = (req: Request) => {
+  const token = req?.headers?.authorization.split(" ")[1] ?? ""; // send at the client
+  const { email } = jwt.verify(token, config.jwtSecret) as { email: string };
+  return generateUidByString(email);
+};

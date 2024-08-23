@@ -66,8 +66,6 @@ export const authUserIsProjectOwner = async (req: Request<{ projectId: string }>
   try {
     const { authority } = await checkUserAuthority(projectId, userId);
 
-    console.log({ authority });
-
     if (authority.includes("Owner")) {
       return next();
     }

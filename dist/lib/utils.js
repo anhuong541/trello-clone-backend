@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.readUserIdFromTheCookis = exports.checkUIDAndProjectExists = exports.generateUidByString = exports.generateNewUid = void 0;
+exports.readUserIdFromAuth = exports.readUserIdFromTheCookis = exports.checkUIDAndProjectExists = exports.generateUidByString = exports.generateNewUid = void 0;
 const tslib_1 = require("tslib");
 const uuid_1 = require("uuid");
 const jsonwebtoken_1 = tslib_1.__importDefault(require("jsonwebtoken"));
@@ -35,4 +35,11 @@ const readUserIdFromTheCookis = (req) => {
     return (0, exports.generateUidByString)(email);
 };
 exports.readUserIdFromTheCookis = readUserIdFromTheCookis;
+const readUserIdFromAuth = (req) => {
+    var _a, _b;
+    const token = (_b = (_a = req === null || req === void 0 ? void 0 : req.headers) === null || _a === void 0 ? void 0 : _a.authorization.split(" ")[1]) !== null && _b !== void 0 ? _b : ""; // send at the client
+    const { email } = jsonwebtoken_1.default.verify(token, config_1.default.jwtSecret);
+    return (0, exports.generateUidByString)(email);
+};
+exports.readUserIdFromAuth = readUserIdFromAuth;
 //# sourceMappingURL=utils.js.map

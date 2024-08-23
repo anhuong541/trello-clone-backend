@@ -1,14 +1,7 @@
 import { Request, Response } from "express";
-import {
-  addMemberAuthorityInProject,
-  addUserProjectsInfo,
-  AuthorityType,
-  checkEmailUIDExists,
-  createOrSetProject,
-  NewDataProject,
-} from "@/lib/firebase-func";
+import { addMemberAuthorityInProject, addUserProjectsInfo, checkEmailUIDExists, createOrSetProject } from "@/lib/firebase-func";
 import { generateNewUid, readUserIdFromTheCookis } from "@/lib/utils";
-import { ProjectType } from "@/types";
+import { AuthorityType, NewDataProject, ProjectType } from "@/types";
 
 export default async function AddProjectHandler(req: Request<{}, {}, ProjectType, {}>, res: Response) {
   const feat = "add project";
@@ -51,12 +44,7 @@ export default async function AddProjectHandler(req: Request<{}, {}, ProjectType
       await createOrSetProject(projectId, dataProject);
 
       const createrAuthority = ["Owner", "Edit", "View"] as AuthorityType[];
-
-      try {
-        await addMemberAuthorityInProject(projectId, userId, createrAuthority);
-      } catch (error) {
-        console.log(error);
-      }
+      await addMemberAuthorityInProject(projectId, userId, createrAuthority);
 
       return res.status(200).json({
         status: "success",

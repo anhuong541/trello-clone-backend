@@ -1,0 +1,6 @@
+{
+  "watch": ["src"],
+  "ext": "ts",
+  "exec": "yarn build && ts-node src/index.ts",
+  "delay": "1000"
+}

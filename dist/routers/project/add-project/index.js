@@ -35,12 +35,7 @@ function AddProjectHandler(req, res) {
                 });
                 yield (0, firebase_func_1.createOrSetProject)(projectId, dataProject);
                 const createrAuthority = ["Owner", "Edit", "View"];
-                try {
-                    yield (0, firebase_func_1.addMemberAuthorityInProject)(projectId, userId, createrAuthority);
-                }
-                catch (error) {
-                    console.log(error);
-                }
+                yield (0, firebase_func_1.addMemberAuthorityInProject)(projectId, userId, createrAuthority);
                 return res.status(200).json({
                     status: "success",
                     message: "Create new project successfull",

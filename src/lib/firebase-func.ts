@@ -1,6 +1,7 @@
 import { doc, getDoc, setDoc, deleteDoc, getDocs, collection, DocumentData, updateDoc } from "firebase/firestore";
-import { firestoreDB } from "@/db/firebase";
+import { AuthorityType, DataUserProject, NewDataProject } from "@/types";
 import { DataRegister, DataTask } from "@/types/firebase";
+import { firestoreDB } from "@/db/firebase";
 
 // user
 export const checkEmailUIDExists = async (uid: string) => {
@@ -46,24 +47,6 @@ export const createNewUser = async (uid: string, data: DataRegister) => {
   return await setDoc(doc(firestoreDB, "users", uid), data);
 };
 
-export interface DataUserProject {
-  projectId: string;
-  projectName: string;
-  dueTime: number;
-  createAt: number;
-}
-
-export type AuthorityType = "Owner" | "Edit" | "View";
-
-export interface NewDataProject {
-  projectId: string;
-  projectName: string;
-  members: string[];
-  description: string;
-  createAt: number;
-  dueTime: number;
-}
-
 export const addUserProjectsInfo = async (uid: string, projectId: string, data: DataUserProject) => {
   return await setDoc(doc(firestoreDB, "users", uid, "projects", projectId), data);
 };
@@ -98,14 +81,6 @@ export const getUpdateProjectDueTime = async (projectId: string) => {
   });
 };
 
-export const addMemberAuthorityInProject = async (projectId: string, userId: string, authority: AuthorityType[]) => {
-  return await setDoc(doc(firestoreDB, "projects", projectId, "authority", userId), { authority });
-};
-
-export const updateMemberAuthorityInProject = async (projectId: string, userId: string, authority: AuthorityType[]) => {
-  await updateDoc(doc(firestoreDB, "projects", projectId, "authority", userId), { authority });
-};
-
 // task feature
 export const createOrSetTask = async (projectId: string, taskId: string, contentTask: DataTask) => {
   return await setDoc(doc(firestoreDB, "projects", projectId, "tasks", taskId), contentTask);
@@ -117,4 +92,17 @@ export const viewTasksProject = async (projectId: string) => {
 
 export const deteleTask = async (projectId: string, taskId: string) => {
   return await deleteDoc(doc(firestoreDB, "projects", projectId, "tasks", taskId));
+};
+
+// member
+export const addMemberAuthorityInProject = async (projectId: string, userId: string, authority: AuthorityType[]) => {
+  return await setDoc(doc(firestoreDB, "projects", projectId, "authority", userId), { authority });
+};
+
+export const updateMemberAuthorityInProject = async (projectId: string, userId: string, authority: AuthorityType[]) => {
+  await updateDoc(doc(firestoreDB, "projects", projectId, "authority", userId), { authority });
+};
+
+export const removeMemberOutOfProject = async (projectId: string, userId: string) => {
+  return await deleteDoc(doc(firestoreDB, "projects", projectId, "authority", userId));
 };

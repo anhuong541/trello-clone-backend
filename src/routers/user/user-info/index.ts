@@ -1,11 +1,18 @@
 import { Request, Response } from "express";
 
 import { getUserDataById } from "@/lib/firebase-func";
-import { readUserIdFromTheCookis } from "@/lib/utils";
+import { readUserIdFromAuth } from "@/lib/utils";
 
 export default async function TakeUserInfoHandler(req: Request, res: Response) {
   const feat = "user-info";
-  const userId = readUserIdFromTheCookis(req); // send at the server
+  let userId = "";
+
+  try {
+    userId = readUserIdFromAuth(req);
+  } catch (error) {
+    console.log("error: ", error);
+    return res.status(400).json({ feat, status: "fail", message: "it got error from here!!!" });
+  }
 
   try {
     const data = await getUserDataById(userId);

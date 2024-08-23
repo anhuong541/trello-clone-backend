@@ -67,7 +67,7 @@ app.delete("/task/:projectId/:taskId", authorizationMidleware, DeleteTaskHandler
 
 app.post("/member/:projectId", authorizationMidleware, authUserIsProjectOwner, AddMemberHandler);
 app.put("/member/:projectId", authorizationMidleware, authUserIsProjectOwner, EditMemberHandler);
-app.delete("/member/:projectId", authorizationMidleware, authUserIsProjectOwner, DeleteMemberHandler);
+app.delete("/member/:projectId/:email", authorizationMidleware, authUserIsProjectOwner, DeleteMemberHandler);
 
 const server = http.createServer(app);
 export const io = new Server(server, {

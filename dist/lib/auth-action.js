@@ -64,7 +64,6 @@ const authUserIsProjectOwner = (req, res, next) => tslib_1.__awaiter(void 0, voi
     const userId = (0, utils_1.readUserIdFromTheCookis)(req);
     try {
         const { authority } = yield (0, firebase_func_1.checkUserAuthority)(projectId, userId);
-        console.log({ authority });
         if (authority.includes("Owner")) {
             return next();
         }
