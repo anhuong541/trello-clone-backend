@@ -15,15 +15,11 @@ export default async function TokenVerifyHandler(req: Request, res: Response) {
     const checkUserIsActive = await checkUserAccountIsActive(userId);
 
     if (!checkUserIsActive) {
-      return res
-        .status(403)
-        .json({ status: "error", feat, message: "user didn't active" });
+      return res.status(403).json({ status: "error", feat, message: "user didn't active" });
     }
 
     return res.status(200).json({ status: "success", feat, checkJwt });
   } catch (error) {
-    return res
-      .status(401)
-      .json({ status: "error", feat, message: "token is expire" });
+    return res.status(401).json({ status: "error", feat, message: "token is expire" });
   }
 }

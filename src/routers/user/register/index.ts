@@ -6,10 +6,7 @@ import { generateUidByString } from "@/lib/utils";
 import { sendMail } from "@/lib/email-action";
 import config from "@/config";
 
-export default async function RegisterRouteHandler(
-  req: Request,
-  res: Response
-) {
+export default async function RegisterRouteHandler(req: Request, res: Response) {
   const feat = "register";
   const { email, password, username } = req.body;
   if (!email || !password || !username) {
@@ -21,22 +18,16 @@ export default async function RegisterRouteHandler(
   const checkEmail = await checkEmailUIDExists(userId);
 
   if (checkEmail) {
-    return res
-      .status(409)
-      .json({ status: "fail", error: "email have been used!", feat });
+    return res.status(409).json({ status: "fail", error: "email have been used!", feat });
   }
 
   const token = jwt.sign({ email, password }, config.jwtSecret, {
     expiresIn: "12h",
   });
 
-  const activationHash = jwt.sign(
-    { message: "active user email", email, username },
-    config.jwtSecret,
-    {
-      expiresIn: "1h",
-    }
-  );
+  const activationHash = jwt.sign({ message: "active user email", email, username }, config.jwtSecret, {
+    expiresIn: "1h",
+  });
 
   const dataRegister = {
     uid: userId,

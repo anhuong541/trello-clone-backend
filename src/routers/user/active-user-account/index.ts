@@ -1,18 +1,11 @@
 import { Request, Response } from "express";
-import {
-  createNewUser,
-  deleteAccountUnActive,
-  getUserDataById,
-} from "@/lib/firebase-func";
+import { createNewUser, deleteAccountUnActive, getUserDataById } from "@/lib/firebase-func";
 import { generateUidByString } from "@/lib/utils";
 import { DataRegister } from "@/types/firebase";
 import jwt from "jsonwebtoken";
 import config from "@/config";
 
-export default async function ActiveUserAccountHandler(
-  req: Request<{ email: string; hash: string }, {}, {}, {}>,
-  res: Response
-) {
+export default async function ActiveUserAccountHandler(req: Request<{ email: string; hash: string }, {}, {}, {}>, res: Response) {
   const { email, hash } = req.params;
 
   const userId = generateUidByString(email);
@@ -34,8 +27,7 @@ export default async function ActiveUserAccountHandler(
   if (data?.activationHash !== hash) {
     await deleteAccountUnActive(userId);
     return res.status(200).json({
-      message:
-        "your something wrong when active your email please register with this email again!",
+      message: "your something wrong when active your email please register with this email again!",
     });
   }
 

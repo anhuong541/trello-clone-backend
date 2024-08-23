@@ -16,16 +16,12 @@ function TokenVerifyHandler(req, res) {
             const userId = (0, utils_1.generateUidByString)(checkJwt === null || checkJwt === void 0 ? void 0 : checkJwt.email);
             const checkUserIsActive = yield (0, firebase_func_1.checkUserAccountIsActive)(userId);
             if (!checkUserIsActive) {
-                return res
-                    .status(403)
-                    .json({ status: "error", feat, message: "user didn't active" });
+                return res.status(403).json({ status: "error", feat, message: "user didn't active" });
             }
             return res.status(200).json({ status: "success", feat, checkJwt });
         }
         catch (error) {
-            return res
-                .status(401)
-                .json({ status: "error", feat, message: "token is expire" });
+            return res.status(401).json({ status: "error", feat, message: "token is expire" });
         }
     });
 }

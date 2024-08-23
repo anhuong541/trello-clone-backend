@@ -19,9 +19,7 @@ function RegisterRouteHandler(req, res) {
         const userId = (0, utils_1.generateUidByString)(email);
         const checkEmail = yield (0, firebase_func_1.checkEmailUIDExists)(userId);
         if (checkEmail) {
-            return res
-                .status(409)
-                .json({ status: "fail", error: "email have been used!", feat });
+            return res.status(409).json({ status: "fail", error: "email have been used!", feat });
         }
         const token = jsonwebtoken_1.default.sign({ email, password }, config_1.default.jwtSecret, {
             expiresIn: "12h",

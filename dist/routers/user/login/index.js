@@ -27,15 +27,11 @@ function LoginRouteHandler(req, res) {
         const userId = (0, utils_1.generateUidByString)(email);
         const checkEmail = yield (0, firebase_func_1.checkEmailUIDExists)(userId);
         if (!checkEmail) {
-            return res
-                .status(404)
-                .json({ status: "fail", error: "email doesn't exists!", feat });
+            return res.status(404).json({ status: "fail", error: "email doesn't exists!", feat });
         }
         const checkPassword = yield checkPasswordIsCorrect(userId, password);
         if (!checkPassword) {
-            return res
-                .status(401)
-                .json({ status: "fail", error: "your password is wrong", feat });
+            return res.status(401).json({ status: "fail", error: "your password is wrong", feat });
         }
         const checkUserIsActive = yield (0, firebase_func_1.checkUserAccountIsActive)(userId);
         if (!checkUserIsActive) {

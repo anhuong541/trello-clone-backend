@@ -1,11 +1,7 @@
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { generateUidByString } from "@/lib/utils";
-import {
-  checkEmailUIDExists,
-  checkUserAccountIsActive,
-  getUserDataById,
-} from "@/lib/firebase-func";
+import { checkEmailUIDExists, checkUserAccountIsActive, getUserDataById } from "@/lib/firebase-func";
 import config from "@/config";
 import { sendUserSession } from "@/lib/auth-action";
 
@@ -31,16 +27,12 @@ export default async function LoginRouteHandler(req: Request, res: Response) {
   const checkEmail = await checkEmailUIDExists(userId);
 
   if (!checkEmail) {
-    return res
-      .status(404)
-      .json({ status: "fail", error: "email doesn't exists!", feat });
+    return res.status(404).json({ status: "fail", error: "email doesn't exists!", feat });
   }
 
   const checkPassword = await checkPasswordIsCorrect(userId, password);
   if (!checkPassword) {
-    return res
-      .status(401)
-      .json({ status: "fail", error: "your password is wrong", feat });
+    return res.status(401).json({ status: "fail", error: "your password is wrong", feat });
   }
 
   const checkUserIsActive = await checkUserAccountIsActive(userId);
