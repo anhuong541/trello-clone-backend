@@ -20,9 +20,8 @@ function EditProjectHandler(req, res) {
             yield (0, utils_1.checkUIDAndProjectExists)(userId, projectContent.projectId, feat, res);
             let userAuthority = [];
             try {
-                const dataProject = yield (0, firebase_func_1.getProjectInfo)(projectContent.projectId);
-                userAuthority = dataProject.authority[userId];
-                console.log("userAuthority => ", userAuthority);
+                const dataProject = yield (0, firebase_func_1.checkUserAuthority)(projectContent.projectId, userId);
+                userAuthority = dataProject.authority;
             }
             catch (error) {
                 return res
@@ -39,6 +38,12 @@ function EditProjectHandler(req, res) {
             const dataInput = Object.assign(Object.assign({}, projectContent), { dueTime: Date.now() });
             try {
                 yield (0, firebase_func_1.createOrSetProject)(projectContent.projectId, dataInput);
+                yield (0, firebase_func_1.addUserProjectsInfo)(userId, projectContent.projectId, {
+                    projectId: projectContent.projectId,
+                    projectName: projectContent.projectName,
+                    dueTime: Date.now(),
+                    createAt: projectContent.createAt,
+                });
                 return res.status(200).json({
                     status: "success",
                     feat,

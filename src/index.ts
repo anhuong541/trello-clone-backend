@@ -66,9 +66,9 @@ app.get("/user", TakeUserInfoHandler);
 app.get("/user/token-verify", TokenVerifyHandler);
 app.get("/user/:email/:hash", ActiveUserAccountHandler);
 
-app.get("/project", authorizationMidleware, ProjectListHandler); // ....
+app.get("/project", authorizationMidleware, ProjectListHandler);
 app.post("/project", authorizationMidleware, AddProjectHandler);
-app.put("/project", authorizationMidleware, EditProjectHandler);
+app.put("/project", authorizationMidleware, EditProjectHandler); // ....
 app.delete("/project/:projectId", authorizationMidleware, DeleteProjectHandler);
 // update 2 api authority and members
 

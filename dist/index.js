@@ -46,9 +46,9 @@ app.get("/user/logout", user_1.LogoutRouteHandler);
 app.get("/user", user_1.TakeUserInfoHandler);
 app.get("/user/token-verify", user_1.TokenVerifyHandler);
 app.get("/user/:email/:hash", user_1.ActiveUserAccountHandler);
-app.get("/project", auth_action_1.authorizationMidleware, project_1.ProjectListHandler); // ....
+app.get("/project", auth_action_1.authorizationMidleware, project_1.ProjectListHandler);
 app.post("/project", auth_action_1.authorizationMidleware, project_1.AddProjectHandler);
-app.put("/project", auth_action_1.authorizationMidleware, project_1.EditProjectHandler);
+app.put("/project", auth_action_1.authorizationMidleware, project_1.EditProjectHandler); // ....
 app.delete("/project/:projectId", auth_action_1.authorizationMidleware, project_1.DeleteProjectHandler);
 // update 2 api authority and members
 app.get("/task/:projectId", auth_action_1.authorizationMidleware, task_1.ViewTasksHandler);

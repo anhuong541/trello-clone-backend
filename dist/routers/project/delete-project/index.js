@@ -18,6 +18,23 @@ function DeleteProjectHandler(req, res) {
                 });
             }
             yield (0, utils_1.checkUIDAndProjectExists)(userId, projectId, feat, res);
+            let userAuthority = [];
+            try {
+                const dataProject = yield (0, firebase_func_1.checkUserAuthority)(projectId, userId);
+                userAuthority = dataProject.authority;
+            }
+            catch (error) {
+                return res
+                    .status(400)
+                    .json({ status: "fail", feat, message: "Didn't find project data" });
+            }
+            if (!userAuthority.includes("Owner")) {
+                return res.status(403).json({
+                    status: "fail",
+                    feat,
+                    message: "User Didn't have an authority to delete project",
+                });
+            }
             try {
                 yield (0, firebase_func_1.deteleProject)(userId, projectId);
                 return res.status(200).json({

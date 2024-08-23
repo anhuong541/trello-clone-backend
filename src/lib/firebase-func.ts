@@ -93,12 +93,19 @@ export const createOrSetProject = async (
 };
 
 export const deteleProject = async (uid: string, projectId: string) => {
-  // need to fixed delete from user to project database
-  return await deleteDoc(doc(firestoreDB, "users", uid, "projects", projectId));
+  await deleteDoc(doc(firestoreDB, "users", uid, "projects", projectId));
+  await deleteDoc(doc(firestoreDB, "projects", projectId));
+  await deleteDoc(doc(firestoreDB, "projects", projectId, "authority", uid));
 };
 
 export const getProjectInfo = async (projectId: string) => {
   return (await getDoc(doc(firestoreDB, "projects", projectId))).data();
+};
+
+export const checkUserAuthority = async (projectId: string, userId: string) => {
+  return (
+    await getDoc(doc(firestoreDB, "projects", projectId, "authority", userId))
+  ).data();
 };
 
 export const getProjectListByUser = async (uid: string) => {

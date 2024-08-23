@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
-import { createOrSetProject, getProjectInfo } from "@/lib/firebase-func";
+import {
+  addUserProjectsInfo,
+  checkUserAuthority,
+  createOrSetProject,
+} from "@/lib/firebase-func";
 import { ProjectType } from "@/types";
 import { checkUIDAndProjectExists, readUserIdFromTheCookis } from "@/lib/utils";
 
@@ -26,10 +30,11 @@ export default async function EditProjectHandler(
     let userAuthority = [];
 
     try {
-      const dataProject = await getProjectInfo(projectContent.projectId);
-      userAuthority = dataProject.authority[userId];
-
-      console.log("userAuthority => ", userAuthority);
+      const dataProject = await checkUserAuthority(
+        projectContent.projectId,
+        userId
+      );
+      userAuthority = dataProject.authority;
     } catch (error) {
       return res
         .status(400)
@@ -51,6 +56,13 @@ export default async function EditProjectHandler(
 
     try {
       await createOrSetProject(projectContent.projectId, dataInput);
+      await addUserProjectsInfo(userId, projectContent.projectId, {
+        projectId: projectContent.projectId,
+        projectName: projectContent.projectName,
+        dueTime: Date.now(),
+        createAt: projectContent.createAt,
+      });
+
       return res.status(200).json({
         status: "success",
         feat,

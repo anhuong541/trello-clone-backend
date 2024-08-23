@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { deteleProject } from "@/lib/firebase-func";
+import { checkUserAuthority, deteleProject } from "@/lib/firebase-func";
 import { checkUIDAndProjectExists, readUserIdFromTheCookis } from "@/lib/utils";
 
 export default async function DeleteProjectHandler(
@@ -20,8 +20,28 @@ export default async function DeleteProjectHandler(
 
     await checkUIDAndProjectExists(userId, projectId, feat, res);
 
+    let userAuthority = [];
+
+    try {
+      const dataProject = await checkUserAuthority(projectId, userId);
+      userAuthority = dataProject.authority;
+    } catch (error) {
+      return res
+        .status(400)
+        .json({ status: "fail", feat, message: "Didn't find project data" });
+    }
+
+    if (!userAuthority.includes("Owner")) {
+      return res.status(403).json({
+        status: "fail",
+        feat,
+        message: "User Didn't have an authority to delete project",
+      });
+    }
+
     try {
       await deteleProject(userId, projectId);
+
       return res.status(200).json({
         status: "success",
         message: "delete project complete",
