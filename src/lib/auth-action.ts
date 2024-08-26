@@ -32,13 +32,19 @@ export const checkUserIsAllowJoiningProject = async (userId: string, projectId: 
   return (await getDoc(doc(firestoreDB, `users`, userId, "projects", projectId))).exists();
 };
 
-export const authUserIsAMember = async (req: Request<{}, {}, TaskType, {}>, res: Response, next: NextFunction) => {
+export const authUserIsAMember = async (req: Request<{ projectId: string }, {}, TaskType, {}>, res: Response, next: NextFunction) => {
   const feat = "check user is a member";
-  const taskContent = req.body;
+  const taskContent = req?.body;
+  let projectId = taskContent?.projectId;
+  if (!projectId) {
+    console.log("it trigger here!");
+    projectId = req.params?.projectId ?? "";
+  }
+
   const userId = readUserIdFromTheCookis(req) as string;
 
   try {
-    const check = await checkUserIsAllowJoiningProject(userId, taskContent.projectId);
+    const check = await checkUserIsAllowJoiningProject(userId, projectId);
 
     if (check) {
       return next();

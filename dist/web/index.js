@@ -37,6 +37,7 @@ app.get("/user", user_1.TakeUserInfoHandler);
 app.get("/user/token-verify", user_1.TokenVerifyHandler);
 app.get("/user/:email/:hash", user_1.ActiveUserAccountHandler);
 app.get("/project", auth_action_1.authorizationMidleware, project_1.ProjectListHandler);
+app.get("/project/:projectId", auth_action_1.authorizationMidleware, project_1.ProjectInfoHandler);
 app.post("/project", auth_action_1.authorizationMidleware, project_1.AddProjectHandler);
 app.put("/project", auth_action_1.authorizationMidleware, project_1.EditProjectHandler);
 app.delete("/project/:projectId", auth_action_1.authorizationMidleware, project_1.DeleteProjectHandler);
@@ -44,6 +45,7 @@ app.get("/task/:projectId", auth_action_1.authorizationMidleware, task_1.ViewTas
 app.put("/task", auth_action_1.authorizationMidleware, auth_action_1.authUserIsAMember, task_1.UpdateTaskHandler);
 app.post("/task", auth_action_1.authorizationMidleware, auth_action_1.authUserIsAMember, task_1.CreateTaskHandler);
 app.delete("/task/:projectId/:taskId", auth_action_1.authorizationMidleware, task_1.DeleteTaskHandler);
+app.get("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_1.authUserIsAMember, members_1.ViewMemberHandler);
 app.post("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.AddMemberHandler);
 app.put("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.EditMemberHandler);
 app.delete("/member/:projectId/:email", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.DeleteMemberHandler);

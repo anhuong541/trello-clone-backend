@@ -10,9 +10,9 @@ import {
   RegisterRouteHandler,
   ActiveUserAccountHandler,
 } from "./routers/user";
-import { AddProjectHandler, DeleteProjectHandler, EditProjectHandler, ProjectListHandler } from "./routers/project";
+import { AddProjectHandler, DeleteProjectHandler, EditProjectHandler, ProjectInfoHandler, ProjectListHandler } from "./routers/project";
 import { CreateTaskHandler, DeleteTaskHandler, UpdateTaskHandler, ViewTasksHandler } from "./routers/task";
-import { AddMemberHandler, EditMemberHandler, DeleteMemberHandler } from "./routers/members";
+import { AddMemberHandler, EditMemberHandler, DeleteMemberHandler, ViewMemberHandler } from "./routers/members";
 import { authorizationMidleware, authUserIsAMember, authUserIsProjectOwner } from "./../lib/auth-action";
 
 dotenv.config();
@@ -47,6 +47,7 @@ app.get("/user/token-verify", TokenVerifyHandler);
 app.get("/user/:email/:hash", ActiveUserAccountHandler);
 
 app.get("/project", authorizationMidleware, ProjectListHandler);
+app.get("/project/:projectId", authorizationMidleware, ProjectInfoHandler);
 app.post("/project", authorizationMidleware, AddProjectHandler);
 app.put("/project", authorizationMidleware, EditProjectHandler);
 app.delete("/project/:projectId", authorizationMidleware, DeleteProjectHandler);
@@ -56,6 +57,7 @@ app.put("/task", authorizationMidleware, authUserIsAMember, UpdateTaskHandler);
 app.post("/task", authorizationMidleware, authUserIsAMember, CreateTaskHandler);
 app.delete("/task/:projectId/:taskId", authorizationMidleware, DeleteTaskHandler);
 
+app.get("/member/:projectId", authorizationMidleware, authUserIsAMember, ViewMemberHandler);
 app.post("/member/:projectId", authorizationMidleware, authUserIsProjectOwner, AddMemberHandler);
 app.put("/member/:projectId", authorizationMidleware, authUserIsProjectOwner, EditMemberHandler);
 app.delete("/member/:projectId/:email", authorizationMidleware, authUserIsProjectOwner, DeleteMemberHandler);

@@ -35,11 +35,17 @@ const checkUserIsAllowJoiningProject = (userId, projectId) => tslib_1.__awaiter(
 });
 exports.checkUserIsAllowJoiningProject = checkUserIsAllowJoiningProject;
 const authUserIsAMember = (req, res, next) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
     const feat = "check user is a member";
-    const taskContent = req.body;
+    const taskContent = req === null || req === void 0 ? void 0 : req.body;
+    let projectId = taskContent === null || taskContent === void 0 ? void 0 : taskContent.projectId;
+    if (!projectId) {
+        console.log("it trigger here!");
+        projectId = (_b = (_a = req.params) === null || _a === void 0 ? void 0 : _a.projectId) !== null && _b !== void 0 ? _b : "";
+    }
     const userId = (0, utils_1.readUserIdFromTheCookis)(req);
     try {
-        const check = yield (0, exports.checkUserIsAllowJoiningProject)(userId, taskContent.projectId);
+        const check = yield (0, exports.checkUserIsAllowJoiningProject)(userId, projectId);
         if (check) {
             return next();
         }
