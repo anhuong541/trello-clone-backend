@@ -3,12 +3,12 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import {
-  ActiveUserAccountHandler,
   LoginRouteHandler,
-  LogoutRouteHandler,
-  RegisterRouteHandler,
-  TakeUserInfoHandler,
   TokenVerifyHandler,
+  LogoutRouteHandler,
+  TakeUserInfoHandler,
+  RegisterRouteHandler,
+  ActiveUserAccountHandler,
 } from "./../routers/user";
 import { AddProjectHandler, DeleteProjectHandler, EditProjectHandler, ProjectListHandler } from "./../routers/project";
 import { CreateTaskHandler, DeleteTaskHandler, UpdateTaskHandler, ViewTasksHandler } from "./../routers/task";
@@ -20,7 +20,6 @@ const app = express();
 const port = process.env.PORT || 3456;
 
 const corsWebAllow = ["http://localhost:3000"];
-
 const corsOptions = {
   origin: corsWebAllow,
   optionsSuccessStatus: 200,
@@ -53,8 +52,8 @@ app.put("/project", authorizationMidleware, EditProjectHandler);
 app.delete("/project/:projectId", authorizationMidleware, DeleteProjectHandler);
 
 app.get("/task/:projectId", authorizationMidleware, ViewTasksHandler);
-app.post("/task", authorizationMidleware, authUserIsAMember, CreateTaskHandler);
 app.put("/task", authorizationMidleware, authUserIsAMember, UpdateTaskHandler);
+app.post("/task", authorizationMidleware, authUserIsAMember, CreateTaskHandler);
 app.delete("/task/:projectId/:taskId", authorizationMidleware, DeleteTaskHandler);
 
 app.post("/member/:projectId", authorizationMidleware, authUserIsProjectOwner, AddMemberHandler);

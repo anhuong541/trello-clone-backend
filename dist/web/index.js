@@ -41,8 +41,8 @@ app.post("/project", auth_action_1.authorizationMidleware, project_1.AddProjectH
 app.put("/project", auth_action_1.authorizationMidleware, project_1.EditProjectHandler);
 app.delete("/project/:projectId", auth_action_1.authorizationMidleware, project_1.DeleteProjectHandler);
 app.get("/task/:projectId", auth_action_1.authorizationMidleware, task_1.ViewTasksHandler);
-app.post("/task", auth_action_1.authorizationMidleware, auth_action_1.authUserIsAMember, task_1.CreateTaskHandler);
 app.put("/task", auth_action_1.authorizationMidleware, auth_action_1.authUserIsAMember, task_1.UpdateTaskHandler);
+app.post("/task", auth_action_1.authorizationMidleware, auth_action_1.authUserIsAMember, task_1.CreateTaskHandler);
 app.delete("/task/:projectId/:taskId", auth_action_1.authorizationMidleware, task_1.DeleteTaskHandler);
 app.post("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.AddMemberHandler);
 app.put("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.EditMemberHandler);

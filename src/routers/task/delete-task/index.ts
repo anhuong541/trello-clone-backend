@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { readUserIdFromTheCookis } from "@/lib/utils";
-import { deteleTask, getUpdateProjectDueTime } from "@/lib/firebase-func";
+import { deteleTask, getUpdateProjectDueTime, viewTasksProject } from "@/lib/firebase-func";
 import { checkUserIsAllowJoiningProject } from "@/lib/auth-action";
+import { io } from "@/ws";
 
 export default async function DeleteTaskHandler(req: Request, res: Response) {
   const feat = "delete task";
@@ -30,6 +31,10 @@ export default async function DeleteTaskHandler(req: Request, res: Response) {
     try {
       await deteleTask(taskContent.projectId, taskContent.taskId);
       await getUpdateProjectDueTime(taskContent.projectId);
+
+      const dataTableAfterUpdate = await viewTasksProject(taskContent.projectId);
+      io.to(taskContent.projectId).emit("view_project", dataTableAfterUpdate);
+
       return res.status(200).json({ status: "success", feat });
     } catch (error) {
       return res.status(400).json({

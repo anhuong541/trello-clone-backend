@@ -4,8 +4,8 @@
   "main": "src/index.ts",
   "private": true,
   "scripts": {
-    "start": "node dist/index.js",
     "dev": "nodemon",
+    "start": "node dist/index.js",
     "serve": "node dist/index.js",
     "vercel-build": "npm run build",
     "build": "rimraf dist && tsc",
@@ -19,7 +19,7 @@
     "add-build"
   ],
   "_moduleAliases": {
-    "@": "./dist"
+    "@": "./src"
   },
   "keywords": [],
   "author": "Nguyen Xuan An Huong",
