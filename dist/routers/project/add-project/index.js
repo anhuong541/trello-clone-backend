@@ -30,6 +30,7 @@ function AddProjectHandler(req, res) {
                 yield (0, firebase_func_1.addUserProjectsInfo)(userId, projectId, {
                     projectId,
                     projectName: projectContent.projectName,
+                    description: projectContent.description,
                     dueTime: Date.now(),
                     createAt: projectContent.createAt,
                 });

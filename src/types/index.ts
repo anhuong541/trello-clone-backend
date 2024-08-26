@@ -26,6 +26,7 @@ export interface ProjectType {
 export interface DataUserProject {
   projectId: string;
   projectName: string;
+  description: string;
   dueTime: number;
   createAt: number;
 }

@@ -47,6 +47,7 @@ export default async function EditProjectHandler(req: Request<{}, {}, ProjectTyp
       await addUserProjectsInfo(userId, projectContent.projectId, {
         projectId: projectContent.projectId,
         projectName: projectContent.projectName,
+        description: projectContent.description,
         dueTime: Date.now(),
         createAt: projectContent.createAt,
       });
