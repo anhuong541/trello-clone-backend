@@ -9,10 +9,10 @@ import {
   TakeUserInfoHandler,
   RegisterRouteHandler,
   ActiveUserAccountHandler,
-} from "./../routers/user";
-import { AddProjectHandler, DeleteProjectHandler, EditProjectHandler, ProjectListHandler } from "./../routers/project";
-import { CreateTaskHandler, DeleteTaskHandler, UpdateTaskHandler, ViewTasksHandler } from "./../routers/task";
-import { AddMemberHandler, EditMemberHandler, DeleteMemberHandler } from "./../routers/members";
+} from "./routers/user";
+import { AddProjectHandler, DeleteProjectHandler, EditProjectHandler, ProjectListHandler } from "./routers/project";
+import { CreateTaskHandler, DeleteTaskHandler, UpdateTaskHandler, ViewTasksHandler } from "./routers/task";
+import { AddMemberHandler, EditMemberHandler, DeleteMemberHandler } from "./routers/members";
 import { authorizationMidleware, authUserIsAMember, authUserIsProjectOwner } from "./../lib/auth-action";
 
 dotenv.config();

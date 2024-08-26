@@ -1,7 +1,7 @@
-import http from "http";
 import { Server } from "socket.io";
-import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import http from "http";
 
 import config from "./../config";
 import { viewTasksProject } from "./../lib/firebase-func";

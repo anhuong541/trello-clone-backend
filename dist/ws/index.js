@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.io = void 0;
 const tslib_1 = require("tslib");
-const http_1 = tslib_1.__importDefault(require("http"));
 const socket_io_1 = require("socket.io");
-const dotenv_1 = tslib_1.__importDefault(require("dotenv"));
 const jsonwebtoken_1 = tslib_1.__importDefault(require("jsonwebtoken"));
+const dotenv_1 = tslib_1.__importDefault(require("dotenv"));
+const http_1 = tslib_1.__importDefault(require("http"));
 const config_1 = tslib_1.__importDefault(require("./../config"));
 const firebase_func_1 = require("./../lib/firebase-func");
 const utils_1 = require("./../lib/utils");
