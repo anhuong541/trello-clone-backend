@@ -100,7 +100,7 @@ export const addMemberAuthorityInProject = async (projectId: string, userId: str
 };
 
 export const viewMemberInProject = async (projectId: string) => {
-  return (await getDocs(collection(firestoreDB, "projects", projectId, "authority"))).docs.map((item: DocumentData) => item.data());
+  return await getDocs(collection(firestoreDB, "projects", projectId, "authority"));
 };
 
 export const updateMemberAuthorityInProject = async (projectId: string, userId: string, authority: AuthorityType[]) => {

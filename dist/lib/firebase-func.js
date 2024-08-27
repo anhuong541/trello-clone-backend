@@ -104,7 +104,7 @@ const addMemberAuthorityInProject = (projectId, userId, authority) => tslib_1.__
 });
 exports.addMemberAuthorityInProject = addMemberAuthorityInProject;
 const viewMemberInProject = (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return (yield (0, firestore_1.getDocs)((0, firestore_1.collection)(firebase_1.firestoreDB, "projects", projectId, "authority"))).docs.map((item) => item.data());
+    return yield (0, firestore_1.getDocs)((0, firestore_1.collection)(firebase_1.firestoreDB, "projects", projectId, "authority"));
 });
 exports.viewMemberInProject = viewMemberInProject;
 const updateMemberAuthorityInProject = (projectId, userId, authority) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {

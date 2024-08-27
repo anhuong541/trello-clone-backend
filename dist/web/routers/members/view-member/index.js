@@ -8,13 +8,29 @@ function ViewMemberHandler(req, res) {
         var _a, _b;
         const feat = "view member auth";
         const projectId = (_b = (_a = req === null || req === void 0 ? void 0 : req.params) === null || _a === void 0 ? void 0 : _a.projectId) !== null && _b !== void 0 ? _b : "";
+        let listMembers;
+        let data = [];
         try {
-            const listMember = yield (0, firebase_func_1.viewMemberInProject)(projectId);
-            return res.status(200).json({ status: "success", feat, listMember });
+            listMembers = yield (0, firebase_func_1.viewMemberInProject)(projectId);
         }
         catch (error) {
-            return res.status(400).json({ status: "fail", feat, message: "Something wrong happen to this api" });
+            return res.status(400).json({ status: "fail", feat, message: "Something wrong happen when access project list members" });
         }
+        try {
+            yield Promise.all(listMembers.docs.map((item) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+                const res = yield (0, firebase_func_1.getUserDataById)(item.id);
+                const dataItem = item.data();
+                return Object.assign(Object.assign({}, res), dataItem);
+            }))).then((value) => (data = value));
+        }
+        catch (error) {
+            return res.status(404).json({ status: "fail", feat, message: "something got wrong when getting list user" });
+        }
+        return res.status(200).json({
+            status: "success",
+            feat,
+            listUser: data,
+        });
     });
 }
 //# sourceMappingURL=index.js.map
