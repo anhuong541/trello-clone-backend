@@ -18,11 +18,12 @@ export default async function ViewMemberHandler(req: Request, res: Response) {
     await Promise.all(
       listMembers.docs.map(async (item: DocumentData) => {
         const res = await getUserDataById(item.id);
-        const dataItem = item.data();
+        let dataItem = item.data();
+        delete dataItem.password;
+
         return {
           ...res,
           ...dataItem,
-          password: undefined,
         };
       })
     ).then((value) => (data = value));

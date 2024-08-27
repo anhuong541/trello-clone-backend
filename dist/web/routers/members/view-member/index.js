@@ -19,8 +19,9 @@ function ViewMemberHandler(req, res) {
         try {
             yield Promise.all(listMembers.docs.map((item) => tslib_1.__awaiter(this, void 0, void 0, function* () {
                 const res = yield (0, firebase_func_1.getUserDataById)(item.id);
-                const dataItem = item.data();
-                return Object.assign(Object.assign(Object.assign({}, res), dataItem), { password: undefined });
+                let dataItem = item.data();
+                delete dataItem.password;
+                return Object.assign(Object.assign({}, res), dataItem);
             }))).then((value) => (data = value));
         }
         catch (error) {

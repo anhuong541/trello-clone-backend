@@ -29,17 +29,18 @@ function AddMemberHandler(req, res) {
                 feat,
             });
         }
-        try {
-            const { authority } = yield (0, firebase_func_1.checkUserAuthority)(projectId, userId);
-            if (!authority.includes("Owner")) {
-                return res.status(401).json({ status: "fail", feat, message: "User don't have this authority" });
-            }
-            yield (0, firebase_func_1.addMemberAuthorityInProject)(projectId, memberUserId, memberAuthority);
-            return res.status(200).json({ status: "success", feat, message: "Add success" });
+        // try {
+        const { authority } = yield (0, firebase_func_1.checkUserAuthority)(projectId, userId);
+        if (!authority.includes("Owner")) {
+            return res.status(401).json({ status: "fail", feat, message: "User don't have this authority" });
         }
-        catch (error) {
-            return res.status(400).json({ status: "fail", feat, message: "Something wrong happen to this api" });
-        }
+        yield (0, firebase_func_1.addMemberAuthorityInProject)(projectId, memberUserId, memberAuthority);
+        yield (0, firebase_func_1.addProjectIntoMemberData)(memberUserId, projectId);
+        console.log("it trigger!!");
+        return res.status(200).json({ status: "success", feat, message: "Add success" });
+        // } catch (error) {
+        //   return res.status(400).json({ status: "fail", feat, message: "Something wrong happen to this api" });
+        // }
     });
 }
 //# sourceMappingURL=index.js.map

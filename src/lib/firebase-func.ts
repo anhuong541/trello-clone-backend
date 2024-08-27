@@ -99,6 +99,19 @@ export const addMemberAuthorityInProject = async (projectId: string, userId: str
   return await setDoc(doc(firestoreDB, "projects", projectId, "authority", userId), { authority });
 };
 
+export const updateMemberInProject = async (memberId: string, projectId: string, members: string[]) => {
+  return await updateDoc(doc(firestoreDB, "projects", projectId), { members: [...members, memberId] });
+};
+
+export const addProjectIntoMemberData = async (memberId: string, projectId: string) => {
+  const projectInfo = await getProjectInfo(projectId);
+  let input = projectInfo;
+  delete input.members;
+
+  await setDoc(doc(firestoreDB, "users", memberId, "projects", projectId), input);
+  await updateDoc(doc(firestoreDB, "projects", projectId), { members: [...projectInfo.members, memberId] });
+};
+
 export const viewMemberInProject = async (projectId: string) => {
   return await getDocs(collection(firestoreDB, "projects", projectId, "authority"));
 };
@@ -107,6 +120,15 @@ export const updateMemberAuthorityInProject = async (projectId: string, userId: 
   await updateDoc(doc(firestoreDB, "projects", projectId, "authority", userId), { authority });
 };
 
-export const removeMemberOutOfProject = async (projectId: string, userId: string) => {
-  return await deleteDoc(doc(firestoreDB, "projects", projectId, "authority", userId));
+export const removeMemberOutOfProject = async (projectId: string, memberId: string) => {
+  const projectInfo = await getProjectInfo(projectId);
+
+  await deleteDoc(doc(firestoreDB, "projects", projectId, "authority", memberId));
+
+  const removedMemberArr = projectInfo.members.filter((item) => item !== memberId);
+  await updateDoc(doc(firestoreDB, "projects", projectId), {
+    members: [...removedMemberArr],
+  });
+
+  await deleteDoc(doc(firestoreDB, "users", memberId, "projects", projectId));
 };

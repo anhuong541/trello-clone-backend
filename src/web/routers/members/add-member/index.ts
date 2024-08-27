@@ -1,4 +1,4 @@
-import { addMemberAuthorityInProject, checkEmailUIDExists, checkUserAuthority } from "@/lib/firebase-func";
+import { addMemberAuthorityInProject, addProjectIntoMemberData, checkEmailUIDExists, checkUserAuthority } from "@/lib/firebase-func";
 import { generateUidByString, readUserIdFromTheCookis } from "@/lib/utils";
 import { AuthorityType } from "@/types";
 import { Request, Response } from "express";
@@ -34,16 +34,19 @@ export default async function AddMemberHandler(
     });
   }
 
-  try {
-    const { authority } = await checkUserAuthority(projectId, userId);
+  // try {
+  const { authority } = await checkUserAuthority(projectId, userId);
 
-    if (!authority.includes("Owner")) {
-      return res.status(401).json({ status: "fail", feat, message: "User don't have this authority" });
-    }
-
-    await addMemberAuthorityInProject(projectId, memberUserId, memberAuthority);
-    return res.status(200).json({ status: "success", feat, message: "Add success" });
-  } catch (error) {
-    return res.status(400).json({ status: "fail", feat, message: "Something wrong happen to this api" });
+  if (!authority.includes("Owner")) {
+    return res.status(401).json({ status: "fail", feat, message: "User don't have this authority" });
   }
+
+  await addMemberAuthorityInProject(projectId, memberUserId, memberAuthority);
+  await addProjectIntoMemberData(memberUserId, projectId);
+  console.log("it trigger!!");
+
+  return res.status(200).json({ status: "success", feat, message: "Add success" });
+  // } catch (error) {
+  //   return res.status(400).json({ status: "fail", feat, message: "Something wrong happen to this api" });
+  // }
 }
