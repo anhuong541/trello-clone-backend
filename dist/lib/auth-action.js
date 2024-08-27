@@ -40,7 +40,7 @@ const authUserIsAMember = (req, res, next) => tslib_1.__awaiter(void 0, void 0, 
     const taskContent = req === null || req === void 0 ? void 0 : req.body;
     let projectId = taskContent === null || taskContent === void 0 ? void 0 : taskContent.projectId;
     if (!projectId) {
-        console.log("it trigger here!");
+        // console.log("it trigger here!");
         projectId = (_b = (_a = req.params) === null || _a === void 0 ? void 0 : _a.projectId) !== null && _b !== void 0 ? _b : "";
     }
     const userId = (0, utils_1.readUserIdFromTheCookis)(req);

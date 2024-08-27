@@ -22,6 +22,7 @@ export default async function ViewMemberHandler(req: Request, res: Response) {
         return {
           ...res,
           ...dataItem,
+          password: undefined,
         };
       })
     ).then((value) => (data = value));

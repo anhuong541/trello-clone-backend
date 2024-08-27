@@ -37,7 +37,7 @@ export const authUserIsAMember = async (req: Request<{ projectId: string }, {}, 
   const taskContent = req?.body;
   let projectId = taskContent?.projectId;
   if (!projectId) {
-    console.log("it trigger here!");
+    // console.log("it trigger here!");
     projectId = req.params?.projectId ?? "";
   }
 
