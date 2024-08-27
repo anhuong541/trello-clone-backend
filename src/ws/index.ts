@@ -27,21 +27,31 @@ export const io = new Server(httpServer, {
 
 const port = 8080;
 
+const getCookieValue = (name, cookies) => cookies.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || "";
+
 // Setup Socket.IO connection
 io.on("connection", (socket) => {
   // console.log("a user connected:", socket.id);
 
-  const userCookie = socket?.handshake?.headers?.cookie?.split("=")[1] ?? null;
-  // console.log("cookie: ", socket?.handshake?.headers?.cookie?.split("="));
+  const cookies = socket?.handshake?.headers?.cookie;
 
   socket.on("join_project_room", async (projectId: string) => {
     socket.join(projectId);
     console.log("User: " + socket.id + " joined " + projectId);
 
-    if (userCookie) {
-      const verify: any = jwt.verify(userCookie, config.jwtSecret);
-      const userId = generateUidByString(verify?.email ?? "");
+    const userSesstionCookie = getCookieValue("user_session", cookies);
 
+    if (userSesstionCookie) {
+      let verify: any = null;
+
+      try {
+        verify = jwt.verify(userSesstionCookie, config.jwtSecret);
+      } catch (error) {
+        console.log("verify error at join_project_room", error);
+        return;
+      }
+
+      const userId = generateUidByString(verify?.email ?? "");
       const check = await checkUserIsAllowJoiningProject(userId, projectId);
 
       if (check) {
