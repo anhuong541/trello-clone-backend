@@ -34,7 +34,6 @@ export default async function AddProjectHandler(req: Request<{}, {}, ProjectType
 
     try {
       await addUserProjectsInfo(userId, projectId);
-
       await createOrSetProject(projectId, dataProject);
 
       const createrAuthority = ["Owner", "Edit", "View"] as AuthorityType[];
