@@ -18,7 +18,7 @@ function AddProjectHandler(req, res) {
                 });
             }
             const projectId = (0, utils_1.generateNewUid)();
-            const dataProject = Object.assign(Object.assign({}, projectContent), { members: [userId], projectId, dueTime: Date.now() });
+            const dataProject = Object.assign(Object.assign({}, projectContent), { projectId, dueTime: Date.now() });
             if (!(yield (0, firebase_func_1.checkEmailUIDExists)(userId))) {
                 return res.status(409).json({
                     status: "fail",

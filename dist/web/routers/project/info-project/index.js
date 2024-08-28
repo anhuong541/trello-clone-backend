@@ -9,10 +9,14 @@ function ProjectInfoHandler(req, res) {
         const { projectId } = req.params;
         try {
             const data = yield (0, firebase_func_1.getProjectInfo)(projectId);
+            const membersRes = yield (0, firebase_func_1.viewMemberInProject)(projectId);
+            const members = membersRes.docs.map((item) => {
+                return Object.assign(Object.assign({}, item.data()), { user: item.id });
+            });
             return res.status(200).json({
                 status: "success",
                 feat,
-                data,
+                data: Object.assign(Object.assign({}, data), { members }),
             });
         }
         catch (error) {

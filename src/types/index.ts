@@ -34,7 +34,6 @@ export interface DataUserProject {
 export interface NewDataProject {
   projectId: string;
   projectName: string;
-  members: string[];
   description: string;
   createAt: number;
   dueTime: number;

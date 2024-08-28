@@ -20,7 +20,6 @@ export default async function AddProjectHandler(req: Request<{}, {}, ProjectType
     const projectId = generateNewUid();
     const dataProject: NewDataProject = {
       ...projectContent,
-      members: [userId],
       projectId,
       dueTime: Date.now(),
     };

@@ -56,10 +56,40 @@ export const createOrSetProject = async (projectId: string, data: NewDataProject
   return await setDoc(doc(firestoreDB, "projects", projectId), data);
 };
 
+// async const deleteCollection = (collectionPath: string) => {
+//   const colRef = collection(firestoreDB, collectionPath);
+//   const querySnapshot = await getDocs(colRef);
+
+//   const deletePromises = querySnapshot.docs.map(async (docSnapshot) => {
+//     const docRef = doc(firestoreDB, collectionPath, docSnapshot.id);
+//     await deleteDoc(docRef);
+//   });
+
+//   await Promise.all(deletePromises);
+// }
+
+async function deleteMemberList(projectId: string) {
+  const colRef = collection(firestoreDB, "projects", projectId, "authority");
+  const querySnapshot = await getDocs(colRef);
+
+  const deleteList = querySnapshot.docs.map(async (item) => {
+    const docRef = doc(firestoreDB, "projects", projectId, "authority", item.id);
+    await deleteDoc(docRef);
+  });
+
+  const deleteUserJoinProject = querySnapshot.docs.map(async (item) => {
+    const docRef = doc(firestoreDB, "users", item.id, "projects", projectId);
+    await deleteDoc(docRef);
+  });
+
+  await Promise.all([...deleteList, ...deleteUserJoinProject]);
+}
+
 export const deteleProject = async (uid: string, projectId: string) => {
-  await deleteDoc(doc(firestoreDB, "users", uid, "projects", projectId));
   await deleteDoc(doc(firestoreDB, "projects", projectId));
-  await deleteDoc(doc(firestoreDB, "projects", projectId, "authority", uid));
+  await deleteDoc(doc(firestoreDB, "users", uid, "projects", projectId));
+  await deleteMemberList(projectId);
+  // missing clear user meber project list
 };
 
 export const getProjectInfo = async (projectId: string) => {
@@ -71,8 +101,7 @@ export const checkUserAuthority = async (projectId: string, userId: string) => {
 };
 
 export const getProjectListByUser = async (uid: string) => {
-  const listProjectRef = await getDocs(collection(firestoreDB, "users", uid, "projects"));
-  return listProjectRef.docs.map((item: DocumentData) => item.data());
+  return (await getDocs(collection(firestoreDB, "users", uid, "projects"))).docs.map((item: DocumentData) => item.data());
 };
 
 export const getUpdateProjectDueTime = async (projectId: string) => {
@@ -99,15 +128,10 @@ export const addMemberAuthorityInProject = async (projectId: string, userId: str
   return await setDoc(doc(firestoreDB, "projects", projectId, "authority", userId), { authority });
 };
 
-export const updateMemberInProject = async (memberId: string, projectId: string, members: string[]) => {
-  return await updateDoc(doc(firestoreDB, "projects", projectId), { members: [...members, memberId] });
-};
-
 export const addProjectIntoMemberData = async (memberId: string, projectId: string) => {
   const projectInfo = await getProjectInfo(projectId);
   // console.log({ projectInfo });
   let input = projectInfo;
-  await updateDoc(doc(firestoreDB, "projects", projectId), { members: [...input.members, memberId] });
   delete input.members;
   await setDoc(doc(firestoreDB, "users", memberId, "projects", projectId), input);
 };
@@ -121,16 +145,6 @@ export const updateMemberAuthorityInProject = async (projectId: string, userId: 
 };
 
 export const removeMemberOutOfProject = async (projectId: string, memberId: string) => {
-  const projectInfo = await getProjectInfo(projectId);
-
-  // console.log({ projectInfo });
-
   await deleteDoc(doc(firestoreDB, "projects", projectId, "authority", memberId));
-
-  const removedMemberArr = projectInfo.members.filter((item) => item !== memberId);
-  await updateDoc(doc(firestoreDB, "projects", projectId), {
-    members: [...removedMemberArr],
-  });
-
   await deleteDoc(doc(firestoreDB, "users", memberId, "projects", projectId));
 };

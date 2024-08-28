@@ -14,6 +14,7 @@ export default async function ProjectListHandler(req: Request, res: Response) {
 
   try {
     const data = await getProjectListByUser(userId);
+
     return res.status(200).json({
       status: "success",
       feat,
