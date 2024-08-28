@@ -51,8 +51,8 @@ const createNewUser = (uid, data) => tslib_1.__awaiter(void 0, void 0, void 0, f
     return yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "users", uid), data);
 });
 exports.createNewUser = createNewUser;
-const addUserProjectsInfo = (uid, projectId, data) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "users", uid, "projects", projectId), data);
+const addUserProjectsInfo = (uid, projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+    return yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "users", uid, "projects", projectId), { projectId });
 });
 exports.addUserProjectsInfo = addUserProjectsInfo;
 //project
@@ -100,7 +100,11 @@ const checkUserAuthority = (projectId, userId) => tslib_1.__awaiter(void 0, void
 });
 exports.checkUserAuthority = checkUserAuthority;
 const getProjectListByUser = (uid) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return (yield (0, firestore_1.getDocs)((0, firestore_1.collection)(firebase_1.firestoreDB, "users", uid, "projects"))).docs.map((item) => item.data());
+    const listProjectId = (yield (0, firestore_1.getDocs)((0, firestore_1.collection)(firebase_1.firestoreDB, "users", uid, "projects"))).docs.map((item) => item.id);
+    const listProjectDataById = listProjectId.map((item) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        return (yield (0, firestore_1.getDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", item))).data();
+    }));
+    return yield Promise.all(listProjectDataById);
 });
 exports.getProjectListByUser = getProjectListByUser;
 const getUpdateProjectDueTime = (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {

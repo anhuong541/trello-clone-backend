@@ -44,13 +44,7 @@ export default async function EditProjectHandler(req: Request<{}, {}, ProjectTyp
 
     try {
       await createOrSetProject(projectContent.projectId, dataInput);
-      await addUserProjectsInfo(userId, projectContent.projectId, {
-        projectId: projectContent.projectId,
-        projectName: projectContent.projectName,
-        description: projectContent.description,
-        dueTime: Date.now(),
-        createAt: projectContent.createAt,
-      });
+      await addUserProjectsInfo(userId, projectContent.projectId);
 
       return res.status(200).json({
         status: "success",

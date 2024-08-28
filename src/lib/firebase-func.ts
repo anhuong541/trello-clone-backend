@@ -1,5 +1,5 @@
 import { doc, getDoc, setDoc, deleteDoc, getDocs, collection, DocumentData, updateDoc } from "firebase/firestore";
-import { AuthorityType, DataUserProject, NewDataProject } from "@/types";
+import { AuthorityType, NewDataProject } from "@/types";
 import { DataRegister, DataTask } from "@/types/firebase";
 import { firestoreDB } from "@/db/firebase";
 
@@ -47,8 +47,8 @@ export const createNewUser = async (uid: string, data: DataRegister) => {
   return await setDoc(doc(firestoreDB, "users", uid), data);
 };
 
-export const addUserProjectsInfo = async (uid: string, projectId: string, data: DataUserProject) => {
-  return await setDoc(doc(firestoreDB, "users", uid, "projects", projectId), data);
+export const addUserProjectsInfo = async (uid: string, projectId: string) => {
+  return await setDoc(doc(firestoreDB, "users", uid, "projects", projectId), { projectId });
 };
 
 //project
@@ -101,7 +101,12 @@ export const checkUserAuthority = async (projectId: string, userId: string) => {
 };
 
 export const getProjectListByUser = async (uid: string) => {
-  return (await getDocs(collection(firestoreDB, "users", uid, "projects"))).docs.map((item: DocumentData) => item.data());
+  const listProjectId = (await getDocs(collection(firestoreDB, "users", uid, "projects"))).docs.map((item: DocumentData) => item.id);
+  const listProjectDataById = listProjectId.map(async (item: string) => {
+    return (await getDoc(doc(firestoreDB, "projects", item))).data();
+  });
+
+  return await Promise.all(listProjectDataById);
 };
 
 export const getUpdateProjectDueTime = async (projectId: string) => {

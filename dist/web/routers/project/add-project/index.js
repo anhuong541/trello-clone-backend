@@ -27,13 +27,7 @@ function AddProjectHandler(req, res) {
                 });
             }
             try {
-                yield (0, firebase_func_1.addUserProjectsInfo)(userId, projectId, {
-                    projectId,
-                    projectName: projectContent.projectName,
-                    description: projectContent.description,
-                    dueTime: Date.now(),
-                    createAt: projectContent.createAt,
-                });
+                yield (0, firebase_func_1.addUserProjectsInfo)(userId, projectId);
                 yield (0, firebase_func_1.createOrSetProject)(projectId, dataProject);
                 const createrAuthority = ["Owner", "Edit", "View"];
                 yield (0, firebase_func_1.addMemberAuthorityInProject)(projectId, userId, createrAuthority);

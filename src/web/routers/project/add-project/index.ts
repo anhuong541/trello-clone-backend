@@ -33,13 +33,7 @@ export default async function AddProjectHandler(req: Request<{}, {}, ProjectType
     }
 
     try {
-      await addUserProjectsInfo(userId, projectId, {
-        projectId,
-        projectName: projectContent.projectName,
-        description: projectContent.description,
-        dueTime: Date.now(),
-        createAt: projectContent.createAt,
-      });
+      await addUserProjectsInfo(userId, projectId);
 
       await createOrSetProject(projectId, dataProject);
 

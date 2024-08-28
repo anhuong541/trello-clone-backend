@@ -16,6 +16,7 @@ function ProjectListHandler(req, res) {
         }
         try {
             const data = yield (0, firebase_func_1.getProjectListByUser)(userId);
+            console.log({ data });
             return res.status(200).json({
                 status: "success",
                 feat,
