@@ -33,8 +33,9 @@ exports.io.on("connection", (socket) => {
     socket.on("join_project_room", (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         var _a;
         socket.join(projectId);
-        console.log("User: " + socket.id + " joined " + projectId);
+        // console.log("User: " + socket.id + " joined " + projectId);
         const userSesstionCookie = getCookieValue("user_session", cookies);
+        // console.log("=>> ", userSesstionCookie);
         if (userSesstionCookie) {
             let verify = null;
             try {
@@ -60,6 +61,9 @@ exports.io.on("connection", (socket) => {
     }));
     socket.on("realtime_update_project", (projectId, data) => {
         exports.io.to(projectId).emit("realtime_update_project_client", data);
+    });
+    socket.on("user_disconnect", () => {
+        socket.disconnect();
     });
     socket.on("disconnect", () => {
         console.log("user disconnected:", socket.id);

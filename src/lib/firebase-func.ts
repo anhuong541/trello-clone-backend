@@ -105,11 +105,11 @@ export const updateMemberInProject = async (memberId: string, projectId: string,
 
 export const addProjectIntoMemberData = async (memberId: string, projectId: string) => {
   const projectInfo = await getProjectInfo(projectId);
+  // console.log({ projectInfo });
   let input = projectInfo;
+  await updateDoc(doc(firestoreDB, "projects", projectId), { members: [...input.members, memberId] });
   delete input.members;
-
   await setDoc(doc(firestoreDB, "users", memberId, "projects", projectId), input);
-  await updateDoc(doc(firestoreDB, "projects", projectId), { members: [...projectInfo.members, memberId] });
 };
 
 export const viewMemberInProject = async (projectId: string) => {
@@ -122,6 +122,8 @@ export const updateMemberAuthorityInProject = async (projectId: string, userId: 
 
 export const removeMemberOutOfProject = async (projectId: string, memberId: string) => {
   const projectInfo = await getProjectInfo(projectId);
+
+  // console.log({ projectInfo });
 
   await deleteDoc(doc(firestoreDB, "projects", projectId, "authority", memberId));
 

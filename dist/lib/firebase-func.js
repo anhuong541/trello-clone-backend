@@ -109,10 +109,11 @@ const updateMemberInProject = (memberId, projectId, members) => tslib_1.__awaite
 exports.updateMemberInProject = updateMemberInProject;
 const addProjectIntoMemberData = (memberId, projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const projectInfo = yield (0, exports.getProjectInfo)(projectId);
+    // console.log({ projectInfo });
     let input = projectInfo;
+    yield (0, firestore_1.updateDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId), { members: [...input.members, memberId] });
     delete input.members;
     yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "users", memberId, "projects", projectId), input);
-    yield (0, firestore_1.updateDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId), { members: [...projectInfo.members, memberId] });
 });
 exports.addProjectIntoMemberData = addProjectIntoMemberData;
 const viewMemberInProject = (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
@@ -125,6 +126,7 @@ const updateMemberAuthorityInProject = (projectId, userId, authority) => tslib_1
 exports.updateMemberAuthorityInProject = updateMemberAuthorityInProject;
 const removeMemberOutOfProject = (projectId, memberId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const projectInfo = yield (0, exports.getProjectInfo)(projectId);
+    // console.log({ projectInfo });
     yield (0, firestore_1.deleteDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId, "authority", memberId));
     const removedMemberArr = projectInfo.members.filter((item) => item !== memberId);
     yield (0, firestore_1.updateDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId), {

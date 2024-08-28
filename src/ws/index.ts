@@ -37,9 +37,11 @@ io.on("connection", (socket) => {
 
   socket.on("join_project_room", async (projectId: string) => {
     socket.join(projectId);
-    console.log("User: " + socket.id + " joined " + projectId);
+    // console.log("User: " + socket.id + " joined " + projectId);
 
     const userSesstionCookie = getCookieValue("user_session", cookies);
+
+    // console.log("=>> ", userSesstionCookie);
 
     if (userSesstionCookie) {
       let verify: any = null;
@@ -68,6 +70,10 @@ io.on("connection", (socket) => {
 
   socket.on("realtime_update_project", (projectId, data) => {
     io.to(projectId).emit("realtime_update_project_client", data);
+  });
+
+  socket.on("user_disconnect", () => {
+    socket.disconnect();
   });
 
   socket.on("disconnect", () => {
