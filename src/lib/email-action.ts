@@ -1,17 +1,6 @@
 import config from "@/config";
 import nodemailer from "nodemailer";
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: config.emailApp,
-    pass: config.passApp,
-  },
-});
-
 interface MessageConfig {
   from: {
     name: string;
@@ -22,6 +11,17 @@ interface MessageConfig {
   text: string;
   html: string;
 }
+
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: config.emailApp,
+    pass: config.passApp,
+  },
+});
 
 const defaultMsgCon = {
   from: {

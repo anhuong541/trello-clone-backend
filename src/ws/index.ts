@@ -11,7 +11,6 @@ import { checkUserIsAllowJoiningProject } from "./../lib/auth-action";
 dotenv.config();
 
 const corsWebAllow = ["http://localhost:3000"];
-
 const corsOptions = {
   origin: corsWebAllow,
   optionsSuccessStatus: 200,
