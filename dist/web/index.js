@@ -52,4 +52,5 @@ app.delete("/member/:projectId/:email", auth_action_1.authorizationMidleware, au
 app.listen(port, () => {
     console.log(`express is listen to port: ${port}`);
 });
+module.exports = app;
 //# sourceMappingURL=index.js.map
