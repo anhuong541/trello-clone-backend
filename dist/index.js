@@ -7,7 +7,5 @@ const index_1 = require("./web/index");
 // module.exports = httpServer.listen(wssport, () => {
 //   console.log(`Websocket is listening on ${wssport}`);
 // });
-module.exports = index_1.app.listen(index_1.port, () => {
-    console.log(`express is listen to port: ${index_1.port}`);
-});
+module.exports = index_1.app;
 //# sourceMappingURL=index.js.map
