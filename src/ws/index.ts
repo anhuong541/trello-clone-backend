@@ -30,7 +30,7 @@ const getCookieValue = (name, cookies) => cookies.match("(^|;)\\s*" + name + "\\
 
 // Setup Socket.IO connection
 io.on("connection", (socket) => {
-  // console.log("a user connected:", socket.id);
+  console.log("a user connected:", socket.id);
 
   const cookies = socket?.handshake?.headers?.cookie;
 

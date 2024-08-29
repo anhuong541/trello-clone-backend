@@ -27,8 +27,8 @@ const port = 8080;
 const getCookieValue = (name, cookies) => { var _a; return ((_a = cookies.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")) === null || _a === void 0 ? void 0 : _a.pop()) || ""; };
 // Setup Socket.IO connection
 exports.io.on("connection", (socket) => {
-    // console.log("a user connected:", socket.id);
     var _a, _b;
+    console.log("a user connected:", socket.id);
     const cookies = (_b = (_a = socket === null || socket === void 0 ? void 0 : socket.handshake) === null || _a === void 0 ? void 0 : _a.headers) === null || _b === void 0 ? void 0 : _b.cookie;
     socket.on("join_project_room", (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         var _a;
