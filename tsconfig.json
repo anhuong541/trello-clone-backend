@@ -42,6 +42,6 @@
         "esnext.asynciterable"
     ]
   },
-  "include": ["src/*", "src/web/routers"],
+  "include": ["src/*"],
   "exclude": ["node_modules"]
 }
