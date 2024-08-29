@@ -62,8 +62,4 @@ app.post("/member/:projectId", authorizationMidleware, authUserIsProjectOwner, A
 app.put("/member/:projectId", authorizationMidleware, authUserIsProjectOwner, EditMemberHandler);
 app.delete("/member/:projectId/:email", authorizationMidleware, authUserIsProjectOwner, DeleteMemberHandler);
 
-app.listen(port, () => {
-  console.log(`express is listen to port: ${port}`);
-});
-
-module.exports = app;
+export { app, port };

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.port = exports.app = void 0;
 const tslib_1 = require("tslib");
 const cookie_parser_1 = tslib_1.__importDefault(require("cookie-parser"));
 const express_1 = tslib_1.__importDefault(require("express"));
@@ -12,7 +13,9 @@ const members_1 = require("./routers/members");
 const auth_action_1 = require("./../lib/auth-action");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
+exports.app = app;
 const port = process.env.PORT || 3456;
+exports.port = port;
 const corsWebAllow = ["http://localhost:3000"];
 const corsOptions = {
     origin: corsWebAllow,
@@ -49,8 +52,4 @@ app.get("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_
 app.post("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.AddMemberHandler);
 app.put("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.EditMemberHandler);
 app.delete("/member/:projectId/:email", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.DeleteMemberHandler);
-app.listen(port, () => {
-    console.log(`express is listen to port: ${port}`);
-});
-module.exports = app;
 //# sourceMappingURL=index.js.map

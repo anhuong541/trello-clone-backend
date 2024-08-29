@@ -24,7 +24,7 @@ export const io = new Server(httpServer, {
   cors: corsOptions,
 });
 
-const port = 8080;
+const wssport = 8080;
 
 const getCookieValue = (name, cookies) => cookies.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")?.pop() || "";
 
@@ -80,9 +80,4 @@ io.on("connection", (socket) => {
   });
 });
 
-// Start the server
-httpServer.listen(port, () => {
-  console.log(`Websocket is listening on ${port}`);
-});
-
-module.exports = httpServer;
+export { httpServer, wssport };
