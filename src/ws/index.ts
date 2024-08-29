@@ -84,3 +84,5 @@ io.on("connection", (socket) => {
 httpServer.listen(port, () => {
   console.log(`Websocket is listening on ${port}`);
 });
+
+module.exports = httpServer;
