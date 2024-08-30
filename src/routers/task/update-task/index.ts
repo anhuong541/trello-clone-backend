@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { TaskType } from "@/types";
 import { createOrSetTask, getUpdateProjectDueTime, viewTasksProject } from "@/lib/firebase-func";
-import { io } from "@/ws";
-// import { io } from "@/index";
+// import { io } from "@/ws";
+import { socket } from "@/lib/socket";
 
 export default async function UpdateTaskHandler(req: Request<{}, {}, TaskType, {}>, res: Response) {
   const feat = "update task";
@@ -21,7 +21,8 @@ export default async function UpdateTaskHandler(req: Request<{}, {}, TaskType, {
       await getUpdateProjectDueTime(taskContent.projectId);
 
       const dataTableAfterUpdate = await viewTasksProject(taskContent.projectId);
-      io.to(taskContent.projectId).emit("view_project", dataTableAfterUpdate);
+      // io.to(taskContent.projectId).emit("view_project", dataTableAfterUpdate);
+      socket.emit("call_update_project", taskContent.projectId, dataTableAfterUpdate);
 
       return res.status(200).json({ status: "success", feat });
     } catch (error) {

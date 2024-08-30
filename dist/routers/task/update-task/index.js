@@ -3,8 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = UpdateTaskHandler;
 const tslib_1 = require("tslib");
 const firebase_func_1 = require("@/lib/firebase-func");
-const ws_1 = require("@/ws");
-// import { io } from "@/index";
+// import { io } from "@/ws";
+const socket_1 = require("@/lib/socket");
 function UpdateTaskHandler(req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const feat = "update task";
@@ -21,7 +21,8 @@ function UpdateTaskHandler(req, res) {
                 yield (0, firebase_func_1.createOrSetTask)(taskContent.projectId, taskContent.taskId, taskContent);
                 yield (0, firebase_func_1.getUpdateProjectDueTime)(taskContent.projectId);
                 const dataTableAfterUpdate = yield (0, firebase_func_1.viewTasksProject)(taskContent.projectId);
-                ws_1.io.to(taskContent.projectId).emit("view_project", dataTableAfterUpdate);
+                // io.to(taskContent.projectId).emit("view_project", dataTableAfterUpdate);
+                socket_1.socket.emit("call_update_project", taskContent.projectId, dataTableAfterUpdate);
                 return res.status(200).json({ status: "success", feat });
             }
             catch (error) {

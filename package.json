@@ -5,7 +5,9 @@
   "private": true,
   "scripts": {
     "dev": "nodemon",
-    "start": "node dist/index.js",
+    "start": "ts-node src/index.ts",
+    "socket": "ts-node src/ws/index.ts",
+    "web": "ts-node src/web/index.ts",
     "serve": "node dist/index.js",
     "vercel-build": "npm run build",
     "build": "rimraf dist && tsc",
@@ -42,6 +44,7 @@
     "query-string": "^9.1.0",
     "serverless-http": "^3.2.0",
     "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5",
     "tslib": "^2.6.3",
     "uuid": "10.0.0",
     "vercel": "36.0.0",

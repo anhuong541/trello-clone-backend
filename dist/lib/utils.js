@@ -30,7 +30,10 @@ const checkUIDAndProjectExists = (userId, projectId, feat, res) => tslib_1.__awa
 exports.checkUIDAndProjectExists = checkUIDAndProjectExists;
 const readUserIdFromTheCookis = (req) => {
     var _a;
-    const token = (_a = req === null || req === void 0 ? void 0 : req.cookies.user_session) !== null && _a !== void 0 ? _a : ""; // send at the client
+    if (config_1.default.env) {
+        return (0, exports.readUserIdFromAuth)(req); // only for deploy
+    }
+    const token = (_a = req === null || req === void 0 ? void 0 : req.cookies.user_session) !== null && _a !== void 0 ? _a : "";
     const { email } = jsonwebtoken_1.default.verify(token, config_1.default.jwtSecret);
     return (0, exports.generateUidByString)(email);
 };

@@ -29,7 +29,10 @@ export const checkUIDAndProjectExists = async (userId: string, projectId: string
 };
 
 export const readUserIdFromTheCookis = (req: Request) => {
-  const token = req?.cookies.user_session ?? ""; // send at the client
+  if (config.env) {
+    return readUserIdFromAuth(req); // only for deploy
+  }
+  const token = req?.cookies.user_session ?? "";
   const { email } = jwt.verify(token, config.jwtSecret) as { email: string };
   return generateUidByString(email);
 };
