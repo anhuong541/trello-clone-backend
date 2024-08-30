@@ -80,4 +80,8 @@ io.on("connection", (socket) => {
   });
 });
 
-export { httpServer, wssport };
+httpServer.listen(wssport, () => {
+  console.log(`listen to port 8080`);
+});
+
+// export { httpServer, wssport };

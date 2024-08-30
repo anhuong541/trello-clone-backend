@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.wssport = exports.httpServer = exports.io = void 0;
+exports.io = void 0;
 const tslib_1 = require("tslib");
 const socket_io_1 = require("socket.io");
 const jsonwebtoken_1 = tslib_1.__importDefault(require("jsonwebtoken"));
@@ -20,12 +20,10 @@ const corsOptions = {
     allowedHeaders: "Content-Type,Authorization",
 };
 const httpServer = http_1.default.createServer();
-exports.httpServer = httpServer;
 exports.io = new socket_io_1.Server(httpServer, {
     cors: corsOptions,
 });
 const wssport = 8080;
-exports.wssport = wssport;
 const getCookieValue = (name, cookies) => { var _a; return ((_a = cookies.match("(^|;)\\s*" + name + "\\s*=\\s*([^;]+)")) === null || _a === void 0 ? void 0 : _a.pop()) || ""; };
 // Setup Socket.IO connection
 exports.io.on("connection", (socket) => {
@@ -71,4 +69,8 @@ exports.io.on("connection", (socket) => {
         console.log("user disconnected:", socket.id);
     });
 });
+httpServer.listen(wssport, () => {
+    console.log(`listen to port 8080`);
+});
+// export { httpServer, wssport };
 //# sourceMappingURL=index.js.map
