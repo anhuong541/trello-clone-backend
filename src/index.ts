@@ -5,7 +5,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import {
-  // LoginRouteHandler,
+  LoginRouteHandler,
   TokenVerifyHandler,
   LogoutRouteHandler,
   TakeUserInfoHandler,
@@ -41,7 +41,7 @@ app.get("/", (req, res) => {
   res.json({ status: "success", text: "everything is clear!!!" });
 });
 
-// app.post("/user/login", LoginRouteHandler);
+app.post("/user/login", LoginRouteHandler);
 app.post("/user/register", RegisterRouteHandler);
 app.get("/user/logout", LogoutRouteHandler);
 app.get("/user", TakeUserInfoHandler);
