@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
     console.log("it run!!!");
     res.json({ status: "success", text: "everything is clear!!!" });
 });
-app.post("/user/login", user_1.LoginRouteHandler);
+// app.post("/user/login", LoginRouteHandler);
 app.post("/user/register", user_1.RegisterRouteHandler);
 app.get("/user/logout", user_1.LogoutRouteHandler);
 app.get("/user", user_1.TakeUserInfoHandler);
