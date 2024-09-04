@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = CreateTaskHandler;
 const tslib_1 = require("tslib");
 const firebase_func_1 = require("./../../../lib/firebase-func");
-// import { io } from "./../../../ws";
 const socket_1 = require("./../../../lib/socket");
 function CreateTaskHandler(req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
@@ -21,8 +20,7 @@ function CreateTaskHandler(req, res) {
                 yield (0, firebase_func_1.createOrSetTask)(taskContent.projectId, taskContent.taskId, taskContent);
                 yield (0, firebase_func_1.getUpdateProjectDueTime)(taskContent.projectId);
                 const dataTableAfterUpdate = yield (0, firebase_func_1.viewTasksProject)(taskContent.projectId);
-                // io.to(taskContent.projectId).emit("view_project", dataTableAfterUpdate);
-                socket_1.socket.emit("call_update_project", taskContent.projectId, dataTableAfterUpdate);
+                socket_1.ablyRealtime.channels.get(`view_project_${taskContent.projectId}`).publish({ data: dataTableAfterUpdate });
                 return res.status(200).json({ status: "success", feat });
             }
             catch (error) {

@@ -29,6 +29,7 @@
   "description": "",
   "dependencies": {
     "@types/module-alias": "^2.0.4",
+    "ably": "^2.3.1",
     "cookie-parser": "1.4.6",
     "cors": "2.8.5",
     "crypto": "^1.0.1",

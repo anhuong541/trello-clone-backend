@@ -16,6 +16,7 @@ import { AddProjectHandler, DeleteProjectHandler, EditProjectHandler, ProjectInf
 import { CreateTaskHandler, DeleteTaskHandler, UpdateTaskHandler, ViewTasksHandler } from "./routers/task";
 import { AddMemberHandler, EditMemberHandler, DeleteMemberHandler, ViewMemberHandler } from "./routers/members";
 import { authorizationMidleware, authUserIsAMember, authUserIsProjectOwner } from "./lib/auth-action";
+import JoinProjectRoomHandler from "./routers/join-project-room";
 
 dotenv.config();
 const app = express();
@@ -63,6 +64,8 @@ app.get("/member/:projectId", authorizationMidleware, authUserIsAMember, ViewMem
 app.post("/member/:projectId", authorizationMidleware, authUserIsProjectOwner, AddMemberHandler);
 app.put("/member/:projectId", authorizationMidleware, authUserIsProjectOwner, EditMemberHandler);
 app.delete("/member/:projectId/:email", authorizationMidleware, authUserIsProjectOwner, DeleteMemberHandler);
+
+app.get("/joinProjectRoom/:projectId", authorizationMidleware, JoinProjectRoomHandler);
 
 app.listen(port, () => {
   console.log(`express is listen to port: ${port}`);

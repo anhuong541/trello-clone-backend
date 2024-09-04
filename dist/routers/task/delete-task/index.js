@@ -6,7 +6,6 @@ const utils_1 = require("./../../../lib/utils");
 const firebase_func_1 = require("./../../../lib/firebase-func");
 const auth_action_1 = require("./../../../lib/auth-action");
 const socket_1 = require("./../../../lib/socket");
-// import { io } from "./../../../ws";
 function DeleteTaskHandler(req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const feat = "delete task";
@@ -32,8 +31,7 @@ function DeleteTaskHandler(req, res) {
                 yield (0, firebase_func_1.deteleTask)(taskContent.projectId, taskContent.taskId);
                 yield (0, firebase_func_1.getUpdateProjectDueTime)(taskContent.projectId);
                 const dataTableAfterUpdate = yield (0, firebase_func_1.viewTasksProject)(taskContent.projectId);
-                // io.to(taskContent.projectId).emit("view_project", dataTableAfterUpdate);
-                socket_1.socket.emit("call_update_project", taskContent.projectId, dataTableAfterUpdate);
+                socket_1.ablyRealtime.channels.get(`view_project_${taskContent.projectId}`).publish({ data: dataTableAfterUpdate });
                 return res.status(200).json({ status: "success", feat });
             }
             catch (error) {
