@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendMail = sendMail;
 const tslib_1 = require("tslib");
-const config_1 = tslib_1.__importDefault(require("@/config"));
+const config_1 = tslib_1.__importDefault(require("./../config"));
 const nodemailer_1 = tslib_1.__importDefault(require("nodemailer"));
 const transporter = nodemailer_1.default.createTransport({
     service: "gmail",

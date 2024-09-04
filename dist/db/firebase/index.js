@@ -5,7 +5,7 @@ const tslib_1 = require("tslib");
 const firestore_1 = require("firebase/firestore");
 const app_1 = require("firebase/app");
 const auth_1 = require("firebase/auth");
-const config_1 = tslib_1.__importDefault(require("@/config"));
+const config_1 = tslib_1.__importDefault(require("./../../config"));
 const firebaseConfig = {
     apiKey: config_1.default.apiKey,
     authDomain: config_1.default.authDomain,

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { checkProjectExists, viewTasksProject } from "@/lib/firebase-func";
-import { readUserIdFromTheCookis } from "@/lib/utils";
-import { checkUserIsAllowJoiningProject } from "@/lib/auth-action";
+import { checkProjectExists, viewTasksProject } from "./../../../lib/firebase-func";
+import { readUserIdFromTheCookis } from "./../../../lib/utils";
+import { checkUserIsAllowJoiningProject } from "./../../../lib/auth-action";
 
 export default async function ViewTasksHandler(req: Request<{ projectId: string }>, res: Response) {
   const feat = "view all tasks"; // name api

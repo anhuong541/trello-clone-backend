@@ -1,5 +1,5 @@
-import { checkEmailUIDExists, checkUserAuthority, removeMemberOutOfProject } from "@/lib/firebase-func";
-import { generateUidByString, readUserIdFromTheCookis } from "@/lib/utils";
+import { checkEmailUIDExists, checkUserAuthority, removeMemberOutOfProject } from "./../../../lib/firebase-func";
+import { generateUidByString, readUserIdFromTheCookis } from "./../../../lib/utils";
 import { Request, Response } from "express";
 
 export default async function DeleteMemberHandler(req: Request<{ email: string; projectId: string }>, res: Response) {

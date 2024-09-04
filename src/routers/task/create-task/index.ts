@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { TaskType } from "@/types";
-import { createOrSetTask, getUpdateProjectDueTime, viewTasksProject } from "@/lib/firebase-func";
-// import { io } from "@/ws";
-import { socket } from "@/lib/socket";
+import { TaskType } from "./../../../types";
+import { createOrSetTask, getUpdateProjectDueTime, viewTasksProject } from "./../../../lib/firebase-func";
+// import { io } from "./../../../ws";
+import { socket } from "./../../../lib/socket";
 
 export default async function CreateTaskHandler(req: Request<{}, {}, TaskType, {}>, res: Response) {
   const feat = "create task"; // name api

@@ -1,7 +1,7 @@
 import { doc, getDoc, setDoc, deleteDoc, getDocs, collection, DocumentData, updateDoc } from "firebase/firestore";
-import { AuthorityType, NewDataProject } from "@/types";
-import { DataRegister, DataTask } from "@/types/firebase";
-import { firestoreDB } from "@/db/firebase";
+import { AuthorityType, NewDataProject } from "./../types";
+import { DataRegister, DataTask } from "./../types/firebase";
+import { firestoreDB } from "./../db/firebase";
 
 // user
 export const checkEmailUIDExists = async (uid: string) => {
