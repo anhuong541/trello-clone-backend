@@ -16,4 +16,5 @@ export default {
   jwtSecret: process.env.JWT_SECRET!,
   emailApp: process.env.APP_EMAIL,
   passApp: process.env.APP_PASS,
+  ablyKey: process.env.ABLY_API_KEY,
 };

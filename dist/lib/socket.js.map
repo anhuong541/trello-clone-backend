@@ -1,1 +1,1 @@
-{"version":3,"file":"socket.js","sourceRoot":"","sources":["../../src/lib/socket.ts"],"names":[],"mappings":";;;;AAAA,uDAAsC;AACtC,wDAAwB;AAEX,QAAA,YAAY,GAAG,IAAI,cAAI,CAAC,QAAQ,CAAC,OAAO,CAAC,GAAG,CAAC,YAAY,CAAC,CAAC;AAE3D,QAAA,MAAM,GAAG,IAAA,qBAAE,EAAC,uBAAuB,CAAC,CAAC;AAClD,oDAAoD"}
+{"version":3,"file":"socket.js","sourceRoot":"","sources":["../../src/lib/socket.ts"],"names":[],"mappings":";;;;AAAA,uDAAsC;AACtC,wDAAwB;AACxB,iEAAiC;AAEpB,QAAA,YAAY,GAAG,IAAI,cAAI,CAAC,QAAQ,CAAC,gBAAM,CAAC,OAAO,CAAC,CAAC;AAEjD,QAAA,MAAM,GAAG,IAAA,qBAAE,EAAC,uBAAuB,CAAC,CAAC;AAClD,oDAAoD"}
