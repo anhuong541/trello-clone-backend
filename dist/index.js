@@ -15,7 +15,7 @@ const join_project_room_1 = tslib_1.__importDefault(require("./routers/join-proj
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3456;
-const corsWebAllow = ["http://localhost:3000", "https://trello-clone-client-three.vercel.app"];
+const corsWebAllow = ["http://localhost:3000", "https://trello-clone-client-three.vercel.app", "https://trello-clone-client-v2.vercel.app"];
 const corsOptions = {
     origin: corsWebAllow,
     optionsSuccessStatus: 200,
