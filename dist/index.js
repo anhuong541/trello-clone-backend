@@ -15,16 +15,26 @@ const join_project_room_1 = tslib_1.__importDefault(require("./routers/join-proj
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3456;
-const corsWebAllow = ["http://localhost:3000", "https://trello-clone-client-three.vercel.app", "https://trello-clone-client-v2.vercel.app"];
-const corsOptions = {
-    origin: corsWebAllow,
-    optionsSuccessStatus: 200,
-    credentials: true, // enable set cookie
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    allowedHeaders: "Content-Type,Authorization",
+const allowedStaticDomains = [
+    "http://localhost:3000",
+    "https://trello-clone-client-three.vercel.app",
+    "https://trello-clone-client-v2.vercel.app",
+];
+const vercelDomainPattern = /\.vercel\.app$/;
+// Dynamic CORS configuration in TypeScript
+const corsOptionsDelegate = (req, callback) => {
+    const origin = req.header("Origin");
+    if (origin && (allowedStaticDomains.includes(origin) || vercelDomainPattern.test(origin))) {
+        const corsOptions = { origin: true }; // Allow the domain
+        callback(null, corsOptions); // Pass the CORS options
+    }
+    else {
+        const corsOptions = { origin: false }; // Block the domain
+        callback(null, corsOptions); // Pass the CORS options
+    }
 };
 // Middleware
-app.use((0, cors_1.default)(corsOptions));
+app.use((0, cors_1.default)(corsOptionsDelegate));
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 // Routes
