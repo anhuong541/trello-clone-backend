@@ -17,4 +17,5 @@ export default {
   emailApp: process.env.APP_EMAIL,
   passApp: process.env.APP_PASS,
   ablyKey: process.env.ABLY_API_KEY,
+  serverUrl: process.env.WEB_SERVER_URL,
 };

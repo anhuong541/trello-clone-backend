@@ -46,7 +46,7 @@ function RegisterRouteHandler(req, res) {
             to: [email],
             subject: "Email active account Trello",
             text: `This is an active email`,
-            html: `<div>Please activate your account by clicking the link: <a href="${"http://localhost:3456"}/user/${email}/${activationHash}">Active account link</a></div>`,
+            html: `<div>Please activate your account by clicking the link: <a href="${config_1.default.serverUrl}/user/${email}/${activationHash}">Active account link</a></div>`,
         };
         yield (0, email_action_1.sendMail)(defaultMsgCon);
         try {

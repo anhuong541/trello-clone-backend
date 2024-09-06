@@ -12,7 +12,7 @@ export default async function ActiveUserAccountHandler(req: Request<{ email: str
   const data = await getUserDataById(userId);
 
   if (data?.isActive) {
-    return res.redirect("http://localhost:3000/project");
+    return res.redirect("https://trello-clone-client-v2.vercel.app/project");
   }
 
   try {
@@ -42,5 +42,5 @@ export default async function ActiveUserAccountHandler(req: Request<{ email: str
   };
 
   await createNewUser(userId, removeHashData); // update to remove hash active
-  return res.redirect("http://localhost:3000/project");
+  return res.redirect("https://trello-clone-client-v2.vercel.app/project");
 }

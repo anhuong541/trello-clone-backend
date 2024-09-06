@@ -10,6 +10,7 @@
     "web": "ts-node src/web/index.ts",
     "serve": "node dist/index.js",
     "vercel-build": "npm run build",
+    "build-c": "tsc",
     "build": "rimraf dist && tsc",
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist",
