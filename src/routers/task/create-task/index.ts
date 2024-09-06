@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { TaskType } from "./../../../types";
-import { createOrSetTask, getUpdateProjectDueTime, viewTasksProject } from "./../../../lib/firebase-func";
+import { checkProjectExists, createOrSetTask, getUpdateProjectDueTime, viewTasksProject } from "./../../../lib/firebase-func";
 import { ablyRealtime } from "./../../../lib/socket";
 
 export default async function CreateTaskHandler(req: Request<{}, {}, TaskType, {}>, res: Response) {
@@ -13,6 +13,10 @@ export default async function CreateTaskHandler(req: Request<{}, {}, TaskType, {
         message: "require task body",
         feat,
       });
+    }
+
+    if (!(await checkProjectExists(taskContent.projectId))) {
+      return res.status(409).json({ status: "fail", error: "project doesn't exists!", feat });
     }
 
     try {

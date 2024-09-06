@@ -19,6 +19,9 @@ function DeleteTaskHandler(req, res) {
                     feat,
                 });
             }
+            if (!(yield (0, firebase_func_1.checkProjectExists)(taskContent.projectId))) {
+                return res.status(409).json({ status: "fail", error: "project doesn't exists!", feat });
+            }
             const check = yield (0, auth_action_1.checkUserIsAllowJoiningProject)(userId, taskContent.projectId);
             if (!check) {
                 return res.status(401).json({

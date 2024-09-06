@@ -16,6 +16,9 @@ function UpdateTaskHandler(req, res) {
                     feat,
                 });
             }
+            if (!(yield (0, firebase_func_1.checkProjectExists)(taskContent.projectId))) {
+                return res.status(409).json({ status: "fail", error: "project doesn't exists!", feat });
+            }
             try {
                 yield (0, firebase_func_1.createOrSetTask)(taskContent.projectId, taskContent.taskId, taskContent);
                 yield (0, firebase_func_1.getUpdateProjectDueTime)(taskContent.projectId);

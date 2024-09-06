@@ -51,7 +51,7 @@ app.get("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_
 app.post("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.AddMemberHandler);
 app.put("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.EditMemberHandler);
 app.delete("/member/:projectId/:email", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.DeleteMemberHandler);
-app.get("/joinProjectRoom/:projectId", auth_action_1.authorizationMidleware, join_project_room_1.default);
+app.get("/join-project-room/:projectId", auth_action_1.authorizationMidleware, join_project_room_1.default);
 app.listen(port, () => {
     console.log(`express is listen to port: ${port}`);
 });
