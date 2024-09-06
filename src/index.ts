@@ -29,15 +29,22 @@ const allowedStaticDomains = [
 ];
 const vercelDomainPattern = /\.vercel\.app$/;
 
+const corsOptionsOut = {
+  optionsSuccessStatus: 200,
+  credentials: true, // enable set cookie
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: "Content-Type,Authorization",
+};
+
 // Dynamic CORS configuration in TypeScript
 const corsOptionsDelegate: CorsOptionsDelegate | any = (req: Request, callback: (err: Error | null, options?: CorsOptions) => void) => {
   const origin = req.header("Origin");
 
   if (origin && (allowedStaticDomains.includes(origin) || vercelDomainPattern.test(origin))) {
-    const corsOptions: CorsOptions = { origin: true }; // Allow the domain
+    const corsOptions: CorsOptions = { origin: true, ...corsOptionsOut };
     callback(null, corsOptions); // Pass the CORS options
   } else {
-    const corsOptions: CorsOptions = { origin: false }; // Block the domain
+    const corsOptions: CorsOptions = { origin: false };
     callback(null, corsOptions); // Pass the CORS options
   }
 };

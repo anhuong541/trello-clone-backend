@@ -21,15 +21,21 @@ const allowedStaticDomains = [
     "https://trello-clone-client-v2.vercel.app",
 ];
 const vercelDomainPattern = /\.vercel\.app$/;
+const corsOptionsOut = {
+    optionsSuccessStatus: 200,
+    credentials: true, // enable set cookie
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: "Content-Type,Authorization",
+};
 // Dynamic CORS configuration in TypeScript
 const corsOptionsDelegate = (req, callback) => {
     const origin = req.header("Origin");
     if (origin && (allowedStaticDomains.includes(origin) || vercelDomainPattern.test(origin))) {
-        const corsOptions = { origin: true }; // Allow the domain
+        const corsOptions = Object.assign({ origin: true }, corsOptionsOut);
         callback(null, corsOptions); // Pass the CORS options
     }
     else {
-        const corsOptions = { origin: false }; // Block the domain
+        const corsOptions = { origin: false };
         callback(null, corsOptions); // Pass the CORS options
     }
 };
