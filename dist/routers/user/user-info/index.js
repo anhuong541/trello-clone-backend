@@ -2,8 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = TakeUserInfoHandler;
 const tslib_1 = require("tslib");
-const firebase_func_1 = require("./../../../lib/firebase-func");
-const utils_1 = require("./../../../lib/utils");
+const firebase_func_1 = require("@/lib/firebase-func");
+const utils_1 = require("@/lib/utils");
 function TakeUserInfoHandler(req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const feat = "user-info";
