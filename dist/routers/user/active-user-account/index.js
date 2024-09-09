@@ -12,7 +12,7 @@ function ActiveUserAccountHandler(req, res) {
         const userId = (0, utils_1.generateUidByString)(email);
         const data = yield (0, firebase_func_1.getUserDataById)(userId);
         if (data === null || data === void 0 ? void 0 : data.isActive) {
-            return res.redirect("https://trello-clone-client-v2.vercel.app/project");
+            return res.redirect(config_1.default.clientUrl);
         }
         try {
             yield jsonwebtoken_1.default.verify(data === null || data === void 0 ? void 0 : data.activationHash, config_1.default.jwtSecret);
@@ -39,7 +39,7 @@ function ActiveUserAccountHandler(req, res) {
             isActive: true,
         };
         yield (0, firebase_func_1.createNewUser)(userId, removeHashData); // update to remove hash active
-        return res.redirect("https://trello-clone-client-v2.vercel.app/project");
+        return res.redirect(config_1.default.clientUrl);
     });
 }
 //# sourceMappingURL=index.js.map

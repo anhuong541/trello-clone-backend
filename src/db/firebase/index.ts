@@ -1,6 +1,8 @@
 import { getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+
+import { firebaseConfigClone } from "./../../config/clone-db";
 import config from "./../../config";
 
 const firebaseConfig = {
@@ -13,6 +15,6 @@ const firebaseConfig = {
   measurementId: config.measurementId,
 };
 
-const firebaseApp = initializeApp(firebaseConfig);
+const firebaseApp = initializeApp(config.env ? firebaseConfig : firebaseConfigClone);
 export const auth = getAuth(firebaseApp);
 export const firestoreDB = getFirestore(firebaseApp);

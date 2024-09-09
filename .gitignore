@@ -6,5 +6,5 @@ node_modules
 .env
 
 # db key
-FirebaseAccountSecretKey.json
+clone-db.ts
 .vercel
