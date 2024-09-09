@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { checkProjectExists, viewTasksProject } from "./../../../lib/firebase-func";
 import { readUserIdFromTheCookis } from "./../../../lib/utils";
 import { checkUserIsAllowJoiningProject } from "./../../../lib/auth-action";
+import { ablyRealtime } from "./../../../lib/socket";
 
 export default async function ViewTasksHandler(req: Request<{ projectId: string }>, res: Response) {
   const feat = "view all tasks"; // name api
@@ -33,9 +34,10 @@ export default async function ViewTasksHandler(req: Request<{ projectId: string 
 
     try {
       const data = await viewTasksProject(projectId);
-
-      return res.status(200).json({ status: "success", feat, data });
+      await ablyRealtime.channels.get(`view_project_${projectId}`).publish({ data });
+      return res.status(200).json({ status: "success", feat, message: "view board success" });
     } catch (error) {
+      await ablyRealtime.channels.get(`view_project_${projectId}`).publish({ data: { error: "fail" } });
       return res.status(400).json({
         status: "fail",
         feat,

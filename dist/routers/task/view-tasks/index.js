@@ -5,6 +5,7 @@ const tslib_1 = require("tslib");
 const firebase_func_1 = require("./../../../lib/firebase-func");
 const utils_1 = require("./../../../lib/utils");
 const auth_action_1 = require("./../../../lib/auth-action");
+const socket_1 = require("./../../../lib/socket");
 function ViewTasksHandler(req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const feat = "view all tasks"; // name api
@@ -31,9 +32,11 @@ function ViewTasksHandler(req, res) {
             }
             try {
                 const data = yield (0, firebase_func_1.viewTasksProject)(projectId);
-                return res.status(200).json({ status: "success", feat, data });
+                yield socket_1.ablyRealtime.channels.get(`view_project_${projectId}`).publish({ data });
+                return res.status(200).json({ status: "success", feat, message: "view board success" });
             }
             catch (error) {
+                yield socket_1.ablyRealtime.channels.get(`view_project_${projectId}`).publish({ data: { error: "fail" } });
                 return res.status(400).json({
                     status: "fail",
                     feat,

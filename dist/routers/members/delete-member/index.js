@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = DeleteMemberHandler;
 const tslib_1 = require("tslib");
+const socket_1 = require("./../../../lib/socket");
 const firebase_func_1 = require("./../../../lib/firebase-func");
 const utils_1 = require("./../../../lib/utils");
 function DeleteMemberHandler(req, res) {
@@ -30,6 +31,8 @@ function DeleteMemberHandler(req, res) {
                 return res.status(401).json({ status: "fail", feat, message: "User don't have this authority" });
             }
             yield (0, firebase_func_1.removeMemberOutOfProject)(projectId, memberUserId);
+            const dataTableAfterUpdate = yield (0, firebase_func_1.viewTasksProject)(projectId);
+            socket_1.ablyRealtime.channels.get(`view_project_${projectId}`).publish({ data: dataTableAfterUpdate });
             return res.status(200).json({ status: "success", feat, message: "Delete success" });
         }
         catch (error) {

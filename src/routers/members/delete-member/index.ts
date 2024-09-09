@@ -1,4 +1,5 @@
-import { checkEmailUIDExists, checkUserAuthority, removeMemberOutOfProject } from "./../../../lib/firebase-func";
+import { ablyRealtime } from "./../../../lib/socket";
+import { checkEmailUIDExists, checkUserAuthority, removeMemberOutOfProject, viewTasksProject } from "./../../../lib/firebase-func";
 import { generateUidByString, readUserIdFromTheCookis } from "./../../../lib/utils";
 import { Request, Response } from "express";
 
@@ -32,6 +33,8 @@ export default async function DeleteMemberHandler(req: Request<{ email: string; 
     }
 
     await removeMemberOutOfProject(projectId, memberUserId);
+    const dataTableAfterUpdate = await viewTasksProject(projectId);
+    ablyRealtime.channels.get(`view_project_${projectId}`).publish({ data: dataTableAfterUpdate });
     return res.status(200).json({ status: "success", feat, message: "Delete success" });
   } catch (error) {
     return res.status(400).json({ status: "fail", feat, message: "Something wrong happen to this api" });
