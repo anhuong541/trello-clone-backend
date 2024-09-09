@@ -2,7 +2,7 @@ import { PriorityType, TaskStatusType } from ".";
 
 export interface DataRegister {
   uid: string;
-  username: string;
+  username: number;
   email: string;
   password: string;
   createAt: number;
@@ -21,6 +21,7 @@ export interface DataProject {
 export interface DataTask {
   taskId: string;
   projectId: string;
+  positionId: string;
   title: string;
   description: string;
   storyPoint: 1 | 2 | 3 | 5 | 8 | 13 | 21;
