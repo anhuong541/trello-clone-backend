@@ -32,7 +32,7 @@ function DeleteMemberHandler(req, res) {
             }
             yield (0, firebase_func_1.removeMemberOutOfProject)(projectId, memberUserId);
             const dataTableAfterUpdate = yield (0, firebase_func_1.viewTasksProject)(projectId);
-            socket_1.ablyRealtime.channels.get(`view_project_${projectId}`).publish({ data: dataTableAfterUpdate });
+            socket_1.ablyRealtime.channels.get(`view_project_${projectId}`).publish({ data: (0, utils_1.handleFormatDataBoard)(dataTableAfterUpdate) });
             return res.status(200).json({ status: "success", feat, message: "Delete success" });
         }
         catch (error) {

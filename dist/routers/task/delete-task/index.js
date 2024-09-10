@@ -34,7 +34,7 @@ function DeleteTaskHandler(req, res) {
                 yield (0, firebase_func_1.deteleTask)(taskContent.projectId, taskContent.taskId);
                 yield (0, firebase_func_1.getUpdateProjectDueTime)(taskContent.projectId);
                 const dataTableAfterUpdate = yield (0, firebase_func_1.viewTasksProject)(taskContent.projectId);
-                socket_1.ablyRealtime.channels.get(`view_project_${taskContent.projectId}`).publish({ data: dataTableAfterUpdate });
+                socket_1.ablyRealtime.channels.get(`view_project_${taskContent.projectId}`).publish({ data: (0, utils_1.handleFormatDataBoard)(dataTableAfterUpdate) });
                 return res.status(200).json({ status: "success", feat });
             }
             catch (error) {

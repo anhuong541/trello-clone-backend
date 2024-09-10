@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { readUserIdFromTheCookis } from "./../../../lib/utils";
+import { handleFormatDataBoard, readUserIdFromTheCookis } from "./../../../lib/utils";
 import { checkProjectExists, deteleTask, getUpdateProjectDueTime, viewTasksProject } from "./../../../lib/firebase-func";
 import { checkUserIsAllowJoiningProject } from "./../../../lib/auth-action";
 import { ablyRealtime } from "./../../../lib/socket";
@@ -37,7 +37,7 @@ export default async function DeleteTaskHandler(req: Request, res: Response) {
       await getUpdateProjectDueTime(taskContent.projectId);
 
       const dataTableAfterUpdate = await viewTasksProject(taskContent.projectId);
-      ablyRealtime.channels.get(`view_project_${taskContent.projectId}`).publish({ data: dataTableAfterUpdate });
+      ablyRealtime.channels.get(`view_project_${taskContent.projectId}`).publish({ data: handleFormatDataBoard(dataTableAfterUpdate) });
 
       return res.status(200).json({ status: "success", feat });
     } catch (error) {
