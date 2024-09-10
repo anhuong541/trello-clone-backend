@@ -7,4 +7,5 @@ node_modules
 
 # db key
 clone-db.ts
+
 .vercel

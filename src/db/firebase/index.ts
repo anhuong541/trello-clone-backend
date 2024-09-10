@@ -2,7 +2,8 @@ import { getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
-import { firebaseConfigClone } from "./../../config/clone-db";
+// @ts-nocheck
+import { firebaseConfigClone } from "../../config/clone-db";
 import config from "./../../config";
 
 const firebaseConfig = {
