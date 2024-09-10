@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 // @ts-nocheck
-import { firebaseConfigClone } from "../../config/clone-db";
+// import { firebaseConfigClone } from "../../config/clone-db";
 import config from "./../../config";
 
 const firebaseConfig = {
@@ -16,6 +16,7 @@ const firebaseConfig = {
   measurementId: config.measurementId,
 };
 
-const firebaseApp = initializeApp(config.env ? firebaseConfig : firebaseConfigClone);
+// const firebaseApp = initializeApp(config.env ? firebaseConfig : firebaseConfigClone);
+const firebaseApp = initializeApp(firebaseConfig);
 export const auth = getAuth(firebaseApp);
 export const firestoreDB = getFirestore(firebaseApp);

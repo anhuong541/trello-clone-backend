@@ -1,1 +1,0 @@
-{"version":3,"file":"clone-db.js","sourceRoot":"","sources":["../../src/config/clone-db.ts"],"names":[],"mappings":";;;AAAa,QAAA,mBAAmB,GAAG;IACjC,MAAM,EAAE,yCAAyC;IACjD,UAAU,EAAE,yCAAyC;IACrD,WAAW,EAAE,mFAAmF;IAChG,SAAS,EAAE,yBAAyB;IACpC,aAAa,EAAE,qCAAqC;IACpD,iBAAiB,EAAE,cAAc;IACjC,KAAK,EAAE,2CAA2C;IAClD,aAAa,EAAE,cAAc;CAC9B,CAAC"}
