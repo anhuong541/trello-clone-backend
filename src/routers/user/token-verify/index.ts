@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import config from "./../../../config";
-import { generateUidByString } from "./../../../lib/utils";
-import { checkUserAccountIsActive } from "./../../../lib/firebase-func";
+import config from "../../../config";
+import { generateUidByString } from "../../../lib/utils";
+import { checkUserAccountIsActive } from "../../../lib/firebase-func";
 
 export default async function TokenVerifyHandler(req: Request, res: Response) {
   const feat = "token verify";

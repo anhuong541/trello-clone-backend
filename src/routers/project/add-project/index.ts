@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { addMemberAuthorityInProject, addUserProjectsInfo, checkEmailUIDExists, createOrSetProject } from "./../../../lib/firebase-func";
-import { generateNewUid, readUserIdFromTheCookis } from "./../../../lib/utils";
-import { AuthorityType, NewDataProject, ProjectType } from "./../../../types";
+import { addMemberAuthorityInProject, addUserProjectsInfo, checkEmailUIDExists, createOrSetProject } from "../../../lib/firebase-func";
+import { generateNewUid, readUserIdFromTheCookis } from "../../../lib/utils";
+import { AuthorityType, NewDataProject, ProjectType } from "../../../types";
 
 export default async function AddProjectHandler(req: Request<{}, {}, ProjectType, {}>, res: Response) {
   const feat = "add project";

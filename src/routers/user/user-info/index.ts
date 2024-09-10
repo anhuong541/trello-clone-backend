@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
-import { getUserDataById } from "./../../../lib/firebase-func";
-import { readUserIdFromAuth } from "./../../../lib/utils";
+import { getUserDataById } from "../../../lib/firebase-func";
+import { readUserIdFromAuth } from "../../../lib/utils";
 
 export default async function TakeUserInfoHandler(req: Request, res: Response) {
   const feat = "user-info";

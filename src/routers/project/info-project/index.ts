@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getProjectInfo, viewMemberInProject } from "./../../../lib/firebase-func";
+import { getProjectInfo, viewMemberInProject } from "../../../lib/firebase-func";
 
 export default async function ProjectInfoHandler(req: Request, res: Response) {
   const feat = "project info";

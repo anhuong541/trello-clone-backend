@@ -1,11 +1,6 @@
-import {
-  addMemberAuthorityInProject,
-  addProjectIntoMemberData,
-  checkEmailUIDExists,
-  checkUserAuthority,
-} from "./../../../lib/firebase-func";
-import { generateUidByString, readUserIdFromTheCookis } from "./../../../lib/utils";
-import { AuthorityType } from "./../../../types";
+import { addMemberAuthorityInProject, addProjectIntoMemberData, checkEmailUIDExists, checkUserAuthority } from "../../../lib/firebase-func";
+import { generateUidByString, readUserIdFromTheCookis } from "../../../lib/utils";
+import { AuthorityType } from "../../../types";
 import { Request, Response } from "express";
 
 export default async function AddMemberHandler(

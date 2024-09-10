@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { readUserIdFromTheCookis } from "./../../../lib/utils";
-import { checkProjectExists, deteleTask, getUpdateProjectDueTime, viewTasksProject } from "./../../../lib/firebase-func";
-import { checkUserIsAllowJoiningProject } from "./../../../lib/auth-action";
-import { ablyRealtime } from "./../../../lib/socket";
+import { readUserIdFromTheCookis } from "../../../lib/utils";
+import { checkProjectExists, deteleTask, getUpdateProjectDueTime, viewTasksProject } from "../../../lib/firebase-func";
+import { checkUserIsAllowJoiningProject } from "../../../lib/auth-action";
+import { ablyRealtime } from "../../../lib/socket";
 
 export default async function DeleteTaskHandler(req: Request, res: Response) {
   const feat = "delete task";

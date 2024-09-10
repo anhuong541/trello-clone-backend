@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { checkEmailUIDExists, createNewUser } from "./../../../lib/firebase-func";
-import { sendUserSession } from "./../../../lib/auth-action";
-import { generateUidByString } from "./../../../lib/utils";
-import { sendMail } from "./../../../lib/email-action";
-import config from "./../../../config";
+import { checkEmailUIDExists, createNewUser } from "../../../lib/firebase-func";
+import { sendUserSession } from "../../../lib/auth-action";
+import { generateUidByString } from "../../../lib/utils";
+import { sendMail } from "../../../lib/email-action";
+import config from "../../../config";
 
 export default async function RegisterRouteHandler(req: Request, res: Response) {
   const feat = "register";

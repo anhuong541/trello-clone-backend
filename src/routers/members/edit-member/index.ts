@@ -1,5 +1,5 @@
-import { checkEmailUIDExists, checkUserAuthority, updateMemberAuthorityInProject } from "./../../../lib/firebase-func";
-import { generateUidByString, readUserIdFromTheCookis } from "./../../../lib/utils";
+import { checkEmailUIDExists, checkUserAuthority, updateMemberAuthorityInProject } from "../../../lib/firebase-func";
+import { generateUidByString, readUserIdFromTheCookis } from "../../../lib/utils";
 import { Request, Response } from "express";
 
 export default async function EditMemberHandler(req: Request, res: Response) {

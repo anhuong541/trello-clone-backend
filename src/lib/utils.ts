@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { Request, Response } from "express";
 import { checkEmailUIDExists, checkProjectExists } from "./firebase-func";
-import config from "./../config";
+import config from "../config";
 
 export const generateNewUid = () => {
   return uuidv4();

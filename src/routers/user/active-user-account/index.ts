@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { createNewUser, deleteAccountUnActive, getUserDataById } from "./../../../lib/firebase-func";
-import { generateUidByString } from "./../../../lib/utils";
-import { DataRegister } from "./../../../types/firebase";
+import { createNewUser, deleteAccountUnActive, getUserDataById } from "../../../lib/firebase-func";
+import { generateUidByString } from "../../../lib/utils";
+import { DataRegister } from "../../../types/firebase";
 import jwt from "jsonwebtoken";
-import config from "./../../../config";
+import config from "../../../config";
 
 export default async function ActiveUserAccountHandler(req: Request<{ email: string; hash: string }, {}, {}, {}>, res: Response) {
   const { email, hash } = req.params;

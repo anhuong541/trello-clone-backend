@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { addUserProjectsInfo, checkUserAuthority, createOrSetProject } from "./../../../lib/firebase-func";
-import { ProjectType } from "./../../../types";
-import { checkUIDAndProjectExists, readUserIdFromTheCookis } from "./../../../lib/utils";
+import { addUserProjectsInfo, checkUserAuthority, createOrSetProject } from "../../../lib/firebase-func";
+import { ProjectType } from "../../../types";
+import { checkUIDAndProjectExists, readUserIdFromTheCookis } from "../../../lib/utils";
 
 export default async function EditProjectHandler(req: Request<{}, {}, ProjectType, {}>, res: Response) {
   const feat = "edit project";
