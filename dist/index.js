@@ -11,6 +11,7 @@ const project_1 = require("./routers/project");
 const task_1 = require("./routers/task");
 const members_1 = require("./routers/members");
 const auth_action_1 = require("./lib/auth-action");
+const test_1 = tslib_1.__importDefault(require("./routers/test"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3456;
@@ -66,6 +67,7 @@ app.get("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_
 app.post("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.AddMemberHandler);
 app.put("/member/:projectId", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.EditMemberHandler);
 app.delete("/member/:projectId/:email", auth_action_1.authorizationMidleware, auth_action_1.authUserIsProjectOwner, members_1.DeleteMemberHandler);
+app.get("/test", test_1.default);
 app.listen(port, () => {
     console.log(`express is listen to port: ${port}`);
 });
