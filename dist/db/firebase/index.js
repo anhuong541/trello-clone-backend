@@ -6,7 +6,7 @@ const firestore_1 = require("firebase/firestore");
 const app_1 = require("firebase/app");
 const auth_1 = require("firebase/auth");
 // @ts-nocheck
-const clone_db_1 = require("../../config/clone-db");
+// import { firebaseConfigClone } from "../../config/clone-db";
 const config_1 = tslib_1.__importDefault(require("./../../config"));
 const firebaseConfig = {
     apiKey: config_1.default.apiKey,
@@ -17,7 +17,8 @@ const firebaseConfig = {
     appId: config_1.default.appId,
     measurementId: config_1.default.measurementId,
 };
-const firebaseApp = (0, app_1.initializeApp)(config_1.default.env ? firebaseConfig : clone_db_1.firebaseConfigClone);
+// const firebaseApp = initializeApp(config.env ? firebaseConfig : firebaseConfigClone);
+const firebaseApp = (0, app_1.initializeApp)(firebaseConfig);
 exports.auth = (0, auth_1.getAuth)(firebaseApp);
 exports.firestoreDB = (0, firestore_1.getFirestore)(firebaseApp);
 //# sourceMappingURL=index.js.map
