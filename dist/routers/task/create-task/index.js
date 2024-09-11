@@ -4,6 +4,7 @@ exports.default = CreateTaskHandler;
 const tslib_1 = require("tslib");
 const firebase_func_1 = require("../../../lib/firebase-func");
 const socket_1 = require("../../../lib/socket");
+const utils_1 = require("../../../lib/utils");
 function CreateTaskHandler(req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const feat = "create task"; // name api
@@ -23,7 +24,7 @@ function CreateTaskHandler(req, res) {
                 yield (0, firebase_func_1.createOrSetTask)(taskContent.projectId, taskContent.taskId, taskContent);
                 yield (0, firebase_func_1.getUpdateProjectDueTime)(taskContent.projectId);
                 const dataTableAfterUpdate = yield (0, firebase_func_1.viewTasksProject)(taskContent.projectId);
-                socket_1.ablyRealtime.channels.get(`view_project_${taskContent.projectId}`).publish({ data: dataTableAfterUpdate });
+                socket_1.ablyRealtime.channels.get(`view_project_${taskContent.projectId}`).publish({ data: (0, utils_1.handleFormatDataBoard)(dataTableAfterUpdate) });
                 return res.status(200).json({ status: "success", feat });
             }
             catch (error) {

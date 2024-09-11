@@ -32,7 +32,9 @@ function ViewTasksHandler(req, res) {
             }
             try {
                 const data = yield (0, firebase_func_1.viewTasksProject)(projectId);
-                yield socket_1.ablyRealtime.channels.get(`view_project_${projectId}`).publish({ data });
+                yield socket_1.ablyRealtime.channels.get(`view_project_${projectId}`).publish({
+                    data: (0, utils_1.handleFormatDataBoard)(data),
+                });
                 return res.status(200).json({ status: "success", feat, message: "view board success" });
             }
             catch (error) {

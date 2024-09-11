@@ -5,6 +5,7 @@ export type AuthorityType = "Owner" | "Edit" | "View";
 export interface TaskType {
   taskId: string;
   projectId: string;
+  positionId: string;
   title: string;
   description: string;
   taskStatus: TaskStatusType;

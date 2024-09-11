@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.readUserIdFromAuth = exports.readUserIdFromTheCookis = exports.checkUIDAndProjectExists = exports.generateUidByString = exports.generateNewUid = void 0;
+exports.handleFormatDataBoard = exports.readUserIdFromAuth = exports.readUserIdFromTheCookis = exports.checkUIDAndProjectExists = exports.generateUidByString = exports.generateNewUid = void 0;
 const tslib_1 = require("tslib");
 const uuid_1 = require("uuid");
 const jsonwebtoken_1 = tslib_1.__importDefault(require("jsonwebtoken"));
@@ -45,4 +45,61 @@ const readUserIdFromAuth = (req) => {
     return (0, exports.generateUidByString)(email);
 };
 exports.readUserIdFromAuth = readUserIdFromAuth;
+const handleFormatDataBoard = (data) => {
+    var _a, _b, _c, _d;
+    const dataLength = data.length;
+    const createKanbanMap = new Map();
+    data.forEach((item) => {
+        var _a;
+        const value = (_a = createKanbanMap.get(item.taskStatus)) !== null && _a !== void 0 ? _a : [];
+        createKanbanMap.set(item.taskStatus, [...value, item]);
+    });
+    let dataBoard;
+    if (dataLength > 0) {
+        dataBoard = {
+            Open: {
+                label: "Open",
+                table: (_a = createKanbanMap.get("Open")) !== null && _a !== void 0 ? _a : [],
+            },
+            "In-progress": {
+                label: "In-progress",
+                table: (_b = createKanbanMap.get("In-progress")) !== null && _b !== void 0 ? _b : [],
+            },
+            Resolved: {
+                label: "Resolved",
+                table: (_c = createKanbanMap.get("Resolved")) !== null && _c !== void 0 ? _c : [],
+            },
+            Closed: {
+                label: "Closed",
+                table: (_d = createKanbanMap.get("Closed")) !== null && _d !== void 0 ? _d : [],
+            },
+        };
+    }
+    else {
+        dataBoard = {
+            Open: {
+                label: "Open",
+                table: [],
+            },
+            "In-progress": {
+                label: "In-progress",
+                table: [],
+            },
+            Resolved: {
+                label: "Resolved",
+                table: [],
+            },
+            Closed: {
+                label: "Closed",
+                table: [],
+            },
+        };
+    }
+    createKanbanMap.clear();
+    return {
+        dataBoard,
+        dataLength,
+    };
+};
+exports.handleFormatDataBoard = handleFormatDataBoard;
 //# sourceMappingURL=utils.js.map

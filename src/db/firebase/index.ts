@@ -1,7 +1,10 @@
 import { getFirestore } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import config from "../../config";
+
+// @ts-nocheck
+// import { firebaseConfigClone } from "../../config/clone-db";
+import config from "./../../config";
 
 const firebaseConfig = {
   apiKey: config.apiKey,
@@ -13,6 +16,7 @@ const firebaseConfig = {
   measurementId: config.measurementId,
 };
 
+// const firebaseApp = initializeApp(config.env ? firebaseConfig : firebaseConfigClone);
 const firebaseApp = initializeApp(firebaseConfig);
 export const auth = getAuth(firebaseApp);
 export const firestoreDB = getFirestore(firebaseApp);

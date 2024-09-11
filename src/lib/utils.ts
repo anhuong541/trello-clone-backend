@@ -42,3 +42,60 @@ export const readUserIdFromAuth = (req: Request) => {
   const { email } = jwt.verify(token, config.jwtSecret) as { email: string };
   return generateUidByString(email);
 };
+
+export const handleFormatDataBoard = (data) => {
+  const dataLength = data.length;
+  const createKanbanMap = new Map();
+  data.forEach((item) => {
+    const value = createKanbanMap.get(item.taskStatus) ?? [];
+    createKanbanMap.set(item.taskStatus, [...value, item]);
+  });
+
+  let dataBoard;
+  if (dataLength > 0) {
+    dataBoard = {
+      Open: {
+        label: "Open",
+        table: createKanbanMap.get("Open") ?? [],
+      },
+      "In-progress": {
+        label: "In-progress",
+        table: createKanbanMap.get("In-progress") ?? [],
+      },
+      Resolved: {
+        label: "Resolved",
+        table: createKanbanMap.get("Resolved") ?? [],
+      },
+      Closed: {
+        label: "Closed",
+        table: createKanbanMap.get("Closed") ?? [],
+      },
+    };
+  } else {
+    dataBoard = {
+      Open: {
+        label: "Open",
+        table: [],
+      },
+      "In-progress": {
+        label: "In-progress",
+        table: [],
+      },
+      Resolved: {
+        label: "Resolved",
+        table: [],
+      },
+      Closed: {
+        label: "Closed",
+        table: [],
+      },
+    };
+  }
+
+  createKanbanMap.clear();
+
+  return {
+    dataBoard,
+    dataLength,
+  };
+};

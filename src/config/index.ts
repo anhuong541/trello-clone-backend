@@ -17,5 +17,6 @@ export default {
   emailApp: process.env.APP_EMAIL!,
   passApp: process.env.APP_PASS!,
   ablyKey: process.env.ABLY_API_KEY!,
-  serverUrl: process.env.WEB_SERVER_URL!,
+  serverUrl: env ? process.env.WEB_SERVER_URL! : "http://localhost:3456",
+  clientUrl: env ? process.env.WEB_CLIENT_URL! : "http://localhost:3000",
 };

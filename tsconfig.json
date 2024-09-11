@@ -42,6 +42,6 @@
         "esnext.asynciterable"
     ]
   },
-  "include": ["src/*"],
+  "include": ["src/*", "src/config/clone-db.ts"],
   "exclude": ["node_modules"]
 }
