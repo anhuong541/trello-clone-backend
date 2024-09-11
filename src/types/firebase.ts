@@ -21,7 +21,7 @@ export interface DataProject {
 export interface DataTask {
   taskId: string;
   projectId: string;
-  positionId: string;
+  // positionId: string;
   title: string;
   description: string;
   storyPoint: 1 | 2 | 3 | 5 | 8 | 13 | 21;

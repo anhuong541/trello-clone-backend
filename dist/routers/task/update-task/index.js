@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = UpdateTaskHandler;
 const tslib_1 = require("tslib");
 const firebase_func_1 = require("../../../lib/firebase-func");
+const utils_1 = require("../../../lib/utils");
+const socket_1 = require("../../../lib/socket");
 function UpdateTaskHandler(req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const feat = "update task";
@@ -20,11 +22,11 @@ function UpdateTaskHandler(req, res) {
             }
             try {
                 yield (0, firebase_func_1.createOrSetTask)(taskContent.projectId, taskContent.taskId, taskContent);
-                yield (0, firebase_func_1.getUpdateProjectDueTime)(taskContent.projectId);
                 const dataTableBeforeUpdate = yield (0, firebase_func_1.viewTasksProject)(taskContent.projectId);
-                console.log({ dataTableBeforeUpdate });
-                // const updateIndexAfterUpdate = dataTableBeforeUpdate.filter((item) => item.taskStatus === taskContent.taskStatus).sort;
-                // ablyRealtime.channels.get(`view_project_${taskContent.projectId}`).publish({ data: handleFormatDataBoard(dataTableBeforeUpdate) });
+                // console.log({ dataTableBeforeUpdate });
+                let formatedDataBoard = (0, utils_1.handleFormatDataBoard)(dataTableBeforeUpdate);
+                yield socket_1.ablyRealtime.channels.get(`view_project_${taskContent.projectId}`).publish({ data: formatedDataBoard });
+                yield (0, firebase_func_1.getUpdateProjectDueTime)(taskContent.projectId);
                 return res.status(200).json({ status: "success", feat });
             }
             catch (error) {
