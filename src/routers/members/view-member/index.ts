@@ -1,4 +1,4 @@
-import { getUserDataById, viewMemberInProject } from "./../../../lib/firebase-func";
+import { getUserDataById, viewMemberInProject } from "../../../lib/firebase-func";
 import { DocumentData } from "firebase/firestore";
 import { Request, Response } from "express";
 

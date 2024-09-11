@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { TaskType } from "./../../../types";
-import { checkProjectExists, createOrSetTask, getUpdateProjectDueTime, viewTasksProject } from "./../../../lib/firebase-func";
-import { ablyRealtime } from "./../../../lib/socket";
-import { handleFormatDataBoard } from "./../../../lib/utils";
+import { TaskType } from "../../../types";
+import { checkProjectExists, createOrSetTask, getUpdateProjectDueTime, viewTasksProject } from "../../../lib/firebase-func";
+import { ablyRealtime } from "../../../lib/socket";
+import { handleFormatDataBoard } from "../../../lib/utils";
 
 export default async function CreateTaskHandler(req: Request<{}, {}, TaskType, {}>, res: Response) {
   const feat = "create task"; // name api

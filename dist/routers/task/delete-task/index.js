@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = DeleteTaskHandler;
 const tslib_1 = require("tslib");
-const utils_1 = require("./../../../lib/utils");
-const firebase_func_1 = require("./../../../lib/firebase-func");
-const auth_action_1 = require("./../../../lib/auth-action");
-const socket_1 = require("./../../../lib/socket");
+const utils_1 = require("../../../lib/utils");
+const firebase_func_1 = require("../../../lib/firebase-func");
+const auth_action_1 = require("../../../lib/auth-action");
+const socket_1 = require("../../../lib/socket");
 function DeleteTaskHandler(req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const feat = "delete task";

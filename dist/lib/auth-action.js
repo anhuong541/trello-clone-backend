@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authUserIsProjectOwner = exports.authUserIsAMember = exports.checkUserIsAllowJoiningProject = exports.authorizationMidleware = exports.sendUserSession = void 0;
 const tslib_1 = require("tslib");
-const config_1 = tslib_1.__importDefault(require("./../config"));
+const config_1 = tslib_1.__importDefault(require("../config"));
 const jsonwebtoken_1 = tslib_1.__importDefault(require("jsonwebtoken"));
 const utils_1 = require("./utils");
-const firebase_1 = require("./../db/firebase");
+const firebase_1 = require("../db/firebase");
 const firestore_1 = require("firebase/firestore");
 const firebase_func_1 = require("./firebase-func");
 const sendUserSession = (res, token) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {

@@ -1,10 +1,10 @@
-import config from "./../config";
-import { TaskType } from "./../types";
+import config from "../config";
+import { TaskType } from "../types";
 import { NextFunction, Request, Response } from "express";
 
 import jwt from "jsonwebtoken";
 import { readUserIdFromTheCookis } from "./utils";
-import { firestoreDB } from "./../db/firebase";
+import { firestoreDB } from "../db/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { checkUserAuthority } from "./firebase-func";
 

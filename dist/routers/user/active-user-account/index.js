@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = ActiveUserAccountHandler;
 const tslib_1 = require("tslib");
-const firebase_func_1 = require("./../../../lib/firebase-func");
-const utils_1 = require("./../../../lib/utils");
+const firebase_func_1 = require("../../../lib/firebase-func");
+const utils_1 = require("../../../lib/utils");
 const jsonwebtoken_1 = tslib_1.__importDefault(require("jsonwebtoken"));
-const config_1 = tslib_1.__importDefault(require("./../../../config"));
+const config_1 = tslib_1.__importDefault(require("../../../config"));
 function ActiveUserAccountHandler(req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const { email, hash } = req.params;

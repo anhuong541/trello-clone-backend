@@ -1,6 +1,6 @@
 import { ablyRealtime } from "./../../../lib/socket";
 import { checkEmailUIDExists, checkUserAuthority, removeMemberOutOfProject, viewTasksProject } from "./../../../lib/firebase-func";
-import { generateUidByString, handleFormatDataBoard, readUserIdFromTheCookis } from "./../../../lib/utils";
+import { generateUidByString, handleFormatDataBoard, readUserIdFromTheCookis } from "../../../lib/utils";
 import { Request, Response } from "express";
 
 export default async function DeleteMemberHandler(req: Request<{ email: string; projectId: string }>, res: Response) {

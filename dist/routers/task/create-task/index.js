@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = CreateTaskHandler;
 const tslib_1 = require("tslib");
-const firebase_func_1 = require("./../../../lib/firebase-func");
-const socket_1 = require("./../../../lib/socket");
-const utils_1 = require("./../../../lib/utils");
+const firebase_func_1 = require("../../../lib/firebase-func");
+const socket_1 = require("../../../lib/socket");
+const utils_1 = require("../../../lib/utils");
 function CreateTaskHandler(req, res) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const feat = "create task"; // name api

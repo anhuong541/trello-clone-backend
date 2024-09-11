@@ -1,7 +1,7 @@
-import { checkProjectExists, createOrSetTask, getUpdateProjectDueTime, viewTasksProject } from "./../../../lib/firebase-func";
+import { checkProjectExists, createOrSetTask, getUpdateProjectDueTime, viewTasksProject } from "../../../lib/firebase-func";
 // import { handleFormatDataBoard } from "../../../lib/utils";
-// import { ablyRealtime } from "./../../../lib/socket";
-import { TaskType } from "./../../../types";
+// import { ablyRealtime } from "../../../lib/socket";
+import { TaskType } from "../../../types";
 import { Request, Response } from "express";
 
 export default async function UpdateTaskHandler(req: Request<{}, {}, TaskType, {}>, res: Response) {
