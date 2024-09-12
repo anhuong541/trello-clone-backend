@@ -72,17 +72,16 @@ async function deleteMemberList(projectId: string) {
   const colRef = collection(firestoreDB, "projects", projectId, "authority");
   const querySnapshot = await getDocs(colRef);
 
-  const deleteList = querySnapshot.docs.map(async (item) => {
-    const docRef = doc(firestoreDB, "projects", projectId, "authority", item.id);
-    await deleteDoc(docRef);
-  });
-
-  const deleteUserJoinProject = querySnapshot.docs.map(async (item) => {
-    const docRef = doc(firestoreDB, "users", item.id, "projects", projectId);
-    await deleteDoc(docRef);
-  });
-
-  await Promise.all([...deleteList, ...deleteUserJoinProject]);
+  await Promise.all([
+    await querySnapshot.docs.map(async (item) => {
+      const docRef = doc(firestoreDB, "projects", projectId, "authority", item.id);
+      await deleteDoc(docRef);
+    }),
+    await querySnapshot.docs.map(async (item) => {
+      const docRef = doc(firestoreDB, "users", item.id, "projects", projectId);
+      await deleteDoc(docRef);
+    }),
+  ]);
 }
 
 export const deteleProject = async (uid: string, projectId: string) => {
@@ -105,8 +104,7 @@ export const checkUserAuthority = async (projectId: string, userId: string) => {
 
 export const getProjectListByUser = async (uid: string) => {
   const listProjectId = (await getDocs(collection(firestoreDB, "users", uid, "projects"))).docs.map((item: DocumentData) => item.id);
-  const listProjectDataById = listProjectId.map(async (item: string) => (await getDoc(doc(firestoreDB, "projects", item))).data());
-  return await Promise.all(listProjectDataById);
+  return await Promise.all(listProjectId.map(async (item: string) => (await getDoc(doc(firestoreDB, "projects", item))).data()));
 };
 
 export const getUpdateProjectDueTime = async (projectId: string) => {
