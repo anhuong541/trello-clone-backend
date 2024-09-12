@@ -24,7 +24,6 @@ export default async function UpdateTaskHandler(req: Request<{}, {}, TaskType, {
       await createOrSetTask(taskContent.projectId, taskContent.taskId, taskContent);
       const dataTableBeforeUpdate = await viewTasksProject(taskContent.projectId);
       // console.log({ dataTableBeforeUpdate });
-
       let formatedDataBoard = handleFormatDataBoard(dataTableBeforeUpdate);
       await ablyRealtime.channels.get(`view_project_${taskContent.projectId}`).publish({ data: formatedDataBoard });
       await getUpdateProjectDueTime(taskContent.projectId);
