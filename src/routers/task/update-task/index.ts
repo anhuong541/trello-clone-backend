@@ -1,6 +1,6 @@
 import { checkProjectExists, createOrSetTask, getUpdateProjectDueTime, viewTasksProject } from "../../../lib/firebase-func";
-// import { handleFormatDataBoard } from "../../../lib/utils";
-// import { ablyRealtime } from "../../../lib/socket";
+import { handleFormatDataBoard } from "../../../lib/utils";
+import { ablyRealtime } from "../../../lib/socket";
 import { TaskType } from "../../../types";
 import { Request, Response } from "express";
 
@@ -22,14 +22,12 @@ export default async function UpdateTaskHandler(req: Request<{}, {}, TaskType, {
 
     try {
       await createOrSetTask(taskContent.projectId, taskContent.taskId, taskContent);
-      await getUpdateProjectDueTime(taskContent.projectId);
       const dataTableBeforeUpdate = await viewTasksProject(taskContent.projectId);
+      // console.log({ dataTableBeforeUpdate });
 
-      console.log({ dataTableBeforeUpdate });
-
-      // const updateIndexAfterUpdate = dataTableBeforeUpdate.filter((item) => item.taskStatus === taskContent.taskStatus).sort;
-      // ablyRealtime.channels.get(`view_project_${taskContent.projectId}`).publish({ data: handleFormatDataBoard(dataTableBeforeUpdate) });
-
+      let formatedDataBoard = handleFormatDataBoard(dataTableBeforeUpdate);
+      await ablyRealtime.channels.get(`view_project_${taskContent.projectId}`).publish({ data: formatedDataBoard });
+      await getUpdateProjectDueTime(taskContent.projectId);
       return res.status(200).json({ status: "success", feat });
     } catch (error) {
       return res.status(400).json({
