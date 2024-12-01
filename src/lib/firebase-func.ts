@@ -1,155 +1,146 @@
-import { doc, getDoc, setDoc, deleteDoc, getDocs, collection, DocumentData, updateDoc } from "firebase/firestore";
 import { AuthorityType, NewDataProject } from "../types";
 import { DataRegister, DataTask } from "../types/firebase";
-import { firestoreDB } from "../db/firebase";
+import { firestore } from "../db/firebase"; // Admin SDK instance
 
 // user
 export const checkEmailUIDExists = async (uid: string) => {
   try {
-    return (await getDoc(doc(firestoreDB, `users`, uid))).exists();
+    const docRef = firestore.collection("users").doc(uid);
+    const docSnapshot = await docRef.get();
+    return docSnapshot.exists;
   } catch (error) {
-    console.log("this is the error: ", error);
+    console.error("this is the error: ", error);
     return null;
   }
 };
 
 export const checkUserAccountIsActive = async (uid: string) => {
   try {
-    const userData = (await getDoc(doc(firestoreDB, `users`, uid))).data();
-    if (userData?.isActive) {
-      return true;
-    }
-    return false;
+    const userData = (await firestore.collection("users").doc(uid).get()).data();
+    return userData?.isActive || false;
   } catch (error) {
-    console.log("this is the error: ", error);
+    console.error("this is the error: ", error);
     return null;
   }
 };
 
 export const deleteAccountUnActive = async (userId: string) => {
   try {
-    return await deleteDoc(doc(firestoreDB, `users`, userId));
+    await firestore.collection("users").doc(userId).delete();
+    return true;
   } catch (error) {
-    console.log("error when delete user: ", error);
+    console.error("error when delete user: ", error);
     return null;
   }
 };
 
 export const checkProjectExists = async (projectId: string) => {
-  return (await getDoc(doc(firestoreDB, "projects", projectId))).exists();
+  const docSnapshot = await firestore.collection("projects").doc(projectId).get();
+  return docSnapshot.exists;
 };
 
 export const getUserDataById = async (uid: string) => {
-  return (await getDoc(doc(firestoreDB, `users`, uid))).data();
+  const docSnapshot = await firestore.collection("users").doc(uid).get();
+  return docSnapshot.data();
 };
 
 export const createNewUser = async (uid: string, data: DataRegister) => {
-  return await setDoc(doc(firestoreDB, "users", uid), data);
+  await firestore.collection("users").doc(uid).set(data);
 };
 
 export const addUserProjectsInfo = async (uid: string, projectId: string) => {
-  return await setDoc(doc(firestoreDB, "users", uid, "projects", projectId), { projectId });
+  await firestore.collection("users").doc(uid).collection("projects").doc(projectId).set({ projectId });
 };
 
-//project
+// project
 export const createOrSetProject = async (projectId: string, data: NewDataProject) => {
-  return await setDoc(doc(firestoreDB, "projects", projectId), data);
+  await firestore.collection("projects").doc(projectId).set(data);
 };
-
-// async const deleteCollection = (collectionPath: string) => {
-//   const colRef = collection(firestoreDB, collectionPath);
-//   const querySnapshot = await getDocs(colRef);
-
-//   const deletePromises = querySnapshot.docs.map(async (docSnapshot) => {
-//     const docRef = doc(firestoreDB, collectionPath, docSnapshot.id);
-//     await deleteDoc(docRef);
-//   });
-
-//   await Promise.all(deletePromises);
-// }
 
 async function deleteMemberList(projectId: string) {
-  const colRef = collection(firestoreDB, "projects", projectId, "authority");
-  const querySnapshot = await getDocs(colRef);
+  const authorityCol = firestore.collection("projects").doc(projectId).collection("authority");
+  const querySnapshot = await authorityCol.get();
 
-  await Promise.all([
-    await querySnapshot.docs.map(async (item) => {
-      const docRef = doc(firestoreDB, "projects", projectId, "authority", item.id);
-      await deleteDoc(docRef);
-    }),
-    await querySnapshot.docs.map(async (item) => {
-      const docRef = doc(firestoreDB, "users", item.id, "projects", projectId);
-      await deleteDoc(docRef);
-    }),
-  ]);
+  await Promise.all(
+    querySnapshot.docs.map(async (item) => {
+      await firestore.collection("projects").doc(projectId).collection("authority").doc(item.id).delete();
+      await firestore.collection("users").doc(item.id).collection("projects").doc(projectId).delete();
+    })
+  );
 }
 
 export const deteleProject = async (uid: string, projectId: string) => {
   await Promise.all([
-    await deleteDoc(doc(firestoreDB, "projects", projectId)),
-    await deleteDoc(doc(firestoreDB, "users", uid, "projects", projectId)),
-    await deleteMemberList(projectId),
+    firestore.collection("projects").doc(projectId).delete(),
+    firestore.collection("users").doc(uid).collection("projects").doc(projectId).delete(),
+    deleteMemberList(projectId),
   ]);
-
-  // missing clear user meber project list
 };
 
 export const getProjectInfo = async (projectId: string) => {
-  return (await getDoc(doc(firestoreDB, "projects", projectId))).data();
+  const docSnapshot = await firestore.collection("projects").doc(projectId).get();
+  return docSnapshot.data();
 };
 
 export const checkUserAuthority = async (projectId: string, userId: string) => {
-  return (await getDoc(doc(firestoreDB, "projects", projectId, "authority", userId))).data();
+  const docSnapshot = await firestore.collection("projects").doc(projectId).collection("authority").doc(userId).get();
+  return docSnapshot.data();
 };
 
 export const getProjectListByUser = async (uid: string) => {
-  const listProjectId = (await getDocs(collection(firestoreDB, "users", uid, "projects"))).docs.map((item: DocumentData) => item.id);
-  return await Promise.all(listProjectId.map(async (item: string) => (await getDoc(doc(firestoreDB, "projects", item))).data()));
+  const projectSnapshot = await firestore.collection("users").doc(uid).collection("projects").get();
+  const projectIds = projectSnapshot.docs.map((doc) => doc.id);
+
+  return await Promise.all(
+    projectIds.map(async (projectId) => {
+      const projectData = await firestore.collection("projects").doc(projectId).get();
+      return projectData.data();
+    })
+  );
 };
 
 export const getUpdateProjectDueTime = async (projectId: string) => {
-  await updateDoc(doc(firestoreDB, "projects", projectId), {
+  await firestore.collection("projects").doc(projectId).update({
     dueTime: Date.now(),
   });
 };
 
 // task feature
 export const createOrSetTask = async (projectId: string, taskId: string, contentTask: DataTask) => {
-  return await setDoc(doc(firestoreDB, "projects", projectId, "tasks", taskId), contentTask);
+  await firestore.collection("projects").doc(projectId).collection("tasks").doc(taskId).set(contentTask);
 };
 
 export const viewTasksProject = async (projectId: string) => {
-  return (await getDocs(collection(firestoreDB, "projects", projectId, "tasks"))).docs.map((item: DocumentData) => item.data());
+  const tasksSnapshot = await firestore.collection("projects").doc(projectId).collection("tasks").get();
+  return tasksSnapshot.docs.map((doc) => doc.data());
 };
 
 export const deteleTask = async (projectId: string, taskId: string) => {
-  return await deleteDoc(doc(firestoreDB, "projects", projectId, "tasks", taskId));
+  await firestore.collection("projects").doc(projectId).collection("tasks").doc(taskId).delete();
 };
 
 // member
 export const addMemberAuthorityInProject = async (projectId: string, userId: string, authority: AuthorityType[]) => {
-  return await setDoc(doc(firestoreDB, "projects", projectId, "authority", userId), { authority });
+  await firestore.collection("projects").doc(projectId).collection("authority").doc(userId).set({ authority });
 };
 
 export const addProjectIntoMemberData = async (memberId: string, projectId: string) => {
   const projectInfo = await getProjectInfo(projectId);
-  // console.log({ projectInfo });
-  let input = projectInfo;
-  delete input.members;
-  await setDoc(doc(firestoreDB, "users", memberId, "projects", projectId), input);
+  const { members, ...dataWithoutMembers } = projectInfo || {};
+  await firestore.collection("users").doc(memberId).collection("projects").doc(projectId).set(dataWithoutMembers);
 };
 
 export const viewMemberInProject = async (projectId: string) => {
-  return await getDocs(collection(firestoreDB, "projects", projectId, "authority"));
+  return await firestore.collection("projects").doc(projectId).collection("authority").get();
 };
 
 export const updateMemberAuthorityInProject = async (projectId: string, userId: string, authority: AuthorityType[]) => {
-  await updateDoc(doc(firestoreDB, "projects", projectId, "authority", userId), { authority });
+  await firestore.collection("projects").doc(projectId).collection("authority").doc(userId).update({ authority });
 };
 
 export const removeMemberOutOfProject = async (projectId: string, memberId: string) => {
   await Promise.all([
-    await deleteDoc(doc(firestoreDB, "projects", projectId, "authority", memberId)),
-    await deleteDoc(doc(firestoreDB, "users", memberId, "projects", projectId)),
+    firestore.collection("projects").doc(projectId).collection("authority").doc(memberId).delete(),
+    firestore.collection("users").doc(memberId).collection("projects").doc(projectId).delete(),
   ]);
 };

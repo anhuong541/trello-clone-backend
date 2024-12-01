@@ -4,8 +4,8 @@ import { NextFunction, Request, Response } from "express";
 
 import jwt from "jsonwebtoken";
 import { readUserIdFromTheCookis } from "./utils";
-import { firestoreDB } from "../db/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { firestore } from "../db/firebase";
+// import { doc, getDoc } from "firebase/firestore";
 import { checkUserAuthority } from "./firebase-func";
 
 export const sendUserSession = async (res: Response, token: string) => {
@@ -32,8 +32,19 @@ export const authorizationMidleware = async (req: Request, res: Response, next: 
   }
 };
 
+// export const checkUserIsAllowJoiningProject = async (userId: string, projectId: string) => {
+//   return (await getDoc(doc(firestoreDB, `users`, userId, "projects", projectId))).exists();
+// };
+
 export const checkUserIsAllowJoiningProject = async (userId: string, projectId: string) => {
-  return (await getDoc(doc(firestoreDB, `users`, userId, "projects", projectId))).exists();
+  try {
+    const docRef = firestore.collection("users").doc(userId).collection("projects").doc(projectId);
+    const docSnapshot = await docRef.get();
+    return docSnapshot.exists;
+  } catch (error) {
+    console.error("Error checking if user is allowed to join project: ", error);
+    return false; // Return false or handle as needed
+  }
 };
 
 export const authUserIsAMember = async (req: Request<{ projectId: string }, {}, TaskType, {}>, res: Response, next: NextFunction) => {

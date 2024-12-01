@@ -6,7 +6,7 @@ const config_1 = tslib_1.__importDefault(require("../config"));
 const jsonwebtoken_1 = tslib_1.__importDefault(require("jsonwebtoken"));
 const utils_1 = require("./utils");
 const firebase_1 = require("../db/firebase");
-const firestore_1 = require("firebase/firestore");
+// import { doc, getDoc } from "firebase/firestore";
 const firebase_func_1 = require("./firebase-func");
 const sendUserSession = (res, token) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     yield res.cookie("user_session", token, {
@@ -33,8 +33,19 @@ const authorizationMidleware = (req, res, next) => tslib_1.__awaiter(void 0, voi
     }
 });
 exports.authorizationMidleware = authorizationMidleware;
+// export const checkUserIsAllowJoiningProject = async (userId: string, projectId: string) => {
+//   return (await getDoc(doc(firestoreDB, `users`, userId, "projects", projectId))).exists();
+// };
 const checkUserIsAllowJoiningProject = (userId, projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return (yield (0, firestore_1.getDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, `users`, userId, "projects", projectId))).exists();
+    try {
+        const docRef = firebase_1.firestore.collection("users").doc(userId).collection("projects").doc(projectId);
+        const docSnapshot = yield docRef.get();
+        return docSnapshot.exists;
+    }
+    catch (error) {
+        console.error("Error checking if user is allowed to join project: ", error);
+        return false; // Return false or handle as needed
+    }
 });
 exports.checkUserIsAllowJoiningProject = checkUserIsAllowJoiningProject;
 const authUserIsAMember = (req, res, next) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {

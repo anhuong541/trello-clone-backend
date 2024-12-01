@@ -2,155 +2,145 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.removeMemberOutOfProject = exports.updateMemberAuthorityInProject = exports.viewMemberInProject = exports.addProjectIntoMemberData = exports.addMemberAuthorityInProject = exports.deteleTask = exports.viewTasksProject = exports.createOrSetTask = exports.getUpdateProjectDueTime = exports.getProjectListByUser = exports.checkUserAuthority = exports.getProjectInfo = exports.deteleProject = exports.createOrSetProject = exports.addUserProjectsInfo = exports.createNewUser = exports.getUserDataById = exports.checkProjectExists = exports.deleteAccountUnActive = exports.checkUserAccountIsActive = exports.checkEmailUIDExists = void 0;
 const tslib_1 = require("tslib");
-const firestore_1 = require("firebase/firestore");
-const firebase_1 = require("../db/firebase");
+const firebase_1 = require("../db/firebase"); // Admin SDK instance
 // user
 const checkEmailUIDExists = (uid) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
-        return (yield (0, firestore_1.getDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, `users`, uid))).exists();
+        const docRef = firebase_1.firestore.collection("users").doc(uid);
+        const docSnapshot = yield docRef.get();
+        return docSnapshot.exists;
     }
     catch (error) {
-        console.log("this is the error: ", error);
+        console.error("this is the error: ", error);
         return null;
     }
 });
 exports.checkEmailUIDExists = checkEmailUIDExists;
 const checkUserAccountIsActive = (uid) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userData = (yield (0, firestore_1.getDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, `users`, uid))).data();
-        if (userData === null || userData === void 0 ? void 0 : userData.isActive) {
-            return true;
-        }
-        return false;
+        const userData = (yield firebase_1.firestore.collection("users").doc(uid).get()).data();
+        return (userData === null || userData === void 0 ? void 0 : userData.isActive) || false;
     }
     catch (error) {
-        console.log("this is the error: ", error);
+        console.error("this is the error: ", error);
         return null;
     }
 });
 exports.checkUserAccountIsActive = checkUserAccountIsActive;
 const deleteAccountUnActive = (userId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     try {
-        return yield (0, firestore_1.deleteDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, `users`, userId));
+        yield firebase_1.firestore.collection("users").doc(userId).delete();
+        return true;
     }
     catch (error) {
-        console.log("error when delete user: ", error);
+        console.error("error when delete user: ", error);
         return null;
     }
 });
 exports.deleteAccountUnActive = deleteAccountUnActive;
 const checkProjectExists = (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return (yield (0, firestore_1.getDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId))).exists();
+    const docSnapshot = yield firebase_1.firestore.collection("projects").doc(projectId).get();
+    return docSnapshot.exists;
 });
 exports.checkProjectExists = checkProjectExists;
 const getUserDataById = (uid) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return (yield (0, firestore_1.getDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, `users`, uid))).data();
+    const docSnapshot = yield firebase_1.firestore.collection("users").doc(uid).get();
+    return docSnapshot.data();
 });
 exports.getUserDataById = getUserDataById;
 const createNewUser = (uid, data) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "users", uid), data);
+    yield firebase_1.firestore.collection("users").doc(uid).set(data);
 });
 exports.createNewUser = createNewUser;
 const addUserProjectsInfo = (uid, projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "users", uid, "projects", projectId), { projectId });
+    yield firebase_1.firestore.collection("users").doc(uid).collection("projects").doc(projectId).set({ projectId });
 });
 exports.addUserProjectsInfo = addUserProjectsInfo;
-//project
+// project
 const createOrSetProject = (projectId, data) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId), data);
+    yield firebase_1.firestore.collection("projects").doc(projectId).set(data);
 });
 exports.createOrSetProject = createOrSetProject;
-// async const deleteCollection = (collectionPath: string) => {
-//   const colRef = collection(firestoreDB, collectionPath);
-//   const querySnapshot = await getDocs(colRef);
-//   const deletePromises = querySnapshot.docs.map(async (docSnapshot) => {
-//     const docRef = doc(firestoreDB, collectionPath, docSnapshot.id);
-//     await deleteDoc(docRef);
-//   });
-//   await Promise.all(deletePromises);
-// }
 function deleteMemberList(projectId) {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
-        const colRef = (0, firestore_1.collection)(firebase_1.firestoreDB, "projects", projectId, "authority");
-        const querySnapshot = yield (0, firestore_1.getDocs)(colRef);
-        yield Promise.all([
-            yield querySnapshot.docs.map((item) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-                const docRef = (0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId, "authority", item.id);
-                yield (0, firestore_1.deleteDoc)(docRef);
-            })),
-            yield querySnapshot.docs.map((item) => tslib_1.__awaiter(this, void 0, void 0, function* () {
-                const docRef = (0, firestore_1.doc)(firebase_1.firestoreDB, "users", item.id, "projects", projectId);
-                yield (0, firestore_1.deleteDoc)(docRef);
-            })),
-        ]);
+        const authorityCol = firebase_1.firestore.collection("projects").doc(projectId).collection("authority");
+        const querySnapshot = yield authorityCol.get();
+        yield Promise.all(querySnapshot.docs.map((item) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+            yield firebase_1.firestore.collection("projects").doc(projectId).collection("authority").doc(item.id).delete();
+            yield firebase_1.firestore.collection("users").doc(item.id).collection("projects").doc(projectId).delete();
+        })));
     });
 }
 const deteleProject = (uid, projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     yield Promise.all([
-        yield (0, firestore_1.deleteDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId)),
-        yield (0, firestore_1.deleteDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "users", uid, "projects", projectId)),
-        yield deleteMemberList(projectId),
+        firebase_1.firestore.collection("projects").doc(projectId).delete(),
+        firebase_1.firestore.collection("users").doc(uid).collection("projects").doc(projectId).delete(),
+        deleteMemberList(projectId),
     ]);
-    // missing clear user meber project list
 });
 exports.deteleProject = deteleProject;
 const getProjectInfo = (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return (yield (0, firestore_1.getDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId))).data();
+    const docSnapshot = yield firebase_1.firestore.collection("projects").doc(projectId).get();
+    return docSnapshot.data();
 });
 exports.getProjectInfo = getProjectInfo;
 const checkUserAuthority = (projectId, userId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return (yield (0, firestore_1.getDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId, "authority", userId))).data();
+    const docSnapshot = yield firebase_1.firestore.collection("projects").doc(projectId).collection("authority").doc(userId).get();
+    return docSnapshot.data();
 });
 exports.checkUserAuthority = checkUserAuthority;
 const getProjectListByUser = (uid) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    const listProjectId = (yield (0, firestore_1.getDocs)((0, firestore_1.collection)(firebase_1.firestoreDB, "users", uid, "projects"))).docs.map((item) => item.id);
-    return yield Promise.all(listProjectId.map((item) => tslib_1.__awaiter(void 0, void 0, void 0, function* () { return (yield (0, firestore_1.getDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", item))).data(); })));
+    const projectSnapshot = yield firebase_1.firestore.collection("users").doc(uid).collection("projects").get();
+    const projectIds = projectSnapshot.docs.map((doc) => doc.id);
+    return yield Promise.all(projectIds.map((projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
+        const projectData = yield firebase_1.firestore.collection("projects").doc(projectId).get();
+        return projectData.data();
+    })));
 });
 exports.getProjectListByUser = getProjectListByUser;
 const getUpdateProjectDueTime = (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    yield (0, firestore_1.updateDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId), {
+    yield firebase_1.firestore.collection("projects").doc(projectId).update({
         dueTime: Date.now(),
     });
 });
 exports.getUpdateProjectDueTime = getUpdateProjectDueTime;
 // task feature
 const createOrSetTask = (projectId, taskId, contentTask) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId, "tasks", taskId), contentTask);
+    yield firebase_1.firestore.collection("projects").doc(projectId).collection("tasks").doc(taskId).set(contentTask);
 });
 exports.createOrSetTask = createOrSetTask;
 const viewTasksProject = (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return (yield (0, firestore_1.getDocs)((0, firestore_1.collection)(firebase_1.firestoreDB, "projects", projectId, "tasks"))).docs.map((item) => item.data());
+    const tasksSnapshot = yield firebase_1.firestore.collection("projects").doc(projectId).collection("tasks").get();
+    return tasksSnapshot.docs.map((doc) => doc.data());
 });
 exports.viewTasksProject = viewTasksProject;
 const deteleTask = (projectId, taskId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return yield (0, firestore_1.deleteDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId, "tasks", taskId));
+    yield firebase_1.firestore.collection("projects").doc(projectId).collection("tasks").doc(taskId).delete();
 });
 exports.deteleTask = deteleTask;
 // member
 const addMemberAuthorityInProject = (projectId, userId, authority) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId, "authority", userId), { authority });
+    yield firebase_1.firestore.collection("projects").doc(projectId).collection("authority").doc(userId).set({ authority });
 });
 exports.addMemberAuthorityInProject = addMemberAuthorityInProject;
 const addProjectIntoMemberData = (memberId, projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     const projectInfo = yield (0, exports.getProjectInfo)(projectId);
-    // console.log({ projectInfo });
-    let input = projectInfo;
-    delete input.members;
-    yield (0, firestore_1.setDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "users", memberId, "projects", projectId), input);
+    const _a = projectInfo || {}, { members } = _a, dataWithoutMembers = tslib_1.__rest(_a, ["members"]);
+    yield firebase_1.firestore.collection("users").doc(memberId).collection("projects").doc(projectId).set(dataWithoutMembers);
 });
 exports.addProjectIntoMemberData = addProjectIntoMemberData;
 const viewMemberInProject = (projectId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    return yield (0, firestore_1.getDocs)((0, firestore_1.collection)(firebase_1.firestoreDB, "projects", projectId, "authority"));
+    return yield firebase_1.firestore.collection("projects").doc(projectId).collection("authority").get();
 });
 exports.viewMemberInProject = viewMemberInProject;
 const updateMemberAuthorityInProject = (projectId, userId, authority) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    yield (0, firestore_1.updateDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId, "authority", userId), { authority });
+    yield firebase_1.firestore.collection("projects").doc(projectId).collection("authority").doc(userId).update({ authority });
 });
 exports.updateMemberAuthorityInProject = updateMemberAuthorityInProject;
 const removeMemberOutOfProject = (projectId, memberId) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
     yield Promise.all([
-        yield (0, firestore_1.deleteDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "projects", projectId, "authority", memberId)),
-        yield (0, firestore_1.deleteDoc)((0, firestore_1.doc)(firebase_1.firestoreDB, "users", memberId, "projects", projectId)),
+        firebase_1.firestore.collection("projects").doc(projectId).collection("authority").doc(memberId).delete(),
+        firebase_1.firestore.collection("users").doc(memberId).collection("projects").doc(projectId).delete(),
     ]);
 });
 exports.removeMemberOutOfProject = removeMemberOutOfProject;

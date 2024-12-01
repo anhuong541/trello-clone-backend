@@ -9,3 +9,4 @@ node_modules
 clone-db.ts
 
 .vercel
+trello-clone-v2-key-secret.json
