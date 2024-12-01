@@ -1,7 +1,7 @@
 {
   "watch": ["src"],
   "ext": "ts",
-  "exec": "yarn build && yarn start",
+  "exec": "yarn start",
   "delay": "1000",
   "restartable": "rs",
   "verbose": true
