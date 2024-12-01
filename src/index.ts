@@ -57,6 +57,7 @@ app.use(cookieParser());
 // Routes
 app.get("/", (req, res) => {
   console.log("it run!!!");
+  console.log("it run!!!");
   res.json({ status: "success", text: "everything is clear!!!" });
 });
 
