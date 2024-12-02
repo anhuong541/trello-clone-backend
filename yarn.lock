@@ -659,6 +659,16 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/api/-/api-1.9.0.tgz#d03eba68273dc0f7509e2a3d5cba21eae10379fe"
   integrity sha512-3giAOQvZiH5F9bMlMiv8+GSPMeqg0dbaeo58/0SlA9sxSqZhnUtxzX9/2FzyhS9sWQf5S0GJE0AKBrFqjpeYcg==
 
+"@otjs/firebase-plaintext@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@otjs/firebase-plaintext/-/firebase-plaintext-0.2.2.tgz#c695a7143e40ea5b7962f85d0ae8b09665368fb3"
+  integrity sha512-3HTLeHDi8pi0DtYKdpEHfNfIAFNxP45zG3+vB4JPdThT6ZzgzeU9Xrar8ErO4z+cxPW/R6OcpbHtvhwSouM5GA==
+
+"@otjs/plaintext@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@otjs/plaintext/-/plaintext-0.2.2.tgz#5b23fffc7a3b16cd709c684b845e9779a322a79a"
+  integrity sha512-FyUyoaj8+iY/mPQ26UTpKAZ0x7PUwyVj6G/FszLLW6qIeTUIJ9sc4Xs2w2RDyO78O40lrFy18bDQMPh8LmxF8w==
+
 "@pkgjs/parseargs@^0.11.0":
   version "0.11.0"
   resolved "https://registry.npmjs.org/@pkgjs/parseargs/-/parseargs-0.11.0.tgz"

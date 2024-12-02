@@ -1,11 +1,8 @@
-import admin from "firebase-admin";
-import { GOOGLE_APPLICATION_CREDENTIALS } from "../../constant";
+import admin, { ServiceAccount } from "firebase-admin";
+import firebaseConfig from "../../config/firebase-config";
 
-const serviceAccountKeys = require(GOOGLE_APPLICATION_CREDENTIALS);
-
-// admin firebase
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccountKeys),
+  credential: admin.credential.cert(firebaseConfig as ServiceAccount),
   databaseURL: "https://trello-clone-v2-78290-default-rtdb.asia-southeast1.firebasedatabase.app",
 });
 

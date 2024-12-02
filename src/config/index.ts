@@ -3,8 +3,7 @@ dotenv.config();
 
 const env = process.env.NODE_ENV === "production";
 
-export default {
-  // firebase
+const config = {
   env,
   apiKey: process.env.FIREBASE_API_KEY!,
   authDomain: process.env.AUTH_DOMAIN!,
@@ -20,3 +19,5 @@ export default {
   serverUrl: env ? process.env.WEB_SERVER_URL! : "http://localhost:3456",
   clientUrl: env ? process.env.WEB_CLIENT_URL! : "http://localhost:3000",
 };
+
+export default config;
